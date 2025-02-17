@@ -21,9 +21,9 @@ Here is what each subfolder represents:
     - The dataset I created by merging `events_set1` and `events_set2` because they contain the actual tweet text and the specific event names. I also manually assigned the `event_type` as a label for classification later on. 
     - This is the dataset we will be focusing on, but I've included the other ones in case they are helpful
 
-#### How to actually get the data in your repository
+#### How to actually get the data in your repository:
 
-To make this easier and for standardization, I've written a python script called `download_data.py`. This will automatically download `train.tsv`, `test.tsv`, and `dev.tsv` from `combined_datasets` to your local `data` directory. If you would like any of the other datasets, feel free to upload the script accordingly. 
+To make this easier and for standardization, I've written a python script called `download_data.py`. This will automatically download `train.tsv`, `test.tsv`, and `dev.tsv` from `combined_datasets` to your local `data` directory. If you would like any of the other datasets, feel free to update the script accordingly. 
 
 To use the script, run:
 1. `pip3 install gdown` (globally) 
