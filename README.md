@@ -33,5 +33,7 @@ Note: exact commands might be different depending on your python and pip version
 
 You should be able to see the three datasets in your `data` directory. To test whether they work, you can access the `test.ipynb` notebook in the `model/notebooks` directory and run the first cell. 
 
+I've added everying in the `data` directory to `.gitignore` because GitHub can't support such large files. As a result, you'll be working with the data on your local repository. 
+
 ### TODO
 - Licensing info, especially for Crisis NLP 
