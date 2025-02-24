@@ -2,10 +2,14 @@ import os
 import gdown 
 
 # Downloads train, test, dev sets from combined_datasets
+train_id = "1EQMnszXXJCR47xEK6QA75Wf-lJd5DJJZ"
+test_id = "1uIFfYOfoWB2gcOVbQB-CXCdUKaRL-i-2"
+dev_id = "1lmxndA9eZLmwvdAqNBpzsMi3_Uf-cNHV"
+
 files_info = [
-    {"url": "https://drive.google.com/uc?id=1051g1Y5xUc716CR5bqeaVYH0D-cFnm5I", "filename": "train.tsv"}, 
-    {"url": "https://drive.google.com/uc?id=1-sXOLEh10vnIa_FgVWOCOqBmC37acpMu", "filename": "dev.tsv"}, 
-    {"url": "https://drive.google.com/uc?id=100ck2eOW37Sg7o6SFu_rqwM6XnQnYosA", "filename": "test.tsv"}
+    {"url": f"https://drive.google.com/uc?id={train_id}", "filename": "train.tsv"}, 
+    {"url": f"https://drive.google.com/uc?id={test_id}", "filename": "test.tsv"},
+    {"url": f"https://drive.google.com/uc?id={dev_id}", "filename": "dev.tsv"}
 ]
 
 # Relative path to data directory 
