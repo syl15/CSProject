@@ -23,11 +23,11 @@ Here is what each subfolder represents:
 
 #### How to actually get the data in your repository:
 
-To make this easier and for standardization, I've written a python script called `download_data.py`. This will automatically download `train.tsv`, `test.tsv`, and `dev.tsv` from `combined_datasets` to your local `data` directory. If you would like any of the other datasets, feel free to update the script accordingly. 
+To make this easier and for standardization, I've written a python script called `download_data.py` available in the `/data/scripts` directory. This will automatically download `train.tsv`, `test.tsv`, and `dev.tsv` from `combined_datasets` to your local `data` directory. If you would like any of the other datasets, feel free to update the script accordingly. 
 
 To use the script, run:
 1. `pip3 install gdown` (globally) 
-2. `python3 download_data.py` (in your project directory). 
+2. `python3 download_data.py` (after navigating the proper directory). 
 
 Note: exact commands might be different depending on your python and pip version.
 
