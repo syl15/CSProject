@@ -16,17 +16,11 @@ You will need three terminal windows to run Flask, FastAPI, and curl commands (t
 
 **Example command:**
 
-curl -X POST http://localhost:5001/predict \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Tornado warning in Oklahoma"}'
+curl -X POST http://localhost:5001/predict -H "Content-Type: application/json" -d '{"text": "Tornado warning in Oklahoma"}'
 
-curl -X POST http://localhost:5001/predict \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Earthquake in Japan"}'
+curl -X POST http://localhost:5001/predict -H "Content-Type: application/json" -d '{"text": "Earthquake in Japan"}'
 
-curl -X POST http://localhost:5001/predict \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Had to evacuate because of the LA fires"}'
+curl -X POST http://localhost:5001/predict -H "Content-Type: application/json" -d '{"text": "Had to evacuate because of the LA fires"}'
 
 **Example response (in terminal):**
 `{"event_type":"tornado"}`
@@ -45,16 +39,12 @@ Expected response: `{"message":"Event Type Prediction API"}`
 
 **Test FastAPI prediction endpoint:** 
 
-curl -X POST http://localhost:8000/predict \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Tornado warning in Oklahoma"}'
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d '{"text": "Tornado warning in Oklahoma"}'
 
 Expected response: `{"event_type":"flood"}` (lol)
 
 **Test mock Flask endpoint:**
 
-curl -X POST http://localhost:5001/mock-predict \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Hurricane warning in Florida"}'
+curl -X POST http://localhost:5001/mock-predict -H "Content-Type: application/json" -d '{"text": "Hurricane warning in Florida"}'
 
 Expected response: `{"event_type":"Testing Flask"}`
