@@ -1,3 +1,19 @@
+### First time users
+  - [Create a venv](#activating-your-venv)
+  - [Run backend/requirements.txt](#installing-new-packages) to download necessary requirements
+  - Host the server by running `flask run` in CLI
+
+### Contents of this folder
+  - Items you need to create:
+    1. `.env`: This is where you will store your DB URL. Contact backend developer for this URL
+    2. `.flaskenv`: This is where you will store variables associated with the Flask app. Contact backend developer for this content
+
+  - `app.py`: Entry point for Flask app. Routes will be defined here for now
+    - Automatically runs the backend server via `flask run`
+    - Optional command `python app.py --reset-db` exists if you want to repopulate the Raw Crisis NLP database. **This is not recommended. Inserting all the training data into the DB took about 25 minutes.**
+  - `database.py`: Allows backend to connect and interact with PostgreSQL tables via SQL queries
+  - `populate.py`: Script to populate the Raw Crisis NLP table and handle table resets. **This should never be manually run**
+
 ### Activiating your venv 
 
 Aside: Should you activate your venv from the root directory?
