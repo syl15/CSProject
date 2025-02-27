@@ -134,7 +134,7 @@ celerybeat.pid
 .env
 .venv
 .venv_backend
-.flaskenv
+# .flaskenv 
 env/
 venv/
 ENV/
