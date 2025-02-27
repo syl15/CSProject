@@ -136,7 +136,7 @@ celerybeat.pid
 .env
 .venv
 .venv_backend
-.flaskenv
+# .flaskenv 
 env/
 venv/
 ENV/
@@ -176,4 +176,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Mac 
 .DS_Store
+
+# Model development 
+.pkl
+*.pkl
+*.joblib
