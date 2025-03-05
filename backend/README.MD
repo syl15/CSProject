@@ -6,7 +6,6 @@
 ### Contents of this folder
   - Items you need to create:
     1. `.env`: This is where you will store your DB URL. Contact backend developer for this URL
-    2. `.flaskenv`: This is where you will store variables associated with the Flask app. Contact backend developer for this content
 
   - `app.py`: Entry point for Flask app. Routes will be defined here for now
     - Automatically runs the backend server via `flask run`
