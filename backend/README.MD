@@ -1,3 +1,15 @@
+### Contents of this folder
+  - Items you need to create:
+    1. `.env`:
+      - Stores DB URL, bluesky credentials
+      - Contact backend developer for this info
+  - `app.py`: Entry point for Flask app.
+    - Automatically runs the backend server via `flask run`
+    - Optional command `python app.py --reset-db` exists if you want to repopulate the Raw Crisis NLP database. **This is not recommended. Inserting all the training data into the DB takes about 25 minutes.**
+  - `database.py`: Allows backend to connect and interact with PostgreSQL tables via SQL queries
+  - `populate.py`: Script to populate the Raw Crisis NLP table and handle table resets. **Do not manually run without asking backend dev**
+  - `bluesky_poller.py`: Sets up and CRON job for periodially polling bluesky
+
 ### First time users
   - [Create a venv](#activating-your-venv)
     - TLDR: 
@@ -8,19 +20,7 @@
       - `pip install -r backend/requirements.txt` to install backend required packages
   - Host the server by running `flask run` in CLI
 
-### Contents of this folder
-  - Items you need to create:
-    1. `.env`:
-      - Stores DB URL, bluesky credentials
-      - Contact backend developer for this URL
-  - `app.py`: Entry point for Flask app.
-    - Automatically runs the backend server via `flask run`
-    - Optional command `python app.py --reset-db` exists if you want to repopulate the Raw Crisis NLP database. **This is not recommended. Inserting all the training data into the DB takes about 25 minutes.**
-  - `database.py`: Allows backend to connect and interact with PostgreSQL tables via SQL queries
-  - `populate.py`: Script to populate the Raw Crisis NLP table and handle table resets. **Do not manually run without asking backend dev**
-  - bluesky_poller.py: Sets up and CRON job for periodially polling bluesky
-
-### Activiating your venv 
+### Activating your venv 
 
 Aside: Should you activate your venv from the root directory?
   - Actually, a lot of sources are mixed over whether this is the best practice and there are many ways to do it, but you can pick a workflow that works for you. 
