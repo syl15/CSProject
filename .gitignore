@@ -184,3 +184,6 @@ cython_debug/
 .pkl
 *.pkl
 *.joblib
+
+# Database testing
+bluesky_log.txt
