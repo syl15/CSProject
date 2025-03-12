@@ -8,8 +8,6 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
 
   <StrictMode>
-    <Navbar/>
-    <Dashboard/>
-
+    <App />
   </StrictMode>
 )
