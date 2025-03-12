@@ -7,3 +7,7 @@
 .nav-item:hover {
     background-color: #F6F6F6;
 }
+.search-bar {
+    width:100%;
+    padding-left:500px;
+}
