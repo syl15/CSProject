@@ -1,0 +1,9 @@
+.nav-item {
+    border: 1px solid #D4D4D4;
+    padding:0.5rem 1rem 0.5rem 1rem;
+    border-radius: 0.3rem;
+}
+
+.nav-item:hover {
+    background-color: #F6F6F6;
+}
