@@ -8,13 +8,13 @@ export default function MobileNavbar() {
   return (
     <Menubar.Root className="visible md:invisible flex flex-start absolute">
         <Menubar.Menu>
-            <div className="flex flex-row-reverse gap-x-10">
+            <div className="flex flex-row-reverse gap-x-5">
             <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
             <Menubar.Trigger><HamburgerMenuIcon width="25" height="25"/></Menubar.Trigger>
             </div>
             <Menubar.Portal>
                 <Menubar.Content
-                    className="border border-[#D4D4D4] rounded-sm text-sm p-3 visible md:invisible"
+                    className="border border-[#D4D4D4] rounded-sm text-sm p-3 visible md:invisible mt-2"
                     align="start"
                     sideOffset={5}
                     alignOffset={-3}
