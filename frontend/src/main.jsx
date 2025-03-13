@@ -4,10 +4,12 @@ import './App.css'
 import Navbar from './Navbar.jsx'
 import Dashboard from './Dashboard.jsx'
 import App from './App.jsx'
+import MobileNavbar from './MobileNavbar.jsx'
 
 createRoot(document.getElementById('root')).render(
 
   <StrictMode>
-    <App />
+
+    <Navbar/>
   </StrictMode>
 )
