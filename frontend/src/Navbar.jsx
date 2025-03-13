@@ -7,7 +7,7 @@ import MobileNavbar from './MobileNavbar';
 
 export default function Navbar() {
   return (
-    <div className="overflow-x-hidden relative">
+    <div className="overflow-x-hidden absolute left-0 right-0 md:border-b-1 md:border-[#D4D4D4] pb-5 px-6 md:px-10">
         <MobileNavbar/>
         <NavigationMenu.Root className="invisible md:visible flex flex-row justify-between items-between">
             <div className="flex flex-row items-center gap-x-10">
