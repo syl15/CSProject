@@ -63,3 +63,21 @@ So after installation, freeze the environment to update the list of dependencies
 And commit the updated requirements to version control. 
 
 The same goes for if you updated an existing package. 
+
+Alternatively, you can just add the dependency to requirements.txt directly. 
+
+
+### Using the Flask API routes 
+
+1. Activate your `venv` and install dependencies
+2. Run the Flask app \
+    `cd backend` \
+    `flask run`
+3. Run the React app \
+    `cd frontend` \
+    `npm install` \
+    `npm run dev`
+
+You should be able to see the API responses on `http://localhost:5173/`.
+
+
