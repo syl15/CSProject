@@ -1,0 +1,309 @@
+[
+    {
+      "id": 1,
+      "name": "Southern California Wildfires",
+      "startDate": "2025-01-07",
+      "endDate": "2025-01-31",
+      "totalTweets": 10590,
+      "severity": 5,
+      "summary": "Massive wildfires spread across Southern California, leading to evacuations and widespread damage.",
+      "location": {
+        "latitude": 34.0522,
+        "longitude": -118.2437,
+        "radius": 50
+      },
+      "locationName": "Los Angeles, California, USA",
+      "sentiment": {
+        "positive": 4236,
+        "negative": 3707,
+        "neutral": 2647
+      },
+      "topTweets": [
+        {
+          "posterName": "John Doe",
+          "username": "@johndoe",
+          "content": "The wildfires are spreading rapidly, stay safe.",
+          "timestamp": "2025-01-15T14:30:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/johndoe/post/123456789"
+        },
+        {
+          "posterName": "Jane Smith",
+          "username": "@janesmith",
+          "content": "Huge appreciation for the firefighters working around the clock.",
+          "timestamp": "2025-01-16T08:15:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/janesmith/post/987654321"
+        },
+        {
+          "posterName": "Mike Adams",
+          "username": "@mikeadams",
+          "content": "The air quality is awful, everyone should wear masks if they go outside.",
+          "timestamp": "2025-01-17T09:45:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/mikeadams/post/1122334455"
+        },
+        {
+          "posterName": "Disaster Relief Org",
+          "username": "@disasterrelief",
+          "content": "We are distributing water and supplies at evacuation centers.",
+          "timestamp": "2025-01-18T14:00:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/disasterrelief/post/9988776655"
+        },
+        {
+          "posterName": "Local News",
+          "username": "@localnews",
+          "content": "Evacuation orders extended as fire containment efforts continue.",
+          "timestamp": "2025-01-19T18:20:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/localnews/post/7766554433"
+        },
+        {
+          "posterName": "Fire Dept",
+          "username": "@lafd",
+          "content": "Crews are working 24/7 to contain the wildfires. Please follow all safety orders.",
+          "timestamp": "2025-01-20T10:30:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/lafd/post/6655443322"
+        },
+        {
+          "posterName": "Citizen Report",
+          "username": "@citizenreport",
+          "content": "Just witnessed firefighters saving a neighborhood from the blaze. Heroes!",
+          "timestamp": "2025-01-21T21:10:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/citizenreport/post/5544332211"
+        },
+        {
+          "posterName": "Weather Updates",
+          "username": "@weatherupdate",
+          "content": "High winds expected tonight, increasing fire risk.",
+          "timestamp": "2025-01-22T07:50:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/weatherupdate/post/4433221100"
+        },
+        {
+          "posterName": "Emergency Alerts",
+          "username": "@emergencyalerts",
+          "content": "Mandatory evacuations now extended to three more counties.",
+          "timestamp": "2025-01-23T17:40:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/emergencyalerts/post/3322110099"
+        },
+        {
+          "posterName": "Support Network",
+          "username": "@supportnet",
+          "content": "If you need assistance evacuating, contact your local shelters.",
+          "timestamp": "2025-01-24T14:05:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/supportnet/post/2211009988"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Florida Hurricane",
+      "startDate": "2024-09-10",
+      "endDate": "2024-09-20",
+      "totalTweets": 12543,
+      "severity": 4,
+      "summary": "Category 5 hurricane makes landfall in Florida, causing significant flooding and damage.",
+      "location": {
+        "latitude": 27.994402,
+        "longitude": -81.760254,
+        "radius": 100
+      },
+      "locationName": "Miami, Florida, USA",
+      "sentiment": {
+        "positive": 3762,
+        "negative": 6271,
+        "neutral": 2510
+      },
+      "topTweets": [
+        {
+          "posterName": "Sarah Johnson",
+          "username": "@sarahj",
+          "content": "Flooding is severe in Miami. Stay indoors and stay safe!",
+          "timestamp": "2024-09-11T10:00:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/sarahj/post/1122003344"
+        },
+        {
+          "posterName": "Weather Alert",
+          "username": "@weather_alert",
+          "content": "Emergency response teams are on high alert as the hurricane moves inland.",
+          "timestamp": "2024-09-12T08:30:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/weather_alert/post/2233445566"
+        },
+        {
+          "posterName": "Jake Thompson",
+          "username": "@jakethompson",
+          "content": "Winds are crazy! Power is already out in some neighborhoods.",
+          "timestamp": "2024-09-12T15:20:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/jakethompson/post/3344556677"
+        },
+        {
+          "posterName": "Lisa Moore",
+          "username": "@lisamoore",
+          "content": "Hurricane shelters are filling up. If you need one, act fast!",
+          "timestamp": "2024-09-13T09:10:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/lisamoore/post/4455667788"
+        },
+        {
+          "posterName": "Gov of Florida",
+          "username": "@govflorida",
+          "content": "State of emergency declared. Resources are being deployed.",
+          "timestamp": "2024-09-13T14:45:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/govflorida/post/5566778899"
+        },
+        {
+          "posterName": "Red Cross",
+          "username": "@redcross",
+          "content": "Emergency relief supplies are on their way to affected areas.",
+          "timestamp": "2024-09-14T07:30:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/redcross/post/6677889900"
+        },
+        {
+          "posterName": "Hurricane Tracker",
+          "username": "@hurricanetracker",
+          "content": "Winds now exceeding 150 mph. Stay indoors and off the roads.",
+          "timestamp": "2024-09-14T22:05:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/hurricanetracker/post/7788990011"
+        },
+        {
+          "posterName": "First Responders",
+          "username": "@firstresponders",
+          "content": "Rescue efforts are underway for those trapped in flood zones.",
+          "timestamp": "2024-09-15T05:55:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/firstresponders/post/8899001122"
+        },
+        {
+          "posterName": "Emergency Broadcast",
+          "username": "@emergencyalerts",
+          "content": "Avoid coastal roads. Flooding is expected to worsen overnight.",
+          "timestamp": "2024-09-15T17:20:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/emergencyalerts/post/9900112233"
+        },
+        {
+          "posterName": "Community Support",
+          "username": "@communityhelp",
+          "content": "Volunteers are setting up food stations for those in need.",
+          "timestamp": "2024-09-16T11:30:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/communityhelp/post/1011121314"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Texas Tornado Outbreak",
+      "startDate": "2023-05-03",
+      "endDate": "2023-05-05",
+      "totalTweets": 8334,
+      "severity": 3,
+      "summary": "A series of powerful tornadoes tore through Texas, causing widespread destruction and loss of power.",
+      "location": {
+        "latitude": 31.9686,
+        "longitude": -99.9018,
+        "radius": 75
+      },
+      "locationName": "Dallas, Texas, USA",
+      "sentiment": {
+        "positive": 2501,
+        "negative": 4327,
+        "neutral": 1506
+      },
+      "topTweets": [
+        {
+          "posterName": "Mark Peterson",
+          "username": "@markp",
+          "content": "Tornado just ripped through my town. Houses destroyed.",
+          "timestamp": "2023-05-03T17:45:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/markp/post/5566778899"
+        },
+        {
+          "posterName": "Emergency Broadcast",
+          "username": "@emergencyalerts",
+          "content": "Seek shelter immediately. Tornado warning in effect.",
+          "timestamp": "2023-05-03T18:00:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/emergencyalerts/post/6677889900"
+        },
+        {
+          "posterName": "Local Reporter",
+          "username": "@localreporter",
+          "content": "Multiple tornadoes confirmed in the area. Stay tuned for updates.",
+          "timestamp": "2023-05-03T19:15:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/localreporter/post/7788990011"
+        },
+        {
+          "posterName": "Rescue Team",
+          "username": "@rescueteam",
+          "content": "Rescue operations have begun. Please keep a safe distance.",
+          "timestamp": "2023-05-03T20:00:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/rescueteam/post/8899001122"
+        },
+        {
+          "posterName": "Tornado Watch",
+          "username": "@tornadowatch",
+          "content": "Radar shows multiple vortexes forming over central Texas.",
+          "timestamp": "2023-05-04T08:30:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/tornadowatch/post/9900112233"
+        },
+        {
+          "posterName": "Community Alert",
+          "username": "@communityalert",
+          "content": "Neighbors are warning each other—stay indoors until the storm passes.",
+          "timestamp": "2023-05-04T10:15:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/communityalert/post/1011121314"
+        },
+        {
+          "posterName": "Weather Central",
+          "username": "@weathercentral",
+          "content": "Tornado activity is expected to continue through the night.",
+          "timestamp": "2023-05-04T12:00:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/weathercentral/post/1112131415"
+        },
+        {
+          "posterName": "Local Official",
+          "username": "@localelected",
+          "content": "Emergency services are on high alert. Follow local advisories.",
+          "timestamp": "2023-05-04T14:30:00Z",
+          "sentiment": "positive",
+          "link": "https://bsky.app/profile/localelected/post/1213141516"
+        },
+        {
+          "posterName": "Citizen Report",
+          "username": "@citizenreport",
+          "content": "I’ve never seen anything like this before. Stay safe everyone.",
+          "timestamp": "2023-05-04T16:45:00Z",
+          "sentiment": "neutral",
+          "link": "https://bsky.app/profile/citizenreport/post/1314151617"
+        },
+        {
+          "posterName": "Local News",
+          "username": "@localnews",
+          "content": "Damage reports are coming in as communities begin to assess the aftermath.",
+          "timestamp": "2023-05-05T09:00:00Z",
+          "sentiment": "negative",
+          "link": "https://bsky.app/profile/localnews/post/1415161718"
+        }
+      ]
+    }
+  ]
+  
