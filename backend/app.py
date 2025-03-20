@@ -1,3 +1,6 @@
+from flask import Flask, jsonify, request
+from flask_cors import CORS 
+import requests
 import sys
 from flask import Flask
 import json
@@ -8,6 +11,7 @@ from collections import OrderedDict
 # FLASK APP SETUP 
 # ----------------------------------------
 app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173"]) 
 
 @app.get("/")
 def home():
