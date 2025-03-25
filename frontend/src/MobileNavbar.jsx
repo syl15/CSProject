@@ -10,7 +10,7 @@ export default function MobileNavbar() {
         <Menubar.Menu>
             <div className="flex flex-row-reverse gap-x-5">
             <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
-            <Menubar.Trigger><HamburgerMenuIcon width="25" height="25"/></Menubar.Trigger>
+            <Menubar.Trigger className="p-0 bg-white border-none"><HamburgerMenuIcon width="25" height="25"/></Menubar.Trigger>
             </div>
             <Menubar.Portal>
                 <Menubar.Content
