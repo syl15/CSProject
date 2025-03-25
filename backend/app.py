@@ -11,18 +11,7 @@ from database import get_db_connection
 # FLASK APP SETUP 
 # ----------------------------------------
 app = Flask(__name__)
-
-#  TODO: Address connection problem later
-# database_url = os.getenv('DATABASE_URL') # Load DB environment variable
-# connection = psycopg2.connect(database_url) # Connect to the PostgreSQL database
-
-
-FASTAPI_URL = "http://localhost:8000/predict"  # FastAPI endpoint
-import sys
-from flask import Flask
-from populate import raw_crisis_nlp_populate
-
-app = Flask(__name__)
+CORS(app, origins=["http://localhost:5173"]) 
 
 @app.get("/")
 def home():
@@ -189,10 +178,17 @@ def mock_prediction():
     """
     return jsonify({"event_type": "Testing Flask"})
 
-if __name__ == "__main__": 
-    app.run(host='0.0.0.0', port=5001) # Note: I used 5001 because 5000 was occupied on my port (by Airplay); we can change this if necessary
+
+# ----------------------------------------
+# APPLICATION STARTUP 
+# ----------------------------------------
+ 
 if __name__ == "__main__":
-    reset_db = "--reset-db" in sys.argv # optional argument to delete and repopulate raw_crisis_nlp_ table
+    """
+    Starts the Flask application.
+    Optionally resets the database if '--reset-db' is passed as a command-line argument. (Not recommended)
+    """
+    reset_db = "--reset-db" in sys.argv # 
 
     if reset_db:
         print("🔄 resetting and repopulating Raw_Crisis_NLP table...")
