@@ -4,7 +4,7 @@ import TestAPI from "./TestAPI.jsx"
 import Navbar from './Navbar'
 import Dashboard from './Dashboard.jsx'
 
-export default function App() {
+function App() {
   return (
     <>
       <Navbar/>
@@ -13,3 +13,5 @@ export default function App() {
     </>   
   );
 }
+
+export default App;
