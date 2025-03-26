@@ -9,9 +9,9 @@ Currently, two official plugins are available:
 
 
 To run: 
-cd frontend
-npm install 
+cd frontend \
+npm install \
 npm run dev 
 
-To exit: 
+To exit: \
 q + return
