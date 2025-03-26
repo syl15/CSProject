@@ -1,20 +1,3 @@
-'''
-CRON job for periodically polling data from bluesky: https://www.youtube.com/watch?v=EgrpfvBc7ks
-
-Activate a local CRON job:
-    1. crontab -l: list out all current jobs
-    2. crontab -e: open cron job editor to add a new job
-    3. enter a new job command 
-        ex: */2 * * * * cd /[absolute path to backend directory] && /[absolute path to backend directory]/.venv_backend/bin/python /[absolute path to backend directory]/bluesky_poller.py
-            - */2 * * * * specifies how often to run a job
-            - everything else specifies the command to be run by the job
-                - in this case, we want to open the backend directory and use python from the backend venv to run the bluesky_poller script
-    4. save the file. If using vim, use ":wq" and press enter
-
-
-TODO: Make CRON job Heroku friendly
-'''
-
 from atproto import Client, client_utils
 from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
@@ -48,7 +31,9 @@ def create_raw_bluesky_table():
                     Post_User_Handle TEXT,
                     Post_Link TEXT,
                     Post_Total_Interactions INTEGER,
-                    Post_Keyword TEXT
+                    Post_Keyword TEXT,
+                    Model_Disaster_Label TEXT,
+                    Model_Sentiment_Rating DECIMAL
                 );
             ''')
             conn.commit()
@@ -70,8 +55,9 @@ def insert_bluesky_data(batch_posts):
         if conn:
             cursor = conn.cursor()
             cursor.executemany('''
-                INSERT INTO raw_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO raw_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword, Model_Disaster_Label,
+                    Model_Sentiment_Rating)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (Post_ID) DO NOTHING;
             ''', batch_posts)
 
@@ -110,6 +96,8 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"
                     post_link = f"https://bsky.app/profile/{post.author.handle}/post/{post_id}"
                     post_total_interactions = post.like_count + post.quote_count + post.reply_count + post.repost_count
                     post_keyword = keyword
+                    model_label = None
+                    model_sentiment = None
                     
                     log_entry = (
                             f"\n==== POST ABOUT {keyword.upper()} ====\n"
@@ -123,13 +111,12 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"
                     log_file.write(log_entry)
 
                     # add post data to the batch list
-                    batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword))
+                    batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment))
 
         if batch_posts:
             insert_bluesky_data(batch_posts)
 
-if __name__ == "__main__":
-    change_schema() 
-    client = authenticate_bsky()
-    create_raw_bluesky_table()
-    poll_bsky_posts(client)
+# if __name__ == "__main__":
+#     client = authenticate_bsky()
+#     create_raw_bluesky_table()
+#     poll_bsky_posts(client, limit=1)
