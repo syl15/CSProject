@@ -14,14 +14,14 @@ export default function Navbar() {
                 <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
                 <NavigationMenu.List className="flex flex-row gap-x-2">
                     {/* Overview */}
-                    <NavigationMenu.Link className="text-sm" href="https://github.com/radix-ui">
+                    <NavigationMenu.Link className="text-sm text-black" href="https://github.com/radix-ui">
                         <NavigationMenu.Item className="list-none nav-item">
                             Overview
                         </NavigationMenu.Item>
                     </NavigationMenu.Link>
 
                     {/* Past Disasters */}
-                    <NavigationMenu.Link className="text-sm" href="https://github.com/radix-ui">
+                    <NavigationMenu.Link className="text-sm text-black" href="https://github.com/radix-ui">
                         <NavigationMenu.Item className="list-none nav-item">
                             Past Disasters
                         </NavigationMenu.Item>
