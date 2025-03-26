@@ -6,7 +6,7 @@ import requests
 app = FastAPI() 
 
 # Load dummy model 
-model = joblib.load("dummy_model.pkl")
+model = joblib.load("optimized_model.sav")
 
 # Define input schema 
 class TweetInput(BaseModel): 
