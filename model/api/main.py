@@ -37,7 +37,7 @@ def predict_event_type(data: TweetInput):
 # NOTE: This will be the classification logic 
 FLASK_API_URL = "http://127.0.0.1:5001/unclassified-posts"
 
-@app.get("/bluesky-data")
+@app.get("/bluesky-data") # TODO: change name to /classify 
 def batch_classify(): 
     """
     Pulls unclassified posts from Flask, classifies them, and returns predictions
