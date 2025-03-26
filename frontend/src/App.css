@@ -45,3 +45,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.scrollbar {
+  scrollbar-width: thin;
+  border-radius: 10px;
+}
