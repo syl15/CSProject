@@ -7,7 +7,7 @@ import Dashboard from "./Dashboard.jsx"
 function App() {
   return (
     <>
-      {/* <TestAPI/> */}
+      <TestAPI/>
       <Navbar/>
       <Dashboard/>
     </>
