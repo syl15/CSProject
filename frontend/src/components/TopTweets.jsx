@@ -1,6 +1,6 @@
 import React from 'react'
 import TweetBox from './TweetBox';
-import './App.css'
+
 
 export default function TopTweets() {
   return (
