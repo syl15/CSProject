@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tailwindcss";
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +44,9 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.scrollbar {
+  scrollbar-width: thin;
+  border-radius: 10px;
 }

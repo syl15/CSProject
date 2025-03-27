@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
 from dateutil import parser
 from database import get_db_connection
+from schema_changes import change_schema
 import os
 
 # create authenticated bsky session to access API
@@ -116,6 +117,7 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"
             insert_bluesky_data(batch_posts)
 
 # if __name__ == "__main__":
-#     client = authenticate_bsky()
+#     change_schema() 
+    client = authenticate_bsky()
 #     create_raw_bluesky_table()
 #     poll_bsky_posts(client, limit=1)

@@ -5,6 +5,7 @@ import sys
 import json
 from populate import raw_crisis_nlp_populate
 from collections import OrderedDict
+from database import get_db_connection
 
 # ----------------------------------------
 # FLASK APP SETUP 
@@ -17,7 +18,7 @@ def home():
     return "Hello, World!"
 
 # ----------------------------------------
-# DATA LOADING AND FORMATTING 
+# DATA LOADING AND FORMATTING (MOCK ENDPOINT)
 # ----------------------------------------
 
 def load_mock_data(): 
@@ -55,7 +56,7 @@ def format_disaster(disaster):
         ])
 
 # ----------------------------------------
-# DISASTER ENDPOINTS 
+# DISASTER ENDPOINTS (MOCK ENDPOINT)
 # ----------------------------------------
 
 @app.get("/disasters")
@@ -105,6 +106,38 @@ def get_recent_disaster():
         json.dumps(format_disaster(recent_disaster), indent=2), 
         mimetype="application/json"
     )
+
+# ----------------------------------------
+# BLUESKY ENDPOINT 
+# ----------------------------------------
+
+@app.get("/unclassified-posts")
+def get_unclassified_posts(): 
+    """
+    Returns Bluesky posts that haven't been classified yet 
+
+    Returns: 
+        JSON: List of unclassified posts with post_id and post_original_text
+    """
+    try: 
+        conn = get_db_connection()
+        cursor = conn.cursor() 
+        cursor.execute("""
+            SELECT post_id, post_original_text 
+            FROM raw_bluesky 
+            WHERE model_disaster_label IS NULL;
+        """)
+
+        rows = cursor.fetchall() 
+        posts = [{"post_id": row[0], "post_original_text": row[1]} for row in rows]
+        return jsonify(posts) 
+    except Exception as e: 
+        return jsonify({"error": str(e)}, 500)
+    finally: 
+        if cursor: 
+            cursor.close() 
+        if conn:
+            conn.close()
 
 
 # ----------------------------------------
