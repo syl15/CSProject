@@ -3,6 +3,7 @@ import TotalTweets from './TotalTweets'
 import OverallSentiment from './OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
+import PieChart from './PieChart'
 
 export default function Dashboard() {
   return (
@@ -18,6 +19,10 @@ export default function Dashboard() {
         </div>
         <div className="row-three flex flex-col md:flex-row md:gap-x-10">
             <TopTweets/>
+        </div>
+
+        <div className="row-three flex flex-col md:flex-row md:gap-x-10">
+            <PieChart/>
         </div>
         
     </div>
