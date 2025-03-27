@@ -3,6 +3,8 @@
 You will need three terminal windows to run Flask, FastAPI, and curl commands (to test). You will also need to have your venv activated and your requirements installed in each terminal before you start any of the apps. 
 
 1. Start `main.py` (FastAPI app) in `model/api`
+    - `cd model`
+    - `python dummy_model.py` This generates the .pkl file for the model
     - `cd model/api` 
     - `python main.py`
     - `uvicorn main:app --reload`
@@ -10,7 +12,7 @@ You will need three terminal windows to run Flask, FastAPI, and curl commands (t
     - To test, go to `http://127.0.0.1:8000`
 2. Start `app.py` (Flask app) in `backend`
     - `cd backend`
-    - `python app.py`
+    - `flask run`
     - Should be running on `http://127.0.0.1:5001`
 3. Run curl commands (below)
 
