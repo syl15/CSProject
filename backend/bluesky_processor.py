@@ -5,6 +5,15 @@ Since the poller is runs on a schedule, we can estimate when to make calls to Fa
 As soon as bluesky_poller.py has run, we will immediately batch process all new data added to the DB
 '''
 
+'''
+!!!!!!!!!
+IMPORTANT NOTE:
+For the purposes of testing, the sql commands in this file write to a TEMPORARY table called "temp_bluesky"
+This temp table will be deleted after testing
+Before deploying, ensure all sql commands are writing to table "raw_bluesky"
+!!!!!!!!!
+'''
+
 #TODO: Does fastAPI servers need to be up the all the time?
 
 import requests

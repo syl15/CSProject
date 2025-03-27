@@ -3,8 +3,16 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta, timezone
 from dateutil import parser
 from database import get_db_connection
-from schema_changes import change_schema
 import os
+
+'''
+!!!!!!!!!
+IMPORTANT NOTE:
+For the purposes of testing, the sql commands in this file write to a TEMPORARY table called "temp_bluesky"
+This temp table will be deleted after proper testing
+Before deploying, ensure all sql commands are write to table "raw_bluesky"
+!!!!!!!!!
+'''
 
 # create authenticated bsky session to access API
 def authenticate_bsky():
@@ -23,8 +31,9 @@ def create_raw_bluesky_table():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
+            #TODO: change temp_bluesky to raw_bluesky
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS raw_bluesky (
+                CREATE TABLE IF NOT EXISTS temp_bluesky (
                     Post_ID TEXT PRIMARY KEY,
                     Post_Original_Text TEXT,
                     Post_Time_Created_At TIMESTAMP,
@@ -54,15 +63,17 @@ def insert_bluesky_data(batch_posts):
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
+            #TODO: change temp_bluesky to raw_bluesky
             cursor.executemany('''
-                INSERT INTO raw_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword, Model_Disaster_Label,
+                INSERT INTO temp_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword, Model_Disaster_Label,
                     Model_Sentiment_Rating)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (Post_ID) DO NOTHING;
             ''', batch_posts)
 
             conn.commit()
-            print(f"✅ {len(batch_posts)} inserted into raw_bluesky.")
+            #TODO: change temp_bluesky to raw_bluesky
+            print(f"✅ {len(batch_posts)} inserted into temp_bluesky.")
         else:
             print("❌ Could not connect to database.")
     except Exception as e:
@@ -115,8 +126,3 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"
 
         if batch_posts:
             insert_bluesky_data(batch_posts)
-
-# if __name__ == "__main__":
-#     client = authenticate_bsky()
-#     create_raw_bluesky_table()
-#     poll_bsky_posts(client, limit=1)
