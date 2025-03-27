@@ -4,8 +4,6 @@ import OverallSentiment from '../OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
-import Map from './Map'
-import PieChart from './PieChart'
 
 export default function Dashboard() {
   return (
@@ -28,7 +26,6 @@ export default function Dashboard() {
             <Map/>
             <TopTweets/>
         </div>
-
     </div>
   )
 }

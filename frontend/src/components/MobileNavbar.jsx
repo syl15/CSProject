@@ -20,12 +20,20 @@ export default function MobileNavbar() {
                     alignOffset={-3}
                 >
                     <Searchbar />
+<<<<<<< HEAD:frontend/src/components/MobileNavbar.jsx
                     <a className="text-sm text-black" href="/">
+=======
+                    <a className="text-sm text-black" href="https://github.com/radix-ui">
+>>>>>>> 1132183 (added summary component, updated navbar links, adjusted toptweets width to avoid overflow):frontend/src/MobileNavbar.jsx
                         <Menubar.Item className="mt-3 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">Overview</p>
                         </Menubar.Item>
                     </a>
+<<<<<<< HEAD:frontend/src/components/MobileNavbar.jsx
                     <a className="text-sm text-black" href="/AllDisasters">
+=======
+                    <a className="text-sm text-black" href="https://github.com/radix-ui">
+>>>>>>> 1132183 (added summary component, updated navbar links, adjusted toptweets width to avoid overflow):frontend/src/MobileNavbar.jsx
                         <Menubar.Item className="mt-2 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">All Disasters</p>
                         </Menubar.Item>
