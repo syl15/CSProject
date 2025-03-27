@@ -1,6 +1,7 @@
 from fastapi import FastAPI 
 from pydantic import BaseModel 
 import joblib 
+from sentiment_analysis import analyze_sentiment
 
 LABEL_MAP = {
     0: "earthquake", 
@@ -19,15 +20,18 @@ model = joblib.load("optimized_model.sav")
 class PostInput(BaseModel): 
     text: str 
 
-# Define output schema 
+# Define output schemas
 class PredictionOutput(BaseModel): 
     event_type: str 
+
+class SentimentOutput(BaseModel): 
+    sentiment_score: int # scale: -5 to 5
 
 @app.get("/")
 def read_root(): 
     return {"message": "Model prediction API"}
 
-@app.post("/predict", response_model=PredictionOutput)
+@app.post("/predict-disaster", response_model=PredictionOutput)
 def predict_event_type(data: PostInput): 
     # Get text from input data 
     text = [data.text]
@@ -38,3 +42,10 @@ def predict_event_type(data: PostInput):
 
     # Return event type 
     return {"event_type": predicted_label}
+
+@app.post("/predict-sentiment", response_model=SentimentOutput)
+def predict_sentiment(data: PostInput): 
+    score = analyze_sentiment(data.text)
+
+    # Return sentiment_score 
+    return {"sentiment_score": score}
