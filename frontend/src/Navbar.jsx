@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationMenu, Menubar } from 'radix-ui';
+import { NavigationMenu } from 'radix-ui';
 import Searchbar from './Searchbar';
 import './Navbar.css'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
@@ -23,7 +23,7 @@ export default function Navbar() {
                     {/* Past Disasters */}
                     <NavigationMenu.Link className="text-sm text-black" href="https://github.com/radix-ui">
                         <NavigationMenu.Item className="list-none nav-item">
-                            Past Disasters
+                            All Disasters
                         </NavigationMenu.Item>
                     </NavigationMenu.Link>
                 </NavigationMenu.List>
