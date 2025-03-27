@@ -3,7 +3,7 @@ import { NavigationMenu } from 'radix-ui';
 import Searchbar from './Searchbar';
 import './Navbar.css'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
-import MobileNavbar from './MobileNavbar';
+import MobileNavbar from './MobileNavbar';;
 
 export default function Navbar() {
   return (
@@ -14,14 +14,14 @@ export default function Navbar() {
                 <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
                 <NavigationMenu.List className="flex flex-row gap-x-2">
                     {/* Overview */}
-                    <NavigationMenu.Link className="text-sm text-black" href="https://github.com/radix-ui">
+                    <NavigationMenu.Link className="text-sm text-black" href="/">
                         <NavigationMenu.Item className="list-none nav-item">
                             Overview
                         </NavigationMenu.Item>
                     </NavigationMenu.Link>
 
                     {/* Past Disasters */}
-                    <NavigationMenu.Link className="text-sm text-black" href="https://github.com/radix-ui">
+                    <NavigationMenu.Link className="text-sm text-black" href="/AllDisasters">
                         <NavigationMenu.Item className="list-none nav-item">
                             All Disasters
                         </NavigationMenu.Item>

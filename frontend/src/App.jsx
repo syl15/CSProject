@@ -2,14 +2,23 @@ import { useState } from 'react'
 import './App.css'
 import TestAPI from "./TestAPI.jsx"
 import Navbar from "./components/Navbar.jsx"
-import Dashboard from "./Dashboard.jsx"
+import { Route, Routes } from 'react-router-dom'
+import AllDisasters from './AllDisasters.jsx'
+import RecentDisaster from './RecentDisaster.jsx'
 
 function App() {
   return (
     <>
       <TestAPI/>
       <Navbar/>
-      <Dashboard/>
+      <div>
+        <Routes>
+          <Route path="/"  element={<RecentDisaster/>} />
+          <Route path="/AllDisasters"  element={<AllDisasters/>} />
+        </Routes>
+        
+      </div>
+      
     </>
   )
 }
