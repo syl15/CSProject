@@ -20,12 +20,12 @@ export default function MobileNavbar() {
                     alignOffset={-3}
                 >
                     <Searchbar />
-                    <a className="text-sm text-black" href="https://github.com/radix-ui">
+                    <a className="text-sm text-black" href="/">
                         <Menubar.Item className="mt-3 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">Overview</p>
                         </Menubar.Item>
                     </a>
-                    <a className="text-sm text-black" href="https://github.com/radix-ui">
+                    <a className="text-sm text-black" href="/AllDisasters">
                         <Menubar.Item className="mt-2 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">All Disasters</p>
                         </Menubar.Item>

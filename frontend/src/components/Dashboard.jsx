@@ -1,12 +1,13 @@
 import React from 'react'
-import TotalTweets from './components/TotalTweets'
-import OverallSentiment from './OverallSentiment'
+import TotalTweets from './TotalTweets'
+import OverallSentiment from '../OverallSentiment'
+import Severity from './Severity'
+import TopTweets from './TopTweets'
+import Summary from './Summary'
+
 import PieChart from './PieChart'
 import Map from './Map'
 import WordMap from './WordMap'
-import Severity from './components/Severity'
-import TopTweets from './components/TopTweets'
-import Summary from './components/Summary'
 
 export default function Dashboard() {
   return (
