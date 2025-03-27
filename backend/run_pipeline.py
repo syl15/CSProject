@@ -19,13 +19,11 @@ from bluesky_poller import poll_bsky_posts, authenticate_bsky
 from bluesky_processor import process_bluesky_data
 
 def run_pipeline():
-    # client = authenticate_bsky()
-    # poll_bsky_posts(client)
-
+    client = authenticate_bsky()
+    poll_bsky_posts(client, limit=1)
     process_bluesky_data()
 
     print("✅ Pipeline complete.")
-
 
 if __name__ == "__main__":
     run_pipeline()
