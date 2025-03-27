@@ -5,10 +5,6 @@ import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
 
-import PieChart from './PieChart'
-import Map from './Map'
-import WordMap from './WordMap'
-
 export default function Dashboard() {
   return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 overflow-x-hidden">
