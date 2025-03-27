@@ -1,6 +1,5 @@
 import React from 'react'
 import TotalTweets from './TotalTweets'
-import OverallSentiment from '../OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
@@ -14,7 +13,6 @@ export default function Dashboard() {
         </div>
         <div className="row-one flex flex-col md:flex-row md:gap-x-10">
             <TotalTweets/>
-            {/* <OverallSentiment/> */}
             <Severity/>
         </div>
         <div className="row-two flex flex-col md:flex-row md:gap-x-10">
