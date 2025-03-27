@@ -108,39 +108,6 @@ def get_recent_disaster():
     )
 
 # ----------------------------------------
-# BLUESKY ENDPOINT 
-# ----------------------------------------
-
-@app.get("/unclassified-posts")
-def get_unclassified_posts(): 
-    """
-    Returns Bluesky posts that haven't been classified yet 
-
-    Returns: 
-        JSON: List of unclassified posts with post_id and post_original_text
-    """
-    try: 
-        conn = get_db_connection()
-        cursor = conn.cursor() 
-        cursor.execute("""
-            SELECT post_id, post_original_text 
-            FROM raw_bluesky 
-            WHERE model_disaster_label IS NULL;
-        """)
-
-        rows = cursor.fetchall() 
-        posts = [{"post_id": row[0], "post_original_text": row[1]} for row in rows]
-        return jsonify(posts) 
-    except Exception as e: 
-        return jsonify({"error": str(e)}, 500)
-    finally: 
-        if cursor: 
-            cursor.close() 
-        if conn:
-            conn.close()
-
-
-# ----------------------------------------
 # MODEL PREDICTION ENDPOINT (FASTAPI)
 # ----------------------------------------
 
