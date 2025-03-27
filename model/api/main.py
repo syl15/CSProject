@@ -9,7 +9,7 @@ app = FastAPI()
 model = joblib.load("optimized_model.sav")
 
 # Define input schema 
-class TweetInput(BaseModel): 
+class PostInput(BaseModel): 
     text: str 
 
 # Output schema 
@@ -20,14 +20,22 @@ class PredictionOutput(BaseModel):
 def read_root(): 
     return {"message": "Event Type Prediction API"}
 
-# TODO: update this once we actually have the model
+LABEL_MAP = {
+    0: "earthquake", 
+    1: "fire", 
+    2: "flood", 
+    3: "hurricane", 
+    4: "unrelated"
+}
+
 @app.post("/predict", response_model=PredictionOutput)
-def predict_event_type(data: TweetInput): 
+def predict_event_type(data: PostInput): 
     # Get text from input data 
     text = [data.text]
 
     # Make a prediction 
-    predicted_label = model.predict(text)[0]
+    predicted_class = model.predict(text)[0] # Returns value from [0...4]
+    predicted_label = LABEL_MAP.get(int(predicted_class), "unknown") # Convert class to string value
 
     # Return event type 
     return {"event_type": predicted_label}
