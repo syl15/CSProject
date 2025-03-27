@@ -1,14 +1,15 @@
 import React from 'react';
 import { Chart as ChartJS } from "chart.js/auto";
-import { Doughnut } from "react-chartjs-2";
+import { Doughnut, Pie } from "react-chartjs-2";
+
+// had to  "npm install react-chartjs-2 chart.js"   
 
 export default function PieChart() {
   return (
-    <div className="flex flex-col flex-start border border-[#D4D4D4] rounded-md mt-15 text-left p-4">
+    <div className="flex flex-col items-start border border-[#D4D4D4] rounded-md mt-4 text-left p-4">
         <h3>Sentiment Trend</h3>
-        <h1 className="text-3xl font-bold mt-2">Pie chart here!</h1>  
 
-        <Doughnut
+        <Pie
           data={{
             labels: ["Positive", "Netural", "Negative"],
             datasets: [

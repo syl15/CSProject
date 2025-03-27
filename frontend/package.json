@@ -21,8 +21,12 @@
     "react-dom": "^19.0.0",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "react-leaflet": "^5.0.0",
 =======
+=======
+    "react-leaflet": "^5.0.0",
+>>>>>>> 74c751a (added the map)
     "react-router-dom": "^7.4.0",
 >>>>>>> 8b65a2a (added all disasters page + routing)
 =======
