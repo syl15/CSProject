@@ -21,8 +21,8 @@ import psycopg2
 from database import get_db_connection
 
 # TODO: Adjust FastAPI Endpoints
-CLASSIFICATION_API_URL = "http://localhost:8000/predict"
-SENTIMENT_API_URL = ""
+CLASSIFICATION_API_URL = "http://localhost:8000/predict-disaster"
+SENTIMENT_API_URL = "http://localhost:8000/predict-sentiment"
 
 # batch fetch new bluesky posts
 def fetch_unprocessed_posts():
