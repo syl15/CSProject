@@ -69,19 +69,18 @@ def classify_posts(posts):
 def analyze_sentiment(posts):
     sentiment_results = []
     for post_id, text, disaster_label in posts:
-        # if disaster_label == "unrelated":
-        #     sentiment_results.append((post_id, None))
-        #     #continue
+        if disaster_label == "unrelated":
+            sentiment_results.append((post_id, None))
+            continue
 
-        # response = requests.post(SENTIMENT_API_URL, json={"text": text})
+        response = requests.post(SENTIMENT_API_URL, json={"text": text})
 
-        # if response.status_code == 200:
-        #     sentiment_score = response.json()["sentiment_score"]
-        #     sentiment_results.append((post_id, sentiment_score))
-        # else:
-        #     print(f"❌ Sentiment analysis failed for {post_id}")
-        #     sentiment_results.append((post_id, None))
-        sentiment_results.append((post_id, None))
+        if response.status_code == 200:
+            sentiment_score = response.json()["sentiment_score"]
+            sentiment_results.append((post_id, sentiment_score))
+        else:
+            print(f"❌ Sentiment analysis failed for {post_id}")
+            sentiment_results.append((post_id, None))
 
     return sentiment_results
 
