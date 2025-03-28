@@ -124,6 +124,29 @@ def remove_unrelated_posts():
         conn = get_db_connection()
         cursor = conn.cursor()
 
+        # fetch unrelated posts before deletion
+         #TODO: change temp_bluesky to raw_bluesky
+        cursor.execute("""
+            SELECT Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link 
+            FROM temp_bluesky
+            WHERE Model_Disaster_Label = 'unrelated';
+        """)
+        unrelated_posts = cursor.fetchall()
+
+        # log unrelated posts so we can check that they're actually "unrelated" to assess model performance
+        with open("bluesky_log.txt", "a") as log_file:
+            log_file.write("\n=== Removed Unrelated Posts ===\n")
+            for post in unrelated_posts:
+                log_entry = (
+                    f"Post ID: {post[0]}\n"
+                    f"Text: {post[1]}\n"
+                    f"Created At: {post[2]}\n"
+                    f"User: {post[3]}\n"
+                    f"Link: {post[4]}\n"
+                    f"--------------------------\n"
+                )
+                log_file.write(log_entry)
+
          #TODO: change temp_bluesky to raw_bluesky
         cursor.execute("""
             DELETE FROM temp_bluesky
@@ -131,7 +154,7 @@ def remove_unrelated_posts():
         """)
 
         conn.commit()
-        print("✅ Unrelated posts removed from database.")
+        print(f"✅ {len(unrelated_posts)} unrelated posts removed from database.")
 
     except Exception as e:
         print("Error deleting unrelated posts:", e)
