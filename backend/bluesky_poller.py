@@ -87,7 +87,7 @@ def insert_bluesky_data(batch_posts):
 # search for certain # of posts given keyword
 def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"], limit=25):
     with open("bluesky_log.txt", "a") as log_file:
-        log_file.write("\nAccessed on " + str(datetime.now()) + "\n")
+        log_file.write("\nPolled on " + str(datetime.now()) + "\n")
         time_limit = datetime.now(timezone.utc) - timedelta(hours=24)
         batch_posts = []
 
@@ -109,17 +109,6 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"
                     post_keyword = keyword
                     model_label = None
                     model_sentiment = None
-                    
-                    log_entry = (
-                            f"\n==== POST ABOUT {keyword.upper()} ====\n"
-                            f"ID: {post_id}\n"
-                            f"Text: {post_original_text}\n"
-                            f"Created At: {post_time_created_at}\n"
-                            f"Author: {post_user_handle}\n"
-                            f"Link: {post_link}\n"
-                            f"Interactions: {post_total_interactions}\n"
-                        )
-                    log_file.write(log_entry)
 
                     # add post data to the batch list
                     batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment))
