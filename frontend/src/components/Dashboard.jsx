@@ -20,6 +20,11 @@ export default function Dashboard() {
         <div className="row-two flex flex-col md:flex-row md:gap-x-10">
             <Summary/>
         </div>
+
+        <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
+            <PieChart/>
+            <Map/>
+        </div>
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
             <TopTweets/>
         </div>
