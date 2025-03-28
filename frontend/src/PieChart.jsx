@@ -7,9 +7,11 @@ import { Doughnut, Pie } from "react-chartjs-2";
 export default function PieChart() {
   return (
     <div className="flex flex-col items-start border border-[#D4D4D4] rounded-md mt-4 text-left p-4">
-        <h3>Sentiment Trend</h3>
+      <div className="w-full border-b-1 border-[#D4D4D4]">
+            <h3 className="pb-2">Sentiment Trend</h3>
+      </div>
 
-        <Pie
+      <Pie
           data={{
             labels: ["Positive", "Netural", "Negative"],
             datasets: [
@@ -35,7 +37,8 @@ export default function PieChart() {
               },
             },
           }}
-        />       
+        />      
+         
     </div>
   );
 }
