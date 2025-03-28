@@ -1,30 +1,28 @@
 import React from 'react';
-import { Chart as ChartJS } from "chart.js/auto";
-import { Doughnut, Pie } from "react-chartjs-2";
-
-// had to  "npm install react-chartjs-2 chart.js"   
+import { Pie } from "react-chartjs-2";
 
 export default function PieChart() {
   return (
-    <div className="flex flex-col items-start border border-[#D4D4D4] rounded-md mt-4 text-left p-4">
-      <div className="w-full border-b-1 border-[#D4D4D4]">
-            <h3 className="pb-2">Sentiment Trend</h3>
+    <div className="flex flex-col items-start border border-[#D4D4D4] rounded-md mt-4 text-left p-4 w-[500px] h-[500px]">
+      <div className="w-full border-b-2 border-[#D4D4D4]">
+        <h3 className="pb-2">Sentiment Trend</h3>
       </div>
 
-      <Pie
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <Pie
           data={{
-            labels: ["Positive", "Netural", "Negative"],
+            labels: ["Positive", "Neutral", "Negative"],
             datasets: [
-                {
-                  label: "Percentage",
-                  data: [10, 20, 30], // Fixed structure
-                  backgroundColor: [
-                    "rgba(185,230,191, 0.8)", // Postive
-                    "rgba(234, 234, 234, 0.8)", // Netural
-                    "rgba(255, 202, 202, 0.8)", // Negative
-                  ]
-                },
-              ],
+              {
+                label: "Percentage",
+                data: [10, 20, 30], // Fixed structure
+                backgroundColor: [
+                  "rgba(185,230,191, 0.8)", // Positive
+                  "rgba(234, 234, 234, 0.8)", // Neutral
+                  "rgba(255, 202, 202, 0.8)", // Negative
+                ],
+              },
+            ],
           }}
           options={{
             plugins: {
@@ -36,9 +34,15 @@ export default function PieChart() {
                 },
               },
             },
+            responsive: true, // Ensures the chart adjusts to container size
+            maintainAspectRatio: false, // Allows the chart to stretch to container size
           }}
-        />      
-         
+        />
+      </div>
     </div>
   );
 }
+
+
+
+// had to  "npm install react-chartjs-2 chart.js"   

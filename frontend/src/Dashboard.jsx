@@ -18,7 +18,7 @@ export default function Dashboard() {
             {/* <OverallSentiment/> */}
             <Severity/>
         </div>
-        <div className="row-three flex flex-col md:flex-row md:gap-x-10">
+        <div className="row-two flex flex-col md:flex-row md:gap-x-10">
             <PieChart/>
             <Map/>
         </div>

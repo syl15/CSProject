@@ -28,7 +28,7 @@ export default function Map() {
         <div className="w-full border-b-1 border-[#D4D4D4]">
             <h3 className="pb-2">Location of Disaster</h3>
       </div>
-      <div ref={mapContainerRef} className="w-[300px] h-[300px]"></div>
+      <div ref={mapContainerRef} className="w-[400px] h-[400px]"></div>
     </div>
   );
 }
