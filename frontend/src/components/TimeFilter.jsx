@@ -21,7 +21,7 @@ export default function TimeFilter() {
 
             <DropdownMenu.Portal>
                 <DropdownMenu.Content
-                    className="w-40 max-h-60 border border-gray-300 rounded-md p-2 w-auto"
+                    className="w-40 max-h-60 border border-gray-300 rounded-md p-2 w-auto bg-white"
                     sideOffset={5}
                     align="start">
 
