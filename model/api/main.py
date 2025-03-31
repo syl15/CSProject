@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
 from pydantic import BaseModel 
 import joblib 
-from api_helpers import preprocess, analyze_sentiment
+from model_helpers import preprocess, analyze_sentiment
 
 LABEL_MAP = {
     0: "earthquake", 
