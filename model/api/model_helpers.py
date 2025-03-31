@@ -1,3 +1,14 @@
+import re
+
+nlp = spacy.load('en_core_web_sm')
+def preprocess(text):
+    text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
+    text = re.sub(r'[^\w\s]', ' ', text)
+    text = " ".join([word for word in text.split() if word[0] != "@"])
+    text = text.lower()
+    text = " ".join([token.lemma_ for token in nlp(text)])
+    return text
+
 import pandas as pd
 import nltk
 from sklearn.exceptions import UndefinedMetricWarning
@@ -16,11 +27,10 @@ sia = SentimentIntensityAnalyzer()
 
 def analyze_sentiment(text):
     scores = sia.polarity_scores(text)
-    return round(scores["compound"] * 5)
+    return scores["compound"]
 
-# Optional: test the function when running this file directly 
-if __name__ == "__main__": 
-    test = pd.read_csv("../datasets/test.tsv", sep="\t").sample(n=10)
-    for i in test["tweet_text"]:
-        score = analyze_sentiment(i)
-        print(score, i)
+###### Test the sentiment analysis model ######
+# test = pd.read_csv("../datasets/test.tsv", sep="\t").sample(n=10)
+# for i in test["tweet_text"]:
+#     score = analyze_sentiment(i)
+#     print(score, i)
