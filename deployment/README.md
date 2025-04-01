@@ -8,7 +8,7 @@ All deployments to Render are triggered from the **main** branch **only**. Thus,
 
 ## Services 
 - `flask-backend`: automatically deploys when `main` is updated (Render watches `backend/`)
-- `fast-api`: automatically deploys when `main` is updated (Render watches `model/api/`)
+- `fastapi-model`: automatically deploys when `main` is updated (Render watches `model/api/`)
 
 ## Live endpoints 
 - Flask Base URL: https://flask-backend-hu5x.onrender.com/
