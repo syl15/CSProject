@@ -25,7 +25,7 @@ class PredictionOutput(BaseModel):
     event_type: str 
 
 class SentimentOutput(BaseModel): 
-    sentiment_score: int
+    sentiment_score: float
 
 @app.get("/")
 def read_root(): 
