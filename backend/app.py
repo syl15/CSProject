@@ -111,7 +111,8 @@ def get_recent_disaster():
 # MODEL PREDICTION ENDPOINT (FASTAPI)
 # ----------------------------------------
 
-FASTAPI_URL = "http://localhost:8000/predict-disaster"
+FASTAPI_URL = "https://fastapi-model-3vkm.onrender.com/predict-disaster"
+
 
 @app.post("/predict")
 def make_prediction(): 
