@@ -111,6 +111,7 @@ def get_recent_disaster():
 # MODEL PREDICTION ENDPOINT (FASTAPI)
 # ----------------------------------------
 
+# TODO: Eventually, make this an env variable, and add it to render.yaml under envVars
 FASTAPI_URL = "https://fastapi-model-3vkm.onrender.com/predict-disaster"
 
 
