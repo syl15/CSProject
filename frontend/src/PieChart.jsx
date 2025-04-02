@@ -8,8 +8,8 @@ export default function PieChart() {
         <h3 className="pb-2">Sentiment Trend</h3>
       </div>
 
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <Pie
+      {/*
+      <Pie
           data={{
             labels: ["Positive", "Neutral", "Negative"],
             datasets: [
@@ -38,11 +38,13 @@ export default function PieChart() {
             maintainAspectRatio: false, // Allows the chart to stretch to container size
           }}
         />
-      </div>
+      */}
+
+        
     </div>
+    
   );
 }
-
 
 
 // had to  "npm install react-chartjs-2 chart.js"   

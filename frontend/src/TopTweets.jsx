@@ -11,7 +11,7 @@ export default function TopTweets() {
         <div className="flex flex-col pt-4 gap-y-3 overflow-y-scroll scrollbar">
             <TweetBox/>
             <TweetBox/>
-            <TweetBox/>
+            <TweetBox/> 
 
         </div>
     </div>
