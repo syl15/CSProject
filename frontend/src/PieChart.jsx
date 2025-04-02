@@ -37,14 +37,10 @@ export default function PieChart() {
             responsive: true, // Ensures the chart adjusts to container size
             maintainAspectRatio: false, // Allows the chart to stretch to container size
           }}
-<<<<<<< HEAD
-        />       
-=======
         />
-<<<<<<< HEAD
+
       </div>
->>>>>>> d2e73b7 (resized piechart/map to page)
-=======
+
       */}
     </div>
     
