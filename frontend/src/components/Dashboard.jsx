@@ -4,6 +4,7 @@ import OverallSentiment from '../OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
+import WordMap from './WordMap'
 
 export default function Dashboard() {
   return (
@@ -28,6 +29,10 @@ export default function Dashboard() {
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
             <TopTweets/>
         </div>
+        <div className="row-three flex flex-col md:flex-row md:gap-x-10">
+            <WordMap/>
+        </div>
+
         
     </div>
   )
