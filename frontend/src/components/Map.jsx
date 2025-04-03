@@ -3,6 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 
 export default function Map() {
+
   const mapContainerRef = useRef(null); // Reference the div, not the map instance
   const mapInstanceRef = useRef(null); // Store the map instance separately
 
@@ -24,7 +25,8 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="flex flex-col border border-[#D4D4D4] rounded-md mt-4 text-left p-4">
+
+    <div className="flex flex-col flex-start border border-[#D4D4D4] rounded-md mt-5 md:mt-15 text-left p-4 gap-y-2 max-w-xl">
         <div className="w-full border-b-1 border-[#D4D4D4]">
             <h3 className="pb-2">Location of Disaster</h3>
       </div>

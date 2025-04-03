@@ -4,7 +4,8 @@ import OverallSentiment from '../OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
-import WordMap from './WordMap'
+import Map from './Map'
+import PieChart from './PieChart'
 
 export default function Dashboard() {
   return (
@@ -20,9 +21,11 @@ export default function Dashboard() {
         </div>
         <div className="row-two flex flex-col md:flex-row md:gap-x-10">
             <Summary/>
+            <PieChart/>
         </div>
 
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
+            <Map/>
             <TopTweets/>
         </div>
 
