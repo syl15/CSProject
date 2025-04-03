@@ -23,17 +23,9 @@ export default function Dashboard() {
         </div>
 
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
-            <PieChart/>
-            <Map/>
-        </div>
-        <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
             <TopTweets/>
         </div>
-        <div className="row-three flex flex-col md:flex-row md:gap-x-10">
-            <WordMap/>
-        </div>
 
-        
     </div>
   )
 }

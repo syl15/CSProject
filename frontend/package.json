@@ -19,19 +19,8 @@
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     "react-leaflet": "^5.0.0",
-=======
-=======
-    "react-leaflet": "^5.0.0",
->>>>>>> 74c751a (added the map)
-    "react-router-dom": "^7.4.0",
->>>>>>> 8b65a2a (added all disasters page + routing)
-=======
-    "react-router-dom": "^7.4.0",
->>>>>>> dd632d6 (added all disasters page + routing)
+    "react-router-dom": "^7.4.1",
     "tailwindcss": "^4.0.10"
   },
   "devDependencies": {
