@@ -3,9 +3,9 @@ import TotalTweets from './TotalTweets'
 import OverallSentiment from './OverallSentiment'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
-import PieChart from './PieChart'
-import Map from './Map'
-import WordMap from './WordMap'
+import PieChart from './components/PieChart'
+import Map from './components/Map'
+import WordMap from './components/WordMap'
 
 export default function Dashboard() { 
   return ( 
