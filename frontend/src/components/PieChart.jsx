@@ -11,7 +11,6 @@ export default function PieChart() {
         <h3 className="pb-2">Sentiment Trend</h3>
       </div>
 
-      {/* New container to control chart size */}
       <div className="w-full h-[20rem] flex justify-center items-center">
         <Pie
           data={{
@@ -19,7 +18,7 @@ export default function PieChart() {
             datasets: [
               {
                 label: "Percentage",
-                data: [10, 20, 30], // Fixed structure
+                data: [10, 20, 30], 
                 backgroundColor: [
                   "rgba(185,230,191, 0.8)", // Positive
                   "rgba(234, 234, 234, 0.8)", // Neutral
@@ -29,13 +28,13 @@ export default function PieChart() {
             ],
           }}
           options={{
-            responsive: true, // Ensures the chart adjusts to container size
-            maintainAspectRatio: false, // Allows the chart to stretch to container size
+            responsive: true, 
+            maintainAspectRatio: false, 
             plugins: {
               tooltip: {
                 callbacks: {
                   label: function (tooltipItem) {
-                    return ` ${tooltipItem.raw}%`; // Fixes tooltip display
+                    return ` ${tooltipItem.raw}%`;
                   },
                 },
               },
