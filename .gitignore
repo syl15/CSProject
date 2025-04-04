@@ -185,6 +185,9 @@ cython_debug/
 .pkl
 *.pkl
 *.joblib
+*.model
+*.sav
+*.npy
 
 # Database testing
 bluesky_log.txt
