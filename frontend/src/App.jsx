@@ -9,7 +9,7 @@ import RecentDisaster from './RecentDisaster.jsx'
 function App() {
   return (
     <>
-      {/* <TestAPI/> */}
+      <TestAPI/>
       <Navbar/>
       <div>
         <Routes>

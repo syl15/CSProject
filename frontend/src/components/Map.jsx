@@ -2,17 +2,24 @@ import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 
-export default function Map() {
+export default function Map({location}) {
 
   const mapContainerRef = useRef(null); // Reference the div, not the map instance
   const mapInstanceRef = useRef(null); // Store the map instance separately
 
   useEffect(() => {
     if (!mapInstanceRef.current && mapContainerRef.current) {
-      mapInstanceRef.current = L.map(mapContainerRef.current).setView([32.9857, -96.7502], 13); // Corrected UTD location
+      mapInstanceRef.current = L.map(mapContainerRef.current).setView([location.latitude, location.longitude], 15); // Corrected UTD location
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
+      }).addTo(mapInstanceRef.current);
+
+      L.circle([location.latitude, location.longitude], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: location.radius
       }).addTo(mapInstanceRef.current);
     }
 
