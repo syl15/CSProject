@@ -51,13 +51,15 @@ def predict_event_type(data: PostInput):
 
     predicted_class = model.predict(text)[0] # Returns value from [0...4]
     predicted_label = LABEL_MAP.get(int(predicted_class), "unknown") # Convert class to string value
+    # Make a prediction 
+    predicted_label = str(model.predict(text)[0])
 
     return {"event_type": predicted_label}    
+
 
 
 @app.post("/predict-sentiment", response_model=SentimentOutput)
 def predict_sentiment(data: PostInput): 
     score = analyze_sentiment(preprocess(data.text))
 
-    # Return sentiment_score 
     return {"sentiment_score": score}
