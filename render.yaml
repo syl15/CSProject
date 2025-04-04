@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: flask-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: BSKY_USERNAME
+        sync: false
+      - key: BSKY_APP_PASSWORD
+        sync: false
+
+  - type: web
+    name: fastapi-model
+    env: python
+    rootDir: model/api
+    buildCommand: pip install -r ../requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    branch: main
+    autoDeploy: true
