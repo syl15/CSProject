@@ -18,8 +18,8 @@ app = FastAPI()
 ''' word2vec_multiclass_model.sav represents the word2vec + linearSVC model
     optimized.sav represents the TFDIF + linearSVC model
 '''
-# file = "word2vec_multiclass_model.sav"
-file = "optimized_model.sav"
+file = "word2vec_multiclass_model.sav"
+# file = "optimized_model.sav"
 model = joblib.load(file)
 
 # Define input schema 
@@ -51,8 +51,6 @@ def predict_event_type(data: PostInput):
 
     predicted_class = model.predict(text)[0] # Returns value from [0...4]
     predicted_label = LABEL_MAP.get(int(predicted_class), "unknown") # Convert class to string value
-    # Make a prediction 
-    predicted_label = str(model.predict(text)[0])
 
     return {"event_type": predicted_label}    
 
