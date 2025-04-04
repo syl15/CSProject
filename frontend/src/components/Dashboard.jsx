@@ -5,12 +5,14 @@ import TopTweets from './TopTweets'
 import Summary from './Summary'
 
 export default function Dashboard({disaster}) {
+    const start = new Date(`${disaster.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
+    const end = new Date(`${disaster.endDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
 
   return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
             <h1 className="text-4xl font-bold text-left">{disaster.name}</h1>
-            <h3 className="text-md text-left">{disaster.startDate} - {disaster.endDate}</h3>
+            <h3 className="text-lg text-left">{start} - {end}</h3>
         </div>
         <div className="row-one flex flex-col md:flex-row md:gap-x-10">
             <TotalTweets/>
