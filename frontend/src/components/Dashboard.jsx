@@ -9,7 +9,6 @@ import PieChart from './PieChart'
 export default function Dashboard({disaster}) {
     const start = new Date(`${disaster.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
     const end = new Date(`${disaster.endDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
-
   return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
@@ -22,10 +21,10 @@ export default function Dashboard({disaster}) {
         </div>
         <div className="row-two flex flex-col md:flex-row md:gap-x-10">
             <Summary summary={disaster.summary}/>
-            <PieChart/>
+            <PieChart sentiment={disaster.sentiment}/>
         </div>
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
-            <Map/>
+            <Map location={disaster.location}/>
             <TopTweets tweetsList={disaster.topTweets}/>
         </div>
     </div>

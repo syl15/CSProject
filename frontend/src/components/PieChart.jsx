@@ -4,10 +4,15 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PieChart() {
+export default function PieChart({sentiment}) {
+  const total = (sentiment.positive + sentiment.negative + sentiment.neutral);
+  const positive = Math.ceil((sentiment.positive/total) * 100);
+  const negative = Math.ceil((sentiment.negative/total) * 100);
+  const neutral = Math.ceil((sentiment.neutral/total) * 100);
+
   return (
     <div className="flex flex-col border border-[#D4D4D4] rounded-md mt-5 md:mt-15 text-left p-4 gap-y-2 h-[25rem] w-full">
-      <div className="w-full border-b-2 border-[#D4D4D4]">
+      <div className="w-full border-b-1 border-[#D4D4D4]">
         <h3 className="pb-2">Sentiment Trend</h3>
       </div>
 
@@ -18,7 +23,7 @@ export default function PieChart() {
             datasets: [
               {
                 label: "Percentage",
-                data: [10, 20, 30], 
+                data: [positive, neutral, negative], 
                 backgroundColor: [
                   "rgba(185,230,191, 0.8)", // Positive
                   "rgba(234, 234, 234, 0.8)", // Neutral
