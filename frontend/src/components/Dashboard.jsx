@@ -15,17 +15,16 @@ export default function Dashboard({disaster}) {
             <h3 className="text-lg text-left">{start} - {end}</h3>
         </div>
         <div className="row-one flex flex-col md:flex-row md:gap-x-10">
-            <TotalTweets/>
-            <Severity/>
+            <TotalTweets total={disaster.totalTweets}/>
+            <Severity severity={disaster.severity}/>
         </div>
         <div className="row-two flex flex-col md:flex-row md:gap-x-10">
-            <Summary/>
+            <Summary summary={disaster.summary}/>
             <PieChart/>
         </div>
-
         <div className="row-three flex flex-col overflow-hidden w-full md:flex-row md:gap-x-10">
             <Map/>
-            <TopTweets/>
+            <TopTweets tweetsList={disaster.topTweets}/>
         </div>
     </div>
   )

@@ -18,7 +18,6 @@ export default function RecentDisaster() {
     if(!recentDisaster) {
         return <div>Loading...</div>
     }
-
     return (
         <Dashboard disaster={recentDisaster}/>
     )
