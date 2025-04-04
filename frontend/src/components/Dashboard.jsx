@@ -3,6 +3,8 @@ import TotalTweets from './TotalTweets'
 import Severity from './Severity'
 import TopTweets from './TopTweets'
 import Summary from './Summary'
+import Map from './Map'
+import PieChart from './PieChart'
 
 export default function Dashboard({disaster}) {
     const start = new Date(`${disaster.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
