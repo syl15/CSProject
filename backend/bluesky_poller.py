@@ -43,6 +43,7 @@ def create_raw_bluesky_table():
                     Post_Keyword TEXT,
                     Model_Disaster_Label TEXT,
                     Model_Sentiment_Rating DECIMAL
+                    Disaster_ID INT
                 );
             ''')
             conn.commit()
@@ -86,32 +87,30 @@ def insert_bluesky_data(batch_posts):
 
 # search for certain # of posts given keyword
 def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"], limit=25):
-    with open("bluesky_log.txt", "a") as log_file:
-        log_file.write("\nPolled on " + str(datetime.now()) + "\n")
-        time_limit = datetime.now(timezone.utc) - timedelta(hours=24)
-        batch_posts = []
+    time_limit = datetime.now(timezone.utc) - timedelta(hours=24)
+    batch_posts = []
 
-        for keyword in keywords:
-            params = {"q": keyword, "limit": limit}
-            posts = client.app.bsky.feed.search_posts(params)
+    for keyword in keywords:
+        params = {"q": keyword, "limit": limit}
+        posts = client.app.bsky.feed.search_posts(params)
 
-            for post in posts.posts:
-                # prevent pulling posts older than the past 24 hours to avoid duplicates
-                post_time = parser.isoparse(post.record.created_at)
-                if post_time > time_limit:
-                    #TODO: checking that URI, author, and handle are not null before accessing
-                    post_id = post.uri.split("/")[-1]
-                    post_original_text = post.record.text
-                    post_time_created_at = post.record.created_at
-                    post_user_handle = post.author.handle
-                    post_link = f"https://bsky.app/profile/{post.author.handle}/post/{post_id}"
-                    post_total_interactions = post.like_count + post.quote_count + post.reply_count + post.repost_count
-                    post_keyword = keyword
-                    model_label = None
-                    model_sentiment = None
+        for post in posts.posts:
+            # prevent pulling posts older than the past 24 hours to avoid duplicates
+            post_time = parser.isoparse(post.record.created_at)
+            if post_time > time_limit:
+                #TODO: checking that URI, author, and handle are not null before accessing
+                post_id = post.uri.split("/")[-1]
+                post_original_text = post.record.text
+                post_time_created_at = post.record.created_at
+                post_user_handle = post.author.handle
+                post_link = f"https://bsky.app/profile/{post.author.handle}/post/{post_id}"
+                post_total_interactions = post.like_count + post.quote_count + post.reply_count + post.repost_count
+                post_keyword = keyword
+                model_label = None
+                model_sentiment = None
+    
+                # add post data to the batch list
+                batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment))
 
-                    # add post data to the batch list
-                    batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment))
-
-        if batch_posts:
-            insert_bluesky_data(batch_posts)
+    if batch_posts:
+        insert_bluesky_data(batch_posts)

@@ -5,3 +5,9 @@ requests
 atproto
 flask-cors
 gunicorn
+sentence-transformers
+hdbscan
+numpy
+scikit-learn
+umap-learn
+matplotlib

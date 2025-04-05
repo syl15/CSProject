@@ -19,6 +19,7 @@ Before deploying, ensure all sql commands are writing to table "raw_bluesky"
 import requests
 import psycopg2
 from database import get_db_connection
+from datetime import datetime
 
 # TODO: Adjust FastAPI Endpoints
 CLASSIFICATION_API_URL = "http://localhost:8000/predict-disaster"
@@ -134,7 +135,8 @@ def remove_unrelated_posts():
         unrelated_posts = cursor.fetchall()
 
         # log unrelated posts so we can check that they're actually "unrelated" to assess model performance
-        with open("bluesky_log.txt", "a") as log_file:
+        with open("unrelated_posts.txt", "a") as log_file:
+            log_file.write("\nPolled on " + str(datetime.now()) + "\n")
             log_file.write("\n=== Removed Unrelated Posts ===\n")
             for post in unrelated_posts:
                 log_entry = (

@@ -17,12 +17,15 @@ TODO: Make CRON job Heroku friendly
 
 from bluesky_poller import poll_bsky_posts, authenticate_bsky
 from bluesky_processor import process_bluesky_data
+from bluesky_clustering import cluster_and_process_posts
 
 def run_pipeline():
     client = authenticate_bsky()
-    poll_bsky_posts(client, limit=1)
+    poll_bsky_posts(client, limit=6)
     process_bluesky_data()
-
+    assigned_count, dropped_count = cluster_and_process_posts()
+    
+    print(f"✅ Disaster processing complete: {assigned_count} posts assigned, {dropped_count} posts dropped")
     print("✅ Pipeline complete.")
 
 if __name__ == "__main__":
