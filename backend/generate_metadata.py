@@ -100,7 +100,7 @@ def format_metadata(metadata):
     # Fix precision to 6 decimal places and convert to string
     latitude = float(metadata["location"]["latitude"])
     longitude = float(metadata["location"]["longitude"])
-    radius = float(metadata["location"]["radius"])
+    radius = metadata["location"]["radius"]
 
     metadata["location"]["latitude"] = f"{latitude:.6f}"
     metadata["location"]["longitude"] = f"{longitude:.6f}"
@@ -174,9 +174,12 @@ def generate_disaster_metadata(clusters):
             {post_texts}
 
         """
-
+        # Model options: 
+            # default: mistral/ministral-8b (stronger reasoning)
+            # openchat: openchat/openchat-7b (more structured)
+            
         data = {
-            "model": "mistral/ministral-8b", 
+            "model": "openchat/openchat-7b", 
             "temperature": 0,
             "messages": [
                 {
