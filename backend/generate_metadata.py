@@ -69,12 +69,16 @@ def validate_metadata(metadata):
         print("location is not a dict")
         return False
     
-    latitude = location.get("latitude")
-    longitude = location.get("longitude")
-    radius = location.get("radius")
-
-    if not all(isinstance(value, (float, int)) for value in [latitude, longitude, radius]):
-        print("latitude/longitude/radius is missing")
+    if not all(key in location for key in ["latitude", "longitude", "radius"]):
+        print("Missing one of latitude, longitude, or radius")
+        return False
+    
+    try: 
+        latitude = float(location.get("latitude"))
+        longitude = float(location.get("longitude"))
+        radius = float(location.get("radius"))
+    except (TypeError, ValueError): 
+        print("latitude/longitude/radius could not be converted to float")
         return False 
 
     if not (-90 <= latitude <= 90): 

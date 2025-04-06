@@ -14,9 +14,11 @@ def create_disaster_table():
             CREATE TABLE IF NOT EXISTS disaster_information (
                 id SERIAL PRIMARY KEY,
                 name TEXT,
+                location_name TEXT, 
                 centroid FLOAT8[],
                 lat DOUBLE PRECISION,
                 long DOUBLE PRECISION,
+                radius DOUBLE PRECISION,
                 date DATE,
                 event_type TEXT,
                 overall_sentiment TEXT,
@@ -134,17 +136,17 @@ def remove_noise_post(post_id):
             conn.close()
 
 # insert new disasters into disaster information
-def insert_new_disaster(name, centroid, lat, long, date, summary):
+def insert_new_disaster(name, location_name, centroid, lat, long, radius, date, summary):
     try:
         print(f"Inserting new disaster: {name}...")
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO disaster_information 
-            (name, centroid, lat, long, date, summary)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            (name, location_name, centroid, lat, long, radius, date, summary)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
-        """, (name, centroid.tolist(), lat, long, date, summary))
+        """, (name, location_name, centroid.tolist(), lat, long, radius, date, summary))
         disaster_id = cursor.fetchone()[0]
         conn.commit()
         print(f"New disaster {name} inserted with ID {disaster_id}.")
