@@ -3,6 +3,7 @@ import spacy
 import spacy.util 
 import subprocess 
 import sys
+import numpy as np
 import pandas as pd
 import nltk
 from sklearn.exceptions import UndefinedMetricWarning
@@ -33,7 +34,7 @@ warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 # Initialize the sentiment analyzer
 sia = SentimentIntensityAnalyzer()
 
-# ------------------ Preprocessing ------------------
+# ------------------ TFIDF Preprocessing ------------------
 
 def preprocess(text):
     text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
@@ -41,7 +42,34 @@ def preprocess(text):
     text = " ".join([word for word in text.split() if word[0] != "@"])
     text = text.lower()
     text = " ".join([token.lemma_ for token in nlp(text)])
+    
     return text
+
+# ------------------ Embeddings Preprocessing ------------------
+# return the average embedding for a text based on Word2Vec embeddings
+def get_word_embeddings(text, model, vector_size=300):
+    words = text.split()
+    embeddings = []
+
+    for word in words: # ignores words w/out embeddings in Word2Vec
+        if word in model:
+            embeddings.append(model[word])
+
+    # if no embeddings found, return a vector of zeros
+    if not embeddings:
+        return np.zeros(vector_size)
+    
+    # return average of the embeddings in the post
+    return np.mean(embeddings, axis=0)
+
+def preprocess_with_embeddings(text, model):
+
+    text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
+    text = re.sub(r'[^\w\s]', ' ', text)
+    text = " ".join([word for word in text.split() if word[0] != "@"])
+    text = text.lower()
+    
+    return get_word_embeddings(text, model)
 
 # ------------------ Sentiment Analysis ------------------
 

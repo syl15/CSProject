@@ -185,6 +185,12 @@ cython_debug/
 .pkl
 *.pkl
 *.joblib
+*.model
+*.sav
+*.npy
 
-# Database testing
-bluesky_log.txt
+# Clustering testing
+backend/clustering_metrics_log.txt
+backend/noise_posts.txt
+backend/cluster_plots/*
+backend/unrelated_posts.txt
