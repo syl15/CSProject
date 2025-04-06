@@ -196,4 +196,4 @@ backend/cluster_plots/*
 backend/unrelated_posts.txt
 
 # Database testing
-bluesky_log.txt
+backend/bluesky_log.txt
