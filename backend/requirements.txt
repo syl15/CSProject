@@ -5,7 +5,8 @@ requests
 atproto
 flask-cors
 gunicorn
-sentence-transformers
+sentence-transformers>=2.3.0
+transformers<4.39.0
 hdbscan
 numpy
 scikit-learn

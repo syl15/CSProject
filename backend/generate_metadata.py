@@ -1,5 +1,5 @@
 # OpenRouter limits: 20 requests/minute, 200 requests/day 
-# TODO: Test with different models, add retry logic? 
+# TODO: Add retry logic on failure
 
 import os, requests, re, json
 from datetime import datetime

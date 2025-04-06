@@ -23,27 +23,20 @@ warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 script_dir = os.path.dirname(__file__)
 
 # get train/test data
-train_path = os.path.join(script_dir, '..', 'data', 'train.tsv')
-test_path = os.path.join(script_dir, '..', 'data', 'test.tsv')
+train_path = os.path.join(script_dir, '..', 'data/datasets', 'train.tsv')
+test_path = os.path.join(script_dir, '..', 'data/datasets', 'test.tsv')
 train = pd.read_csv(train_path, sep="\t").groupby("event_type").sample(frac=1)
 test = pd.read_csv(test_path, sep="\t").groupby("event_type").sample(frac=1)
 
-'''
-    - when running this file for the first time:
-        - comment out "word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")"
-        - uncomment "path = api.load("word2vec-google-news-300", return_path=True)"
-        - uncomment "word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)"
-        - uncomment "word2vec_model.save("word2vec-google-news-300.model")"
-    - for all other iterations:
-        - comment out "path = api.load("word2vec-google-news-300", return_path=True)"
-        - comment out "word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)"
-        - comment out "word2vec_model.save("word2vec-google-news-300.model")"
-        - uncomment "word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")"
-'''
-# path = api.load("word2vec-google-news-300", return_path=True)
-# word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)
-# word2vec_model.save("word2vec-google-news-300.model")
-word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")
+# Download the model 
+model_path = os.path.join(script_dir, "word2vec-google-news-300.model")
+
+if os.path.exists(model_path):
+    word2vec_model = KeyedVectors.load(model_path)
+else: 
+    path = api.load("word2vec-google-news-300", return_path=True)
+    word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)
+    word2vec_model.save(model_path)
 
 # return the average embedding for a text based on Word2Vec embeddings
 def get_word_embeddings(text, model, vector_size=300):

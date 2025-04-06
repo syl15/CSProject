@@ -3,6 +3,7 @@
 #------------------------------------------------------------------------
 from database import get_db_connection
 import psycopg2
+import numpy as np
 
 def create_disaster_table():
     try:
