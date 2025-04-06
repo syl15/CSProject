@@ -32,13 +32,16 @@ test = pd.read_csv(test_path, sep="\t").groupby("event_type").sample(frac=1)
     - when running this file for the first time:
         - comment out "word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")"
         - uncomment "path = api.load("word2vec-google-news-300", return_path=True)"
+        - uncomment "word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)"
         - uncomment "word2vec_model.save("word2vec-google-news-300.model")"
     - for all other iterations:
         - comment out "path = api.load("word2vec-google-news-300", return_path=True)"
+        - comment out "word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)"
         - comment out "word2vec_model.save("word2vec-google-news-300.model")"
         - uncomment "word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")"
 '''
 # path = api.load("word2vec-google-news-300", return_path=True)
+# word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)
 # word2vec_model.save("word2vec-google-news-300.model")
 word2vec_model = KeyedVectors.load("word2vec-google-news-300.model")
 
