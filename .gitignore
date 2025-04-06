@@ -194,3 +194,6 @@ backend/clustering_metrics_log.txt
 backend/noise_posts.txt
 backend/cluster_plots/*
 backend/unrelated_posts.txt
+
+# Database testing
+bluesky_log.txt
