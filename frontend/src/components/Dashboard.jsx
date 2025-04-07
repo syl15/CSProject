@@ -12,6 +12,7 @@ export default function Dashboard({disaster}) {
     const currDisaster = location.state || disaster; 
     const start = new Date(`${currDisaster.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
     const end = new Date(`${currDisaster.endDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
+
   return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
@@ -27,6 +28,8 @@ export default function Dashboard({disaster}) {
             <PieChart sentiment={currDisaster.sentiment}/>
         </div>
         <div className="row-three flex flex-col overflow-hidden w-full lg:flex-row md:gap-x-10">
+            <Map location={currDisaster.location}/>
+            <TopTweets tweetsList={currDisaster.topTweets}/>
             <Map location={currDisaster.location}/>
             <TopTweets tweetsList={currDisaster.topTweets}/>
         </div>
