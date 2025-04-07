@@ -9,6 +9,7 @@ import { Collapsible } from "radix-ui";
 import {
 	CaretDownIcon, CheckIcon, Cross2Icon, RowSpacingIcon
 } from "@radix-ui/react-icons";
+import { BASE_URL } from "./config";
 
 export default function AllDisasters() {
     const [disasters, setDisasters] = useState([]);
@@ -25,7 +26,6 @@ export default function AllDisasters() {
     const eventTypes = ["earthquake", "hurricane", "wildfire", "flood"]
     
     const navigate = useNavigate();
-
     // Fetch disasters on mount 
     useEffect(() => {
         // Add parameters if necessary
@@ -205,6 +205,8 @@ export default function AllDisasters() {
               </div>
             </div>
           </div>
+
+          
       </div>
     )
         
