@@ -191,3 +191,12 @@ cython_debug/
 
 # Database testing
 bluesky_log.txt
+
+# Node modules 
+node_modules
+
+# Clustering testing 
+backend/clustering_metrics_log.txt
+backend/noise_posts.txt
+backend/cluster_plots/*
+backend/unrelated_posts.txt
