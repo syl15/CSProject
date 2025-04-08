@@ -80,7 +80,7 @@ Alternatively, you can just add the dependency to requirements.txt directly.
 
 You should be able to see the API responses on `http://localhost:5173/`.
 
-#### How to use the query parameters: 
+### Overivew of API routes
 
 `GET /disasters`
 - This is meant to be an overview of all the disasters in our database. It will have less information than the endpoint for each disaster. 
@@ -93,7 +93,6 @@ You should be able to see the API responses on `http://localhost:5173/`.
       - `http://127.0.0.1:5001/disasters` (returns all) 
       - `http://127.0.0.1:5001/disasters?limit=2` (returns first two)
       - `http://127.0.0.1:5001/disasters?startDate=2024-01-01` 
-      - `http://127.0.0.1:5001/disasters?endDate=2024-12-31` 
 
 `GET /disasters/id` 
 - This will contain additional information about each disaster, including posts (currently limited to returning a max of 10)
