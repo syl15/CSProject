@@ -292,6 +292,38 @@ def get_disaster_by_id(disaster_id):
         mimetype="application/json"
     )
 
+@app.get("/disasters/recent")
+def get_most_recent_disaster(): 
+    """
+    Retrieves the most recent disaster based on start date.
+
+    Returns:
+        JSON: The most recent disaster with full metadata and top posts.
+    """
+    conn = get_db_connection() 
+    cursor = conn.cursor() 
+
+    # Get the ID of the most recent disaster 
+    cursor.execute("""
+            SELECT id
+            FROM disaster_information
+            ORDER BY date DESC
+            LIMIT 1;
+    """)
+
+    row = cursor.fetchone() 
+    if not row: 
+        return jsonify({"erorr" : "No disasters found"}), 404
+    
+    most_recent_id = row[0]
+    
+    cursor.close() 
+    conn.close() 
+
+    # Forward to /disasters/<id> endpoint
+    return get_disaster_by_id(most_recent_id)
+
+
 # ----------------------------------------
 # MODEL PREDICTION ENDPOINT (FASTAPI)
 # ----------------------------------------

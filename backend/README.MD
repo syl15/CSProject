@@ -102,6 +102,7 @@ You should be able to see the API responses on `http://localhost:5173/`.
 - Examples: 
   - `http://127.0.0.1:5001/disasters/23` (returns disaster with disaster_id=23)
 
-`GET /disasters/recent` (No longer available)
--  For now, you can just use `get/disasters/?limit=1`
+`GET /disasters/recent` 
+- Returns the most recent disaster, with all the metadata and posts 
+- No other parameters are available
 
