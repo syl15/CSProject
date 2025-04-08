@@ -18,98 +18,9 @@ CORS(app, origins=["http://localhost:5173"])
 def home():
     return "Hello, World!"
 
-# ----------------------------------------
-# DATA LOADING AND FORMATTING (MOCK ENDPOINT)
-# ----------------------------------------
-
-def load_mock_data(): 
-    """Loads mock disaster data from a  JSON file"""
-
-    with open("mock_disaster_data.json", "r") as file: 
-        return json.load(file) 
-    
-mock_disasters = load_mock_data()
-
-# Format result to maintain attribute order 
-def format_disaster(disaster): 
-    """
-    Formats a disaster entry as an OrderedDict to maintain original attribute order. 
-
-    Args: 
-        disaster(dict): A dictionary representing a disaster
-    
-    Returns: 
-        OrderedDict: A disaster entry with consistent attribute ordering.
-    """
-
-    return OrderedDict([
-            ("id",  disaster["id"]),
-            ("name", disaster["name"]),
-            ("totalPosts", disaster["totalPosts"]),
-            ("eventType", disaster["eventType"]),
-            ("startDate", disaster["startDate"]),
-            ("summary", disaster["summary"]),
-            ("location", disaster["location"]),
-            ("locationName", disaster["locationName"]),
-            ("sentiment", disaster["sentiment"]),
-            ("overallSentiment", disaster["overallSentiment"]),
-        ])
 
 # ----------------------------------------
-# DISASTER ENDPOINTS (MOCK ENDPOINT)
-# ----------------------------------------
-
-# @app.get("/disasters")
-# def get_disasters(): 
-#     """
-#     Retrieves a list of disasters, optionally filtered by start and end date.
-
-#     Query Parameters:
-#         - limit (int, optional): The number of disasters to return. Default is 10.
-#         - startDate (str, optional): Filters disasters that started on or after this date (YYYY-MM-DD).
-#         - endDate (str, optional): Filters disasters that ended on or before this date (YYYY-MM-DD).
-
-#     Returns:
-#         JSON: A list of disasters matching the filters.
-#     """
-
-#     limit = int(request.args.get("limit", 10)) # Default=10 disasters 
-#     start_date = request.args.get("startDate")
-#     end_date = request.args.get("endDate")
-    
-#     # Filter disasters by startDate and endDate if provided
-#     filtered_disasters = [ 
-#         disaster for disaster in mock_disasters
-#         if (not start_date or disaster["startDate"] >= start_date) and
-#             (not end_date or disaster["endDate"] <= end_date)
-#     ]
-
-#     formatted_disasters = [format_disaster(disaster) for disaster in filtered_disasters[:limit]]
-
-#     return app.response_class(
-#         json.dumps(formatted_disasters, indent=2), 
-#         mimetype="application/json"
-#     )
-
-
-# @app.get("/disasters/recent")
-# def get_recent_disaster(): 
-#     """
-#     Retrieves the most recent disaster based on start date.
-
-#     Returns:
-#         JSON: The most recent disaster.
-#     """
-#     recent_disaster = max(mock_disasters, key=lambda disaster: disaster["startDate"])
-
-#     return app.response_class(
-#         json.dumps(format_disaster(recent_disaster), indent=2), 
-#         mimetype="application/json"
-#     )
-
-
-# ----------------------------------------
-# DISASTER ENDPOINTS (REAL ENDPOINT)
+# DISASTER ENDPOINTS 
 # ----------------------------------------
 
 # TODO: Remove any unnecessary fields in /disasters (only include those necessary for "All disasters" page)

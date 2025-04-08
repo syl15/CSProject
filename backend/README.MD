@@ -82,18 +82,26 @@ You should be able to see the API responses on `http://localhost:5173/`.
 
 #### How to use the query parameters: 
 
-`GET /disasters/recent` 
-- No parameters are required. This will return the single most recent disaster. 
-
 `GET /disasters`
+- This is meant to be an overview of all the disasters in our database. It will have less information than the endpoint for each disaster. 
 - This has a few optional parameters you can specify. Check out `app.py` for more documentation 
   - limit (how many disasters you want to return)
   - startDate (start date of the disaster)
-  - endDate (end date of the disaster) 
-- With the mock data, here are some examples: 
   - To use a parameter, use the format: 
     - `base_url/disasters?key=value?key=value`, where the parameter name is the `key` 
-  - `http://127.0.0.1:5001/disasters` (returns all) 
-  - `http://127.0.0.1:5001/disasters?limit=2` (returns first two, California and Florida)
-  - `http://127.0.0.1:5001/disasters?startDate=2024-01-01` (returns California and Florida)
-  - `http://127.0.0.1:5001/disasters?endDate=2024-12-31` (returns Florida and Texas)
+    - Examples: 
+      - `http://127.0.0.1:5001/disasters` (returns all) 
+      - `http://127.0.0.1:5001/disasters?limit=2` (returns first two)
+      - `http://127.0.0.1:5001/disasters?startDate=2024-01-01` 
+      - `http://127.0.0.1:5001/disasters?endDate=2024-12-31` 
+
+`GET /disasters/id` 
+- This will contain additional information about each disaster, including posts (currently limited to returning a max of 10)
+- No other parameters are available  
+- You must specify a valid id to get back a disaster 
+- Examples: 
+  - `http://127.0.0.1:5001/disasters/23` (returns disaster with disaster_id=23)
+
+`GET /disasters/recent` (No longer available)
+-  For now, you can just use `get/disasters/?limit=1`
+
