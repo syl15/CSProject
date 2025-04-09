@@ -35,6 +35,7 @@ export default function AllDisasters() {
       navigate(`/AllDisasters/${disaster.name}`, { state: disaster });
     }
 
+
     const back = () => {
       if(currIndex > 0) {
         setCurrIndex(currIndex-3);
@@ -46,7 +47,8 @@ export default function AllDisasters() {
         setCurrIndex(currIndex + 3);
       }
     };
-
+    
+    
 
     const positiveSelected = (e) => {
       if(e.target.checked){
