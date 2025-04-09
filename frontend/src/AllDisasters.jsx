@@ -35,6 +35,10 @@ export default function AllDisasters() {
               setDisasters(result);
               setFilteredDisasters(result);
             })
+            .then((result) => {
+              setDisasters(result);
+              setFilteredDisasters(result);
+            })
             .catch(console.error);
     }, [])
 
