@@ -9,7 +9,7 @@ const TestAPI = () => {
     // Fetch disasters on mount 
     useEffect(() => {
         // Add parameters if necessary
-        fetch(`${BASE_URL}/disasters`) // Ex. /disasters?limit=1 
+        fetch(`${BASE_URL}/disasters`) // Ex. disasters?limit=1
             .then((result) => result.json())
             .then(setDisasters)
             .catch(console.error);
