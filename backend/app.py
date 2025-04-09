@@ -23,11 +23,10 @@ def home():
 # DISASTER ENDPOINTS 
 # ----------------------------------------
 
-# TODO: Remove any unnecessary fields in /disasters (only include those necessary for "All disasters" page)
 @app.get("/disasters")
 def get_disasters(): 
     """
-    Retrieves a list of disasters, optionally filtered by start and end date.
+    Retrieves a summary list of disasters, optionally filtered by start and end date.
 
     Query Parameters:
         - limit (int, optional): The number of disasters to return. Default is 10.
@@ -48,10 +47,6 @@ def get_disasters():
             SELECT id, 
                    name, 
                    date, 
-                   summary, 
-                   lat, 
-                   long, 
-                   radius, 
                    location_name
             FROM disaster_information; 
     """)
@@ -103,49 +98,24 @@ def get_disasters():
     event_type_rows = cursor.fetchall() 
     event_type_map = {row[0]: row[1] for row in event_type_rows}
 
-    # Fetch total post_count 
-    cursor.execute("""
-        SELECT disaster_id, COUNT(*) AS total_posts
-        FROM temp_bluesky
-        GROUP BY disaster_id;
-    """)
-
-    post_count_rows = cursor.fetchall()
-    post_count_map = {row[0]: row[1] for row in post_count_rows}
-
     disasters = [] 
 
     for row in disaster_rows: 
         disaster_id = row[0]
         event_type = event_type_map.get(disaster_id, "unknown")
-        total_posts = post_count_map.get(disaster_id, 0)
         sentiment = sentiment_map.get(disaster_id)
 
         if sentiment: 
-            pos, neg, neu, median, overall = sentiment 
-            sentiment_dict = {
-                "positive": pos, 
-                "negative": neg, 
-                "neutral": neu
-            }
+            overall = sentiment[4]
         else:
-            sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
             overall = "unknown"
 
         disaster = OrderedDict([
             ("id", disaster_id),
             ("name", row[1]),
-            ("totalPosts", total_posts), 
             ("eventType", event_type),
             ("startDate", row[2].isoformat()),
-            ("summary", row[3]),
-            ("location", {
-                "latitude": float(row[4]),
-                "longitude": float(row[5]),
-                "radius": float(row[6])
-            }), 
-            ("locationName", row[7]),
-            ("sentiment", sentiment_dict), 
+            ("locationName", row[3]),
             ("overallSentiment", overall)
 
         ])
@@ -247,8 +217,14 @@ def get_disaster_by_id(disaster_id):
     total_posts = post_count[0] if post_count else 0
 
     # Get top 10 posts
+    # TODO: Add posterName whenever tracked
     cursor.execute("""
-            SELECT post_user_handle, post_original_text, post_time_created_at, post_link, model_sentiment_rating
+            SELECT 
+                post_user_handle, 
+                post_original_text, 
+                post_time_created_at, 
+                post_link, 
+                model_sentiment_rating
             FROM temp_bluesky
             WHERE disaster_id = %s
             LIMIT 10     
@@ -295,7 +271,7 @@ def get_disaster_by_id(disaster_id):
 @app.get("/disasters/recent")
 def get_most_recent_disaster(): 
     """
-    Retrieves the most recent disaster based on start date.
+    Retrieves the most recent disaster based on id.
 
     Returns:
         JSON: The most recent disaster with full metadata and top posts.
@@ -307,7 +283,7 @@ def get_most_recent_disaster():
     cursor.execute("""
             SELECT id
             FROM disaster_information
-            ORDER BY date DESC
+            ORDER BY id DESC
             LIMIT 1;
     """)
 
