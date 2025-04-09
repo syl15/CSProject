@@ -51,7 +51,31 @@ export default function AllDisasters() {
     const positiveSelected = (e) => {
       if(e.target.checked){
         const newDisasters = disasters.filter(disaster => 
-          disaster.name === e.target.value
+          disaster.overallSentiment === e.target.value
+        );
+        setFilteredDisasters(newDisasters)
+      }
+      else {
+        setFilteredDisasters(disasters);
+      }
+    }
+
+    const neutralSelected = (e) => {
+      if(e.target.checked){
+        const newDisasters = disasters.filter(disaster => 
+          disaster.overallSentiment === e.target.value
+        );
+        setFilteredDisasters(newDisasters)
+      }
+      else {
+        setFilteredDisasters(disasters);
+      }
+    }
+
+    const negativeSelected = (e) => {
+      if(e.target.checked){
+        const newDisasters = disasters.filter(disaster => 
+          disaster.overallSentiment === e.target.value
         );
         setFilteredDisasters(newDisasters)
       }
@@ -70,11 +94,29 @@ export default function AllDisasters() {
             <div className="flex flex-row items-center gap-x-2">
               <input
                 type="checkbox"
-                value="Florida Hurricane"
+                value="positive"
                 onChange={positiveSelected}
                 id="positive"
               />
               <p>Positive</p>
+            </div>
+            <div className="flex flex-row items-center gap-x-2">
+              <input
+                type="checkbox"
+                value="neutral"
+                onChange={neutralSelected}
+                id="neutral"
+              />
+              <p>Neutral</p>
+            </div>
+            <div className="flex flex-row items-center gap-x-2">
+              <input
+                type="checkbox"
+                value="negative"
+                onChange={negativeSelected}
+                id="negative"
+              />
+              <p>Negative</p>
             </div>
           
           </div>
