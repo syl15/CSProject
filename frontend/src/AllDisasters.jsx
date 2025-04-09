@@ -132,6 +132,19 @@ export default function AllDisasters() {
       
     };
 
+    const back = () => {
+      if(currIndex > 0) {
+        setCurrIndex(currIndex-3);
+      }
+    }
+
+    const next = () => {
+      if (currIndex < disasters.length - 1) {
+        setCurrIndex(currIndex + 3);
+      }
+    };
+    
+    
 
 
     return (
