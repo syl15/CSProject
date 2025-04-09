@@ -86,7 +86,7 @@ def insert_bluesky_data(batch_posts):
             conn.close() 
 
 # search for certain # of posts given keyword
-def poll_bsky_posts(client, keywords=["hurricane", "flood", "fire", "earthquake"], limit=25):
+def poll_bsky_posts(client, keywords=["hurricane", "flood", "wildfire", "earthquake"], limit=25):
     time_limit = datetime.now(timezone.utc) - timedelta(hours=24)
     batch_posts = []
 
