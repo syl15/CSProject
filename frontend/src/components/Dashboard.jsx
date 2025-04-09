@@ -20,7 +20,7 @@ export default function Dashboard({disaster}) {
         </div>
         <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
             <TotalTweets total={currDisaster.totalTweets}/>
-            <Severity severity={currDisaster.severity}/>
+            {/* <Severity severity={currDisaster.severity}/> */}
         </div>
         <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
             <Summary summary={currDisaster.summary}/>
