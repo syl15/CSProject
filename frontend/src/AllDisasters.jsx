@@ -132,32 +132,6 @@ export default function AllDisasters() {
       
     };
 
-    const back = () => {
-      if(currIndex > 0) {
-        setCurrIndex(currIndex-3);
-      }
-    }
-
-    const next = () => {
-      if (currIndex < disasters.length - 1) {
-        setCurrIndex(currIndex + 3);
-      }
-    };
-
-
-    const positiveSelected = (e) => {
-      if(e.target.checked){
-        const newDisasters = disasters.filter(disaster => 
-          disaster.name === e.target.value
-        );
-        setFilteredDisasters(newDisasters)
-      }
-      else {
-        setFilteredDisasters(disasters);
-      }
-    }
-
-
     return (
       <div className="flex flex-col mt-30 min-w-screen min-h-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 overflow-x-hidden">
           <h1 className="text-4xl font-bold text-left">All Disasters</h1>
