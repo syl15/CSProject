@@ -8,6 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score
 from clustering_helper import create_disaster_table, load_existing_disasters, update_bluesky_disaster_column, remove_noise_post, insert_new_disaster, update_disaster_centroid, get_unprocessed_posts
 from generate_metadata import generate_disaster_metadata
+from sklearn.preprocessing import normalize
 import umap
 import matplotlib.pyplot as plt
 import datetime
@@ -15,25 +16,24 @@ import os
 import json
 
 
-SIMILARITY_THRESHOLD = 0.9
+SIMILARITY_THRESHOLD = 0.75
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 def embed_posts(posts):
-    print("Embedding posts...")
-
     if not posts:
         print("No posts to embed.")
         return np.array([])
 
     texts = [post[1] for post in posts]  # post set consists of (Post_ID, Post_Original_Text)
     embeddings = model.encode(texts)
+    normalized_embeddings = normalize(embeddings, norm='l2')
     print(f"Generated embeddings for {len(posts)} posts.")
-    return embeddings
+    return normalized_embeddings
 
 # cluster new posts based on embeddings
 def cluster_and_get_centroids(embeddings, posts):
     print("Clustering posts using HDBSCAN...")
-    clusterer = hdbscan.HDBSCAN(min_cluster_size=2)
+    clusterer = hdbscan.HDBSCAN(min_cluster_size=2, min_samples=1, metric='euclidean')
     labels = clusterer.fit_predict(embeddings)
 
     clustered_posts = {}
@@ -62,19 +62,27 @@ def assign_clusters_to_disasters(cluster_centroids, existing_disasters):
     new_disaster_clusters = []
 
     for cluster_id, new_centroid in cluster_centroids.items():
-        matched = False
+        best_match = None
+        best_similarity = 0
+
         for disaster_id, existing_centroid in existing_disasters:
             similarity = cosine_similarity([new_centroid], [existing_centroid])[0][0]
-            if similarity > SIMILARITY_THRESHOLD:
-                assignments[cluster_id] = disaster_id
-                matched = True
 
-                updated_centroid = np.mean([existing_centroid, new_centroid], axis=0)
-                update_disaster_centroid(disaster_id, updated_centroid)
-                break
-
-        if not matched:
+            if similarity > SIMILARITY_THRESHOLD and similarity > best_similarity:
+                best_match = disaster_id
+                best_similarity = similarity
+                
+        if best_match:
+            assignments[cluster_id] = best_match
+        else:
             new_disaster_clusters.append(cluster_id)
+
+        #         updated_centroid = np.mean([existing_centroid, new_centroid], axis=0)
+        #         update_disaster_centroid(disaster_id, updated_centroid)
+        #         break
+
+        # if not matched:
+        #     new_disaster_clusters.append(cluster_id)
 
     print(f"Assignments complete. Assigned {len(assignments)} clusters to existing disasters.")
     print(f"{len(new_disaster_clusters)} new clusters identified.")
@@ -87,19 +95,30 @@ def assign_noise_to_disasters(noise_posts, existing_disasters):
     dropped = []
 
     for post, embedding in noise_posts:
-        matched = False
+        best_match = None
+        best_similarity = 0
+
         for disaster_id, centroid in existing_disasters:
             similarity = cosine_similarity([embedding], [centroid])[0][0]
-            if similarity > SIMILARITY_THRESHOLD:
-                assigned.append((post[0], disaster_id))  # Post_ID, Disaster_ID
-                matched = True
 
-                updated_centroid = np.mean([centroid, embedding], axis=0)
-                update_disaster_centroid(disaster_id, updated_centroid)
-                break
+            if similarity > SIMILARITY_THRESHOLD and similarity > best_similarity:
+                best_match = disaster_id
+                best_similarity = similarity
+        
+        #         assigned.append((post[0], disaster_id))  # Post_ID, Disaster_ID
+        #         matched = True
 
-        if not matched:
-            dropped.append(post[0])  # Just Post_ID to drop later
+        #         updated_centroid = np.mean([centroid, embedding], axis=0)
+        #         update_disaster_centroid(disaster_id, updated_centroid)
+        #         break
+
+        # if not matched:
+        #     dropped.append(post[0])  # Just Post_ID to drop later
+
+        if best_match:
+            assigned.append((post[0], best_match))
+        else:
+            dropped.append(post[0])
 
     print(f"Assigned {len(assigned)} noise posts to existing clusters.")
     print(f"Dropped {len(dropped)} noise posts.")
@@ -246,4 +265,3 @@ def cluster_and_process_posts():
 
     print("Process complete.")
     return len(post_to_disaster), len(noise_to_drop)
-
