@@ -47,8 +47,6 @@ export default function AllDisasters() {
         setCurrIndex(currIndex + 3);
       }
     };
-    
-    
 
     const positiveSelected = (e) => {
       if(e.target.checked){
