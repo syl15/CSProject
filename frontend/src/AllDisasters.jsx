@@ -35,7 +35,8 @@ export default function AllDisasters() {
             .catch(console.error);
     }, [])
 
-    if(!disasters) {
+
+    if(!disasters && !filteredDisasters) {
       return <div>Loading...</div>
     }
 
