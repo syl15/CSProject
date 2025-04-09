@@ -9,7 +9,7 @@ export default function Map({location}) {
 
   useEffect(() => {
     if (!mapInstanceRef.current && mapContainerRef.current) {
-      mapInstanceRef.current = L.map(mapContainerRef.current).setView([location.latitude, location.longitude], 15); // Corrected UTD location
+      mapInstanceRef.current = L.map(mapContainerRef.current).setView([location.latitude, location.longitude], 10); // Corrected UTD location
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors"
