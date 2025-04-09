@@ -6,7 +6,7 @@ from gensim.models import KeyedVectors
 
 LABEL_MAP = {
     0: "earthquake", 
-    1: "fire", 
+    1: "wildfire", 
     2: "flood", 
     3: "hurricane", 
     4: "unrelated"
