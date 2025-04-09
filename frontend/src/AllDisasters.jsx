@@ -143,8 +143,19 @@ export default function AllDisasters() {
         setCurrIndex(currIndex + 3);
       }
     };
-    
-    
+
+
+    const positiveSelected = (e) => {
+      if(e.target.checked){
+        const newDisasters = disasters.filter(disaster => 
+          disaster.name === e.target.value
+        );
+        setFilteredDisasters(newDisasters)
+      }
+      else {
+        setFilteredDisasters(disasters);
+      }
+    }
 
 
     return (
