@@ -147,74 +147,85 @@ def get_disaster_by_id(disaster_id):
         JSON: A single disaster object with metadata and top posts 
     """
 
-    try: 
+    conn = get_db_connection() 
+    cursor = conn.cursor() 
 
-        conn = get_db_connection() 
-        cursor = conn.cursor() 
+    # Get all base disaster info 
+    cursor.execute("""
+            SELECT id, 
+                   name, 
+                   date, 
+                   summary, 
+                   lat, 
+                   long, 
+                   radius, 
+                   location_name
+            FROM disaster_information
+            WHERE id = %s;
+    """, (disaster_id,))
 
-        # Get all base disaster info 
-        cursor.execute("""
-                SELECT id, 
-                    name, 
-                    date, 
-                    summary, 
-                    lat, 
-                    long, 
-                    radius, 
-                    location_name
-                FROM disaster_information
-                WHERE id = %s;
-        """, (disaster_id,))
+    row = cursor.fetchone() 
 
-        row = cursor.fetchone() 
+    if not row: 
+        return jsonify({"error": "Disaster not found"}), 404
+    
+    # Get sentiment
+    cursor.execute("""
+            SELECT 
+                COUNT(*) FILTER (WHERE model_sentiment_rating >= 0.05),
+                COUNT(*) FILTER (WHERE model_sentiment_rating <= -0.05),
+                COUNT(*) FILTER (
+                    WHERE model_sentiment_rating > -0.05 AND model_sentiment_rating < 0.05
+                ),
+                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating),
+                CASE 
+                    WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) >= 0.05 THEN 'positive'
+                    WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) <= -0.05 THEN 'negative'
+                    ELSE 'neutral'
+                END
+            FROM temp_bluesky
+            WHERE disaster_id = %s
+    """, (disaster_id,))
 
-        if not row: 
-            return jsonify({"error": "Disaster not found"}), 404
-        
-        # Get sentiment
-        cursor.execute("""
-                SELECT 
-                    COUNT(*) FILTER (WHERE model_sentiment_rating >= 0.05),
-                    COUNT(*) FILTER (WHERE model_sentiment_rating <= -0.05),
-                    COUNT(*) FILTER (
-                        WHERE model_sentiment_rating > -0.05 AND model_sentiment_rating < 0.05
-                    ),
-                    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating),
-                    CASE 
-                        WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) >= 0.05 THEN 'positive'
-                        WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) <= -0.05 THEN 'negative'
-                        ELSE 'neutral'
-                    END
-                FROM temp_bluesky
-                WHERE disaster_id = %s
-        """, (disaster_id,))
+    sentiment = cursor.fetchone()
+    if sentiment:
+        pos, neg, neu, median, overall = sentiment
+        sentiment_dict  = {
+            "positive": pos, 
+            "negative": neg, 
+            "neutral": neu
+        }
+    else:
+        sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
+        overall = "unknown"
+    
+    # Calculate severity 
+    if median: 
+        if median >= 0.5: 
+            severity = 1 
+        elif median >= 0.05: 
+            severity = 2
+        elif median > -0.05: 
+            severity = 3 
+        elif median > -0.5: 
+            severity = 4 
+        else:
+            severity = 5 
+    else: 
+        severity = 3
 
-        sentiment = cursor.fetchone()
-        if sentiment:
-            pos, neg, neu, median, overall = sentiment
-            total = pos + neg + neu
-
-            sentiment_dict  = {
-                "positive": pos, 
-                "negative": neg, 
-                "neutral": neu
-            }
-
-            # Compute a severity score 
-            # How many negative posts + median intensity 
-            sentiment_balance = (neg - pos) / total if total else 0 
-            hybrid_score = sentiment_balance + (-1 * median if median else 0) 
-
-            if hybrid_score <= -1.0: # Strongly positive
-                severity = 1
-            elif hybrid_score <= -0.3:
-                severity = 2
-            elif hybrid_score <= 0.3:
-                severity = 3
-            elif hybrid_score <= 0.8: 
-                severity = 4
-            else:
-                severity = 5 # Strongly negative
+     # Get event type
+    cursor.execute("""
+            SELECT model_disaster_label
+            FROM temp_bluesky
+            WHERE disaster_id = %s AND model_disaster_label IS NOT NULL
+            GROUP BY model_disaster_label
+            ORDER BY COUNT(*) DESC, model_disaster_label ASC
+            LIMIT 1
+    """, (disaster_id,))
+    
+    event_type_row = cursor.fetchone()
+    event_type = event_type_row[0] if event_type_row else "unknown"
 
         else:
             sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
@@ -317,25 +328,25 @@ def get_disaster_by_id(disaster_id):
             "sentimentScore": float(r[5])
         })
 
-        # Build final disaster object (match format of /disasters)
-        disaster = OrderedDict([
-            ("id", row[0]),
-            ("name", row[1]),
-            ("totalPosts", total_posts),
-            ("severity", severity),
-            ("eventType", event_type),
-            ("startDate", row[2].isoformat()),
-            ("summary", row[3]),
-            ("location", {
-                "latitude": float(row[4]),
-                "longitude": float(row[5]),
-                "radius": float(row[6])
-            }),
-            ("locationName", row[7]),
-            ("sentiment", sentiment_dict), 
-            ("overallSentiment", overall),
-            ("posts", posts)
-        ])
+    # Build final disaster object (match format of /disasters)
+    disaster = OrderedDict([
+        ("id", row[0]),
+        ("name", row[1]),
+        ("totalPosts", total_posts),
+        ("severity", severity),
+        ("eventType", event_type),
+        ("startDate", row[2].isoformat()),
+        ("summary", row[3]),
+        ("location", {
+            "latitude": float(row[4]),
+            "longitude": float(row[5]),
+            "radius": float(row[6])
+        }),
+        ("locationName", row[7]),
+        ("sentiment", sentiment_dict), 
+        ("overallSentiment", overall),
+        ("posts", posts)
+    ])
 
     cursor.close() 
     conn.close()
