@@ -199,7 +199,7 @@ def get_disaster_by_id(disaster_id):
         }
 
         # Compute a severity score 
-        # How many people are upset + how strongly they express it
+        # How many negative posts + median intensity 
         sentiment_balance = (neg - pos) / total if total else 0 
         hybrid_score = sentiment_balance + (-1 * median if median else 0) 
 
