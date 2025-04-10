@@ -7,9 +7,13 @@ export default function Summary({summary}) {
         <div className="border-b-1 border-[#D4D4D4]">
             <h3 className="pb-2">Summary</h3>
         </div>
-        <div className="flex flex-wrap p-2">
-          {summary}
-        </div>
+        
+          {summary ? (
+            <div className="flex flex-wrap p-2">{summary}</div>
+          ) : (
+            <div className="flex flex-wrap justify-center items-center leading-80">No data</div>
+          )}
+        
     </div>
   );
 }
