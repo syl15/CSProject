@@ -7,11 +7,28 @@ import Map from './Map'
 import PieChart from './PieChart'
 import AddedDate from './AddedDate'
 import { useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
 
 export default function Dashboard({disaster}) {
     const location = useLocation();
     const currDisaster = location.state || disaster; 
-    const start = new Date(`${currDisaster.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
+   
+   const [disasterInfo, setDisasterInfo] = useState();
+   // Fetch disasters on mount 
+    useEffect(() => {
+        // Add parameters if necessary
+        fetch(`${BASE_URL}/disasters/${currDisaster.id}`) // Ex. /disasters?limit=1 
+            .then((result) => result.json())
+            .then(setDisasterInfo)
+            .catch(console.error);
+    }, [])
+   
+    if(!disasterInfo) {
+        return <p>Loading...</p>
+    }
+    const start = new Date(`${disasterInfo.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
+
     return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
