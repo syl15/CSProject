@@ -195,6 +195,23 @@ def get_disaster_by_id(disaster_id):
             "negative": neg, 
             "neutral": neu
         }
+
+        # Compute a severity score 
+        # How many people are upset + how strongly they express it
+        sentiment_balance = (neg - pos) / total if total else 0 
+        hybrid_score = sentiment_balance + (-1 * median if median else 0) 
+
+        if hybrid_score <= -1.0: # Strongly positive
+            severity = 1
+        elif hybrid_score <= -0.3:
+            severity = 2
+        elif hybrid_score <= 0.3:
+            severity = 3
+        elif hybrid_score <= 0.8: 
+            severity = 4
+        else:
+            severity = 5 # Strongly negative
+
     else:
         sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
         overall = "unknown"
