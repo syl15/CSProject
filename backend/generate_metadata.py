@@ -106,6 +106,9 @@ def format_metadata(metadata):
     longitude = float(metadata["location"]["longitude"])
     radius = metadata["location"]["radius"]
 
+    # Cap the radius to a reasonable range
+    radius = min(max(radius, 100), 1_000_000)  # between 100m and 1,000,000m
+
     metadata["location"]["latitude"] = f"{latitude:.6f}"
     metadata["location"]["longitude"] = f"{longitude:.6f}"
     metadata["location"]["radius"] = f"{radius}"
@@ -159,7 +162,11 @@ def generate_disaster_metadata(clusters):
             Output constraints: 
             - Latitude must be between -90 and 90 (inclusive), with exactly six decimal places.
             - Longitude must be between -180 and 180 (inclusive), with exactly six decimal places.
-            - Radius must be a positive number in meters
+            - Radius must be a positive number in meters, and must not exceed 1,000,000 (i.e. 1,000 km).
+            - Radius should reflect the approximate geographic impact area:
+                - Small/local disasters: 1,000 to 10,000 meters (e.g. building fires, flash floods)
+                - City-scale disasters: 10,000 to 30,000 meters (e.g. earthquakes, urban wildfires)
+                - Large/regional disasters: 30,000 to 100,000 meters (e.g. major wildfires, hurricanes)
 
             Return ONLY a valid JSON object, nothing else. Do not include explanations, markdown formatting, or commentary. Do not wrap it in code blocks.
 
