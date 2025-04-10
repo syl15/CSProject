@@ -5,6 +5,7 @@ import TopTweets from './TopTweets'
 import Summary from './Summary'
 import Map from './Map'
 import PieChart from './PieChart'
+import AddedDate from './AddedDate'
 import { useLocation } from 'react-router-dom'
 
 export default function Dashboard({disaster}) {
@@ -19,7 +20,13 @@ export default function Dashboard({disaster}) {
         </div>
         <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
             <TotalTweets total={currDisaster.totalPosts}/>
-            {/* <Severity severity={currDisaster.severity}/> */}
+            {currDisaster.severity ? (
+                <Severity severity={currDisaster.severity}/>
+            ) : (
+                <Severity severity="No data"/>
+            )}
+           
+            <AddedDate dateAdded={start}/>
         </div>
         <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
             <Summary summary={currDisaster.summary}/>
@@ -30,7 +37,7 @@ export default function Dashboard({disaster}) {
             {currDisaster.posts ? (
                 <TopTweets tweetsList={currDisaster.posts}/>
             ) : (
-                <p>No data</p>
+                <TopTweets tweetsList="No data"/>
             )}
             {/* <TopTweets tweetsList={currDisaster.topTweets}/> */}
         </div>
