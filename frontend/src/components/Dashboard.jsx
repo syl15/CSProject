@@ -16,12 +16,11 @@ export default function Dashboard({disaster}) {
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
             <h1 className="text-4xl font-bold text-left">{currDisaster.name}</h1>
-            <h3 className="text-lg text-left">{start}</h3>
         </div>
         <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
+            <AddedDate dateAdded={start}/>
             <TotalTweets total={currDisaster.totalPosts}/>
             <Severity severity={currDisaster.severity}/>
-            <AddedDate dateAdded={start}/>
         </div>
         <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
             <Summary summary={currDisaster.summary}/>
