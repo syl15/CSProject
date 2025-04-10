@@ -5,10 +5,12 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function PieChart({sentiment}) {
-  const total = (sentiment.positive + sentiment.negative + sentiment.neutral);
-  const positive = Math.ceil((sentiment.positive/total) * 100);
-  const negative = Math.ceil((sentiment.negative/total) * 100);
-  const neutral = Math.ceil((sentiment.neutral/total) * 100);
+  if(sentiment) {
+    const total = (sentiment.positive + sentiment.negative + sentiment.neutral);
+    const positive = Math.ceil((sentiment.positive/total) * 100);
+    const negative = Math.ceil((sentiment.negative/total) * 100);
+    const neutral = Math.ceil((sentiment.neutral/total) * 100);
+  }
 
   return (
     <div className="flex flex-col border border-[#D4D4D4] rounded-md mt-5 md:mt-15 text-left p-4 gap-y-2 h-[25rem] w-full">
@@ -17,6 +19,7 @@ export default function PieChart({sentiment}) {
       </div>
 
       <div className="w-full h-[20rem] flex justify-center items-center">
+      {sentiment ? (
         <Pie
           data={{
             labels: ["Positive", "Neutral", "Negative"],
@@ -46,6 +49,10 @@ export default function PieChart({sentiment}) {
             },
           }}
         />
+      ) : (
+        <p>No data</p>
+      )}
+        
       </div>
     </div>
   );
