@@ -10,7 +10,7 @@ import Dashboard from './components/Dashboard.jsx'
 function App() {
   return (
     <>
-      <TestAPI/>
+      {/* <TestAPI/> */}
       <Navbar/>
       <div>
         <Routes>

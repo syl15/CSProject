@@ -8,11 +8,19 @@ export default function TopTweets({tweetsList}) {
         <div className="border-b-1 border-[#D4D4D4]">
             <h3 className="pb-2">Tweets</h3>
         </div>
-        <div className="flex flex-col pt-4 gap-y-3 overflow-y-scroll scrollbar">
+        
+        
+        {tweetsList ? (
+          <div className="flex flex-col pt-4 gap-y-3 overflow-y-scroll scrollbar">
             {tweetsList.map((tweet) => (
-              <TweetBox tweetObj={tweet}/>
+                <TweetBox tweetObj={tweet}/>
             ))}
-        </div>
+          </div>
+        ) : (
+          <div className="flex flex-wrap justify-center items-center leading-80">No data</div>
+        )}
+            
+       
     </div>
   );
 }
