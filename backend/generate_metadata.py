@@ -1,7 +1,7 @@
 # OpenRouter limits: 20 requests/minute, 200 requests/day 
 # TODO: Add retry logic on failure
 
-import os, requests, re, json
+import os, requests, re, json, sys
 from datetime import datetime
 from collections import OrderedDict
 
@@ -11,6 +11,8 @@ def parse_llm_response(response):
     Parses and cleans LLM response JSON, stripping any markdown/formatting.
     Returns a Python dictionary if valid, else None
     """
+
+    sys.set_int_max_str_digits(10000)
 
     try: 
         raw_response = response.json()["choices"][0]["message"]["content"]

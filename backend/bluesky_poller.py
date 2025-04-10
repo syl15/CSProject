@@ -42,8 +42,9 @@ def create_raw_bluesky_table():
                     Post_Total_Interactions INTEGER,
                     Post_Keyword TEXT,
                     Model_Disaster_Label TEXT,
-                    Model_Sentiment_Rating DECIMAL
-                    Disaster_ID INT
+                    Model_Sentiment_Rating DECIMAL,
+                    Disaster_ID INT,
+                    Poster_Name TEXT
                 );
             ''')
             conn.commit()
@@ -67,8 +68,8 @@ def insert_bluesky_data(batch_posts):
             #TODO: change temp_bluesky to raw_bluesky
             cursor.executemany('''
                 INSERT INTO temp_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword, Model_Disaster_Label,
-                    Model_Sentiment_Rating)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    Model_Sentiment_Rating, Poster_Name)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (Post_ID) DO NOTHING;
             ''', batch_posts)
 
@@ -104,13 +105,14 @@ def poll_bsky_posts(client, keywords=["hurricane", "flood", "wildfire", "earthqu
                 post_time_created_at = post.record.created_at
                 post_user_handle = post.author.handle
                 post_link = f"https://bsky.app/profile/{post.author.handle}/post/{post_id}"
+                poster_name = post.author.display_name
                 post_total_interactions = post.like_count + post.quote_count + post.reply_count + post.repost_count
                 post_keyword = keyword
                 model_label = None
                 model_sentiment = None
     
                 # add post data to the batch list
-                batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment))
+                batch_posts.append((post_id, post_original_text, post_time_created_at, post_user_handle, post_link, post_total_interactions, post_keyword, model_label, model_sentiment, poster_name))
 
     if batch_posts:
         insert_bluesky_data(batch_posts)

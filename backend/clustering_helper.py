@@ -207,3 +207,52 @@ def get_unprocessed_posts():
             cursor.close()
         if conn:
             conn.close()
+
+# Helper function to update centroids with weighted averaging
+def update_disaster_centroid_weighted(disaster_id, embedding, conn=None):
+    """Update disaster centroid with a new embedding using weighted averaging."""
+    try:            
+        print(f"updating centroid for disaster {disaster_id}")
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # Get current centroid and count of posts in this disaster
+        cursor.execute("""
+            SELECT centroid, 
+                  (SELECT COUNT(*) FROM temp_bluesky WHERE disaster_id = %s) as post_count
+            FROM disaster_information 
+            WHERE id = %s
+        """, (disaster_id, disaster_id))
+        
+        result = cursor.fetchone()
+        if not result:
+            print(f"Warning: Disaster {disaster_id} not found in database.")
+            return
+            
+        current_centroid, post_count = result
+        current_centroid = np.array(current_centroid)
+        
+        # Weight based on number of posts
+        # New centroid = (current_centroid * post_count + new_embedding) / (post_count + 1)
+        if post_count > 0:
+            updated_centroid = (current_centroid * post_count + embedding) / (post_count + 1)
+        else:
+            updated_centroid = embedding
+            
+        # Update in database
+        cursor.execute("""
+            UPDATE disaster_information
+            SET centroid = %s
+            WHERE id = %s
+        """, (updated_centroid.tolist(), disaster_id))
+        
+        conn.commit()
+        print(f"Updated centroid for disaster {disaster_id} with weighted averaging.")
+        
+    except Exception as e:
+        print(f"Error updating centroid for disaster {disaster_id}:", e)
+        
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
