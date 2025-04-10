@@ -5,6 +5,7 @@ import TopTweets from './TopTweets'
 import Summary from './Summary'
 import Map from './Map'
 import PieChart from './PieChart'
+import AddedDate from './AddedDate'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { BASE_URL } from "../config";
