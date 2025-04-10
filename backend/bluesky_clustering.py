@@ -6,51 +6,104 @@ import hdbscan
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import silhouette_score
-from clustering_helper import create_disaster_table, load_existing_disasters, update_bluesky_disaster_column, remove_noise_post, insert_new_disaster, update_disaster_centroid, get_unprocessed_posts
+from clustering_helper import *
 from generate_metadata import generate_disaster_metadata
+from sklearn.preprocessing import normalize
 import umap
 import matplotlib.pyplot as plt
 import datetime
 import os
 import json
+import warnings
 
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", message="'force_all_finite' was renamed to 'ensure_all_finite'")
 
-SIMILARITY_THRESHOLD = 0.9
+SIMILARITY_THRESHOLD = 0.75
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 def embed_posts(posts):
-    print("Embedding posts...")
-
     if not posts:
         print("No posts to embed.")
         return np.array([])
 
     texts = [post[1] for post in posts]  # post set consists of (Post_ID, Post_Original_Text)
     embeddings = model.encode(texts)
+    normalized_embeddings = normalize(embeddings, norm='l2')
     print(f"Generated embeddings for {len(posts)} posts.")
-    return embeddings
+    return normalized_embeddings
 
-# cluster new posts based on embeddings
+def direct_similarity_clustering(embeddings, posts):
+    """Alternative clustering for very small batches using direct similarity."""
+    clustered_posts = {}
+    cluster_centroids = {}
+    noise_posts = []
+    
+    # Start with first post as a cluster
+    if len(posts) > 0:
+        clustered_posts[0] = [(posts[0], embeddings[0])]
+        cluster_centroids[0] = embeddings[0]
+        
+        # Compare each remaining post to existing clusters
+        for i in range(1, len(posts)):
+            post = posts[i]
+            embedding = embeddings[i]
+            
+            assigned = False
+            for cluster_id, centroid in cluster_centroids.items():
+                similarity = cosine_similarity([embedding], [centroid])[0][0]
+                
+                if similarity > SIMILARITY_THRESHOLD:
+                    clustered_posts[cluster_id].append((post, embedding))
+                    # Update centroid
+                    vectors = [vec for _, vec in clustered_posts[cluster_id]]
+                    cluster_centroids[cluster_id] = np.mean(vectors, axis=0)
+                    assigned = True
+                    break
+            
+            if not assigned:
+                # Create new cluster
+                new_cluster_id = max(clustered_posts.keys()) + 1 if clustered_posts else 0
+                clustered_posts[new_cluster_id] = [(post, embedding)]
+                cluster_centroids[new_cluster_id] = embedding
+    
+    return clustered_posts, cluster_centroids, noise_posts
+
+# cluster new posts based on embeddings with improved parameters
 def cluster_and_get_centroids(embeddings, posts):
     print("Clustering posts using HDBSCAN...")
-    clusterer = hdbscan.HDBSCAN(min_cluster_size=2)
+    
+    # Use slightly more restrictive parameters for better clusters
+    clusterer = hdbscan.HDBSCAN(
+        min_cluster_size=3,  # Increased from 2 for more meaningful clusters
+        min_samples=2,       # Increased from 1 for better noise detection
+        cluster_selection_epsilon=0.15,  # Help merge close clusters
+        metric='euclidean',
+        cluster_selection_method='eom'  # Better for varying density clusters
+    )
+    
+    # If there are very few posts, use a different approach
+    if len(posts) < 5:
+        print("Too few posts for HDBSCAN, using direct similarity clustering...")
+        return direct_similarity_clustering(embeddings, posts)
+    
     labels = clusterer.fit_predict(embeddings)
-
+    
     clustered_posts = {}
     noise_posts = []
-
+    
     for i, label in enumerate(labels):
         if label == -1:
-            noise_posts.append((posts[i], embeddings[i]))  # keep noise post + vector
+            noise_posts.append((posts[i], embeddings[i]))
         else:
             clustered_posts.setdefault(label, []).append((posts[i], embeddings[i]))
-
-    # compute centroids of each cluster
+    
+    # Compute centroids
     cluster_centroids = {}
     for cluster_id, items in clustered_posts.items():
         vectors = [vec for _, vec in items]
         cluster_centroids[cluster_id] = np.mean(vectors, axis=0)
-
+    
     print(f"Clustering complete. Found {len(clustered_posts)} clusters and {len(noise_posts)} noise posts.")
     return clustered_posts, cluster_centroids, noise_posts
 
@@ -62,18 +115,19 @@ def assign_clusters_to_disasters(cluster_centroids, existing_disasters):
     new_disaster_clusters = []
 
     for cluster_id, new_centroid in cluster_centroids.items():
-        matched = False
+        best_match = None
+        best_similarity = 0
+
         for disaster_id, existing_centroid in existing_disasters:
             similarity = cosine_similarity([new_centroid], [existing_centroid])[0][0]
-            if similarity > SIMILARITY_THRESHOLD:
-                assignments[cluster_id] = disaster_id
-                matched = True
 
-                updated_centroid = np.mean([existing_centroid, new_centroid], axis=0)
-                update_disaster_centroid(disaster_id, updated_centroid)
-                break
-
-        if not matched:
+            if similarity > SIMILARITY_THRESHOLD and similarity > best_similarity:
+                best_match = disaster_id
+                best_similarity = similarity
+                
+        if best_match:
+            assignments[cluster_id] = best_match
+        else:
             new_disaster_clusters.append(cluster_id)
 
     print(f"Assignments complete. Assigned {len(assignments)} clusters to existing disasters.")
@@ -82,24 +136,30 @@ def assign_clusters_to_disasters(cluster_centroids, existing_disasters):
 
 # match embeddings marked as noise to existing clusters or drop them
 def assign_noise_to_disasters(noise_posts, existing_disasters):
-    print("Assigning noise posts to existing clusters or dropping them...")
+    print("Assigning noise posts to existing clusters using improved method...")
     assigned = []
     dropped = []
-
+    
+    # Set a slightly lower threshold for noise posts to increase matches
+    noise_threshold = SIMILARITY_THRESHOLD * 0.9
+    
     for post, embedding in noise_posts:
-        matched = False
+        best_match = None
+        best_similarity = 0
+
         for disaster_id, centroid in existing_disasters:
             similarity = cosine_similarity([embedding], [centroid])[0][0]
-            if similarity > SIMILARITY_THRESHOLD:
-                assigned.append((post[0], disaster_id))  # Post_ID, Disaster_ID
-                matched = True
 
-                updated_centroid = np.mean([centroid, embedding], axis=0)
-                update_disaster_centroid(disaster_id, updated_centroid)
-                break
-
-        if not matched:
-            dropped.append(post[0])  # Just Post_ID to drop later
+            if similarity > noise_threshold and similarity > best_similarity:
+                best_match = disaster_id
+                best_similarity = similarity
+        
+        if best_match:
+            assigned.append((post[0], best_match))
+            # Update the centroid with the new post
+            update_disaster_centroid_weighted(best_match, embedding)
+        else:
+            dropped.append(post[0])
 
     print(f"Assigned {len(assigned)} noise posts to existing clusters.")
     print(f"Dropped {len(dropped)} noise posts.")
@@ -130,7 +190,7 @@ def create_new_disasters_and_assign(clustered_posts, new_disaster_clusters, clus
         cluster_centroid_list.append(cluster_centroids[cluster_id])
     
     print("LLM input preview:")
-    print(json.dumps(cluster_inputs, indent=2, ensure_ascii=False))
+    print(json.dumps(cluster_inputs[:1], indent=2, ensure_ascii=False))
 
     # Generate metadata for all clusters 
     metadata_list = generate_disaster_metadata(cluster_inputs)
@@ -212,38 +272,97 @@ def evaluate_final_clusters(post_to_disaster, embeddings_dict):
 def cluster_and_process_posts():
     print("Processing and assigning posts...")
     create_disaster_table()
+    
+    # Get unprocessed posts
     posts = get_unprocessed_posts()
+    if not posts:
+        print("No new posts to process.")
+        return 0, 0
+        
+    # Embed new posts
     embeddings = embed_posts(posts)
-
+    
+    # Create a dictionary for quick lookup
+    post_id_to_embedding = {post[0]: emb for post, emb in zip(posts, embeddings)}
+    
+    # Load existing disasters with their centroids
     existing_disasters = load_existing_disasters()
-    clustered_posts, cluster_centroids, noise_posts = cluster_and_get_centroids(embeddings, posts)
-
-    assignments, new_disaster_clusters = assign_clusters_to_disasters(cluster_centroids, existing_disasters)
-
-    post_to_disaster = []
-    for cluster_id, disaster_id in assignments.items():
-        for post, _ in clustered_posts[cluster_id]:
-            post_to_disaster.append((post[0], disaster_id))
-
-    # create new disaster
-    new_disaster_assignments = create_new_disasters_and_assign(clustered_posts, new_disaster_clusters, cluster_centroids)
-    post_to_disaster.extend(new_disaster_assignments)
-
-    # handle noise
-    noise_assignments, noise_to_drop = assign_noise_to_disasters(noise_posts, existing_disasters)
-    post_to_disaster.extend(noise_assignments)
-
+    
+    # First, try to match new posts directly to existing disasters
+    direct_matches = []
+    unmatched_posts = []
+    unmatched_embeddings = []
+    
+    print("Attempting direct assignment to existing disasters...")
+    for i, post in enumerate(posts):
+        post_id = post[0]
+        embedding = embeddings[i]
+        
+        best_match = None
+        best_similarity = 0
+        
+        # Compare with existing disaster centroids
+        for disaster_id, centroid in existing_disasters:
+            similarity = cosine_similarity([embedding], [centroid])[0][0]
+            
+            if similarity > SIMILARITY_THRESHOLD and similarity > best_similarity:
+                best_match = disaster_id
+                best_similarity = similarity
+        
+        if best_match:
+            # Post matches an existing disaster
+            direct_matches.append((post_id, best_match))
+            # Update the centroid (weighted by cluster size)
+            update_disaster_centroid_weighted(best_match, embedding)
+        else:
+            # Post doesn't match any existing disaster
+            unmatched_posts.append(post)
+            unmatched_embeddings.append(embedding)
+    
+    print(f"Directly assigned {len(direct_matches)} posts to existing disasters.")
+    
+    # Only cluster remaining unmatched posts
+    post_to_disaster = direct_matches.copy()
+    if unmatched_posts:
+        # Convert lists back to numpy array for clustering
+        unmatched_embeddings_array = np.array(unmatched_embeddings)
+        
+        # Use HDBSCAN with improved parameters for remaining posts
+        clustered_posts, cluster_centroids, noise_posts = cluster_and_get_centroids(
+            unmatched_embeddings_array, unmatched_posts)
+        
+        # Process newly formed clusters
+        assignments, new_disaster_clusters = assign_clusters_to_disasters(
+            cluster_centroids, existing_disasters)
+        
+        # Assign posts from matched clusters to existing disasters
+        for cluster_id, disaster_id in assignments.items():
+            for post, _ in clustered_posts[cluster_id]:
+                post_to_disaster.append((post[0], disaster_id))
+        
+        # Create new disasters for new clusters
+        new_disaster_assignments = create_new_disasters_and_assign(
+            clustered_posts, new_disaster_clusters, cluster_centroids)
+        post_to_disaster.extend(new_disaster_assignments)
+        
+        # Try once more to match noise posts to ALL disasters (original + newly created)
+        updated_disasters = load_existing_disasters()  # Reload to include new disasters
+        noise_assignments, noise_to_drop = assign_noise_to_disasters(noise_posts, updated_disasters)
+        post_to_disaster.extend(noise_assignments)
+    else:
+        noise_to_drop = []
+    
+    # Update database
     if post_to_disaster:
         update_bluesky_disaster_column(post_to_disaster)
-
-    # can also just drop rows where disaster_id = null
-    print(f"Dropping {len(noise_to_drop)} posts")
+    
+    # Handle noise posts
     for post_id in noise_to_drop:
         remove_noise_post(post_id)
-
+    
+    # Evaluate clustering results
     embeddings_dict = {post[0]: emb for post, emb in zip(posts, embeddings)}
     evaluate_final_clusters(post_to_disaster, embeddings_dict)
-
+    
     print("Process complete.")
     return len(post_to_disaster), len(noise_to_drop)
-

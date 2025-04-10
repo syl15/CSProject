@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
 from pydantic import BaseModel 
 import joblib 
-from model_helpers import preprocess, preprocess_with_embeddings, analyze_sentiment
+from model_helpers import preprocess, preprocess_sentence, preprocess_with_embeddings, analyze_sentiment
 from gensim.models import KeyedVectors
 
 LABEL_MAP = {
@@ -18,7 +18,7 @@ app = FastAPI()
 ''' word2vec_multiclass_model.sav represents the word2vec + linearSVC model
     optimized.sav represents the TFDIF + linearSVC model
 '''
-file = "word2vec_multiclass_model.sav"
+file = "sentence_transformer_model.sav"
 # file = "optimized_model.sav"
 model = joblib.load(file)
 
@@ -45,6 +45,9 @@ def predict_event_type(data: PostInput):
     elif (file == "word2vec_multiclass_model.sav"):
         word2vec_model = KeyedVectors.load("../word2vec-google-news-300.model")
         text = [preprocess_with_embeddings(data.text, word2vec_model)]
+
+    elif (file == "sentence_transformer_model.sav"):
+        text = [preprocess_sentence(data.text)]
 
     else:
         None
