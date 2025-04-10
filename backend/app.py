@@ -194,6 +194,21 @@ def get_disaster_by_id(disaster_id):
     else:
         sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
         overall = "unknown"
+    
+    # Calculate severity 
+    if median: 
+        if median >= 0.5: 
+            severity = 1 
+        elif median >= 0.05: 
+            severity = 2
+        elif median > -0.05: 
+            severity = 3 
+        elif median > -0.5: 
+            severity = 4 
+        else:
+            severity = 5 
+    else: 
+        severity = 3
 
      # Get event type
     cursor.execute("""
@@ -247,6 +262,7 @@ def get_disaster_by_id(disaster_id):
         ("id", row[0]),
         ("name", row[1]),
         ("totalPosts", total_posts),
+        ("severity", severity),
         ("eventType", event_type),
         ("startDate", row[2].isoformat()),
         ("summary", row[3]),
