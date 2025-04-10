@@ -1,10 +1,10 @@
 import os 
 import gdown 
 
-# Downloads train, test, dev sets from combined_datasets
-train_id = "1EQMnszXXJCR47xEK6QA75Wf-lJd5DJJZ"
-test_id = "1uIFfYOfoWB2gcOVbQB-CXCdUKaRL-i-2"
-dev_id = "1lmxndA9eZLmwvdAqNBpzsMi3_Uf-cNHV"
+# Downloads train, test, dev sets from all_data (https://drive.google.com/drive/u/5/folders/1_RTvKXflGBOdWWaocSOax5JxPzBIz8n1)
+train_id = "1ABaDbbrpJvLR-mVX5KW9vXnRuQNufZuQ"
+test_id = "1D0H5ASAat1sDzTuqB9VEJozvwrCKQ04w"
+dev_id = "1MEx0KFVDUHaWWfWK4XGc_Ch4zaTmcqsh"
 
 files_info = [
     {"url": f"https://drive.google.com/uc?id={train_id}", "filename": "train.tsv"}, 
