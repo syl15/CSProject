@@ -217,9 +217,9 @@ def get_disaster_by_id(disaster_id):
     total_posts = post_count[0] if post_count else 0
 
     # Get top 10 posts
-    # TODO: Add posterName whenever tracked
     cursor.execute("""
             SELECT 
+                poster_name, 
                 post_user_handle, 
                 post_original_text, 
                 post_time_created_at, 
@@ -234,11 +234,12 @@ def get_disaster_by_id(disaster_id):
     posts = [] 
     for r in post_rows:
         posts.append({
-            "username": r[0],
-            "content": r[1],
-            "timestamp": r[2].isoformat(),
-            "sentimentScore": float(r[4]),
-            "link": r[3]
+            "posterName": r[0] if r[0] else "Unknown",
+            "username": r[1],
+            "content": r[2],
+            "timestamp": r[3].isoformat(),
+            "link": r[4],
+            "sentimentScore": float(r[5])
         })
 
     # Build final disaster object (match format of /disasters)
