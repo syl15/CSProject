@@ -45,6 +45,13 @@ def preprocess(text):
     
     return text
 
+# ------------------ Sentence Transformer Preprocessing ------------------
+from sentence_transformers import SentenceTransformer
+def preprocess_sentence(text):
+    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+    return model.encode(preprocess(text))
+
+
 # ------------------ Embeddings Preprocessing ------------------
 # return the average embedding for a text based on Word2Vec embeddings
 def get_word_embeddings(text, model, vector_size=300):
