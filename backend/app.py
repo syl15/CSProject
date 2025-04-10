@@ -291,6 +291,55 @@ def get_disaster_by_id(disaster_id):
         cursor.close() 
         conn.close()
 
+    # Get top 10 posts
+    cursor.execute("""
+            SELECT 
+                poster_name, 
+                post_user_handle, 
+                post_original_text, 
+                post_time_created_at, 
+                post_link, 
+                model_sentiment_rating
+            FROM temp_bluesky
+            WHERE disaster_id = %s
+            LIMIT 10     
+    """, (disaster_id,))
+    post_rows = cursor.fetchall()
+
+    posts = [] 
+    for r in post_rows:
+        posts.append({
+            "posterName": r[0] if r[0] else "Unknown",
+            "username": r[1],
+            "content": r[2],
+            "timestamp": r[3].isoformat(),
+            "link": r[4],
+            "sentimentScore": float(r[5])
+        })
+
+        # Build final disaster object (match format of /disasters)
+        disaster = OrderedDict([
+            ("id", row[0]),
+            ("name", row[1]),
+            ("totalPosts", total_posts),
+            ("severity", severity),
+            ("eventType", event_type),
+            ("startDate", row[2].isoformat()),
+            ("summary", row[3]),
+            ("location", {
+                "latitude": float(row[4]),
+                "longitude": float(row[5]),
+                "radius": float(row[6])
+            }),
+            ("locationName", row[7]),
+            ("sentiment", sentiment_dict), 
+            ("overallSentiment", overall),
+            ("posts", posts)
+        ])
+
+    cursor.close() 
+    conn.close()
+
         sys.stdout.write(f"Returning disaster {disaster_id}\n")
         sys.stdout.flush()
 
