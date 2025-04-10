@@ -186,14 +186,34 @@ def get_disaster_by_id(disaster_id):
     sentiment = cursor.fetchone()
     if sentiment:
         pos, neg, neu, median, overall = sentiment
+        total = pos + neg + neu
+
         sentiment_dict  = {
             "positive": pos, 
             "negative": neg, 
             "neutral": neu
         }
+
+        # Compute a severity score 
+        # How many negative posts + median intensity 
+        sentiment_balance = (neg - pos) / total if total else 0 
+        hybrid_score = sentiment_balance + (-1 * median if median else 0) 
+
+        if hybrid_score <= -1.0: # Strongly positive
+            severity = 1
+        elif hybrid_score <= -0.3:
+            severity = 2
+        elif hybrid_score <= 0.3:
+            severity = 3
+        elif hybrid_score <= 0.8: 
+            severity = 4
+        else:
+            severity = 5 # Strongly negative
+
     else:
         sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
         overall = "unknown"
+        severity = 2 # Defaults to neutral
 
      # Get event type
     cursor.execute("""
@@ -217,9 +237,9 @@ def get_disaster_by_id(disaster_id):
     total_posts = post_count[0] if post_count else 0
 
     # Get top 10 posts
-    # TODO: Add posterName whenever tracked
     cursor.execute("""
             SELECT 
+                poster_name, 
                 post_user_handle, 
                 post_original_text, 
                 post_time_created_at, 
@@ -234,11 +254,12 @@ def get_disaster_by_id(disaster_id):
     posts = [] 
     for r in post_rows:
         posts.append({
-            "username": r[0],
-            "content": r[1],
-            "timestamp": r[2].isoformat(),
-            "sentimentScore": float(r[4]),
-            "link": r[3]
+            "posterName": r[0] if r[0] else "Unknown",
+            "username": r[1],
+            "content": r[2],
+            "timestamp": r[3].isoformat(),
+            "link": r[4],
+            "sentimentScore": float(r[5])
         })
 
     # Build final disaster object (match format of /disasters)
@@ -246,6 +267,7 @@ def get_disaster_by_id(disaster_id):
         ("id", row[0]),
         ("name", row[1]),
         ("totalPosts", total_posts),
+        ("severity", severity),
         ("eventType", event_type),
         ("startDate", row[2].isoformat()),
         ("summary", row[3]),
