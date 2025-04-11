@@ -24,7 +24,7 @@ export default function DisasterCard({disaster}) {
     <div className="flex flex-col flex-start border border-[#D4D4D4] rounded-md  text-left p-6 gap-y-5 max-w-xl">
         <div className="row-one flex flex-col flex-wrap">
             <h1 className="text-2xl font-bold text-left">{disaster.name}</h1>
-            <h3 className="text-md">{start}</h3>
+            {/* <h3 className="text-md">{start}</h3> */}
         </div>
         <div className="row-two flex flex-col gap-y-2">
             {/* not in mock api */}
