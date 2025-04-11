@@ -11,3 +11,17 @@
     width:100%;
     padding-left:500px;
 }
+
+.search-result{
+    padding: 10px 20px;
+}
+
+.search-result{
+    background-color: #F6F6F6;
+}
+
+.relative {
+    position: relative;
+    width: 250px; 
+}
+
