@@ -1,8 +1,8 @@
 import * as React from "react";
 import Searchbar from "./Searchbar";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import TimeFilter from "./TimeFilter";
 import DisasterTypeFilter from "./DisasterTypeFilter";
+import SentimentFilter from "./SentimentFilter";
 
 export default function FilterColumn() {
 	return(
@@ -10,7 +10,7 @@ export default function FilterColumn() {
             <Searchbar/>   
             <p className="text-left text-md flex flex-row items-center gap-x-3"><MixerHorizontalIcon width={20} height={20}/>  Filter by: </p>
             <div className="md:absolute md:mt-29 flex flex-col gap-y-4 ">
-                <TimeFilter/>
+                <SentimentFilter/>
                 <DisasterTypeFilter/>
             </div>
         </div>  
