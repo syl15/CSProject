@@ -10,6 +10,7 @@ export default function AllDisasters() {
     const [disasters, setDisasters] = useState([]);
     const [currIndex, setCurrIndex] = useState(0);
     const [filteredDisasters, setFilteredDisasters] = useState([]);
+    const [filterSelected, setFilterSelected] = useState([]);
     const navigate = useNavigate();
 
     // Fetch disasters on mount 
@@ -50,41 +51,25 @@ export default function AllDisasters() {
       }
     };
 
-    const positiveSelected = (e) => {
-      if(e.target.checked){
-        const newDisasters = disasters.filter(disaster => 
-          disaster.overallSentiment === e.target.value
-        );
-        setFilteredDisasters(newDisasters)
-      }
-      else {
-        setFilteredDisasters(disasters);
+    const filterChange = (e) => {
+      if(e.target.checked) {
+        setFilterSelected([...filterSelected, e.target.value])
+      } else {
+        setFilterSelected(filterSelected.filter((filterID) => filterID !== e.target.value))
       }
     }
 
-    const neutralSelected = (e) => {
-      if(e.target.checked){
-        const newDisasters = disasters.filter(disaster => 
-          disaster.overallSentiment === e.target.value
-        );
-        setFilteredDisasters(newDisasters)
-      }
-      else {
+    useEffect(() => {
+      console.log(filterSelected);
+      if(filterSelected.length === 0) {
         setFilteredDisasters(disasters);
-      }
-    }
-
-    const negativeSelected = (e) => {
-      if(e.target.checked){
-        const newDisasters = disasters.filter(disaster => 
-          disaster.overallSentiment === e.target.value
+      } else {
+        const newDisasters = filterSelected.map((filterID) =>
+          disasters.filter(disaster => disaster.overallSentiment === filterID)
         );
-        setFilteredDisasters(newDisasters)
+        setFilteredDisasters(newDisasters.flat());
       }
-      else {
-        setFilteredDisasters(disasters);
-      }
-    }
+    }, [filterSelected])
 
     return (
       <div className="flex flex-col mt-30 min-w-screen min-h-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 overflow-x-hidden">
@@ -97,7 +82,7 @@ export default function AllDisasters() {
               <input
                 type="checkbox"
                 value="positive"
-                onChange={positiveSelected}
+                onChange={filterChange}
                 id="positive"
               />
               <p>Positive</p>
@@ -106,12 +91,12 @@ export default function AllDisasters() {
               <input
                 type="checkbox"
                 value="neutral"
-                onChange={neutralSelected}
+                onChange={filterChange}
                 id="neutral"
               />
               <p>Neutral</p>
             </div>
-            <div className="flex flex-row items-center gap-x-2">
+            {/* <div className="flex flex-row items-center gap-x-2">
               <input
                 type="checkbox"
                 value="negative"
@@ -119,7 +104,7 @@ export default function AllDisasters() {
                 id="negative"
               />
               <p>Negative</p>
-            </div>
+            </div> */}
           
           </div>
           
