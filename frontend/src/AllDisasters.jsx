@@ -20,6 +20,8 @@ export default function AllDisasters() {
     const [openEvent, setOpenEvent] = useState(false);
     const sentimentTypes = ["positive", "neutral", "negative"];
     const eventTypes = ["earthquake", "hurricane", "wildfire"]
+    const [checkboxDisasters, setCheckboxDisasters] = useState([false, false, false])
+    const [checkboxSentiment, setCheckboxSentiment] = useState([false, false, false])
     
     const navigate = useNavigate();
 
@@ -61,11 +63,19 @@ export default function AllDisasters() {
       }
     };
 
-    const filterUpdate = (e, filters, setFilters) => {
+    const filterUpdate = (e, filters, setFilters, checkboxes, setCheckboxes, index) => {
       if(e.target.checked) {
         setFilters([...filters, e.target.value])
+
+        const checkboxCopy = [...checkboxes];
+        checkboxCopy[index] = true;
+        setCheckboxes(checkboxCopy);
       } else {
         setFilters(filters.filter((filterID) => filterID !== e.target.value))
+        
+        const checkboxCopy = [...checkboxes];
+        checkboxCopy[index] = false;
+        setCheckboxes(checkboxCopy);
       }
     }
 
@@ -76,9 +86,7 @@ export default function AllDisasters() {
       else {
         let resultArr = disasters;
         resultArr = filterBySentiment(resultArr);
-        console.log(resultArr);
         resultArr = filterByEvent(resultArr.flat());
-        console.log(resultArr);
         setFilteredDisasters(resultArr.flat().sort(function(a, b) {
           return a.id - b.id;
         }));
@@ -130,12 +138,13 @@ export default function AllDisasters() {
                 
                   
               <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 ">
-                {sentimentTypes.map((sentimentID) => (
+                {sentimentTypes.map((sentimentID, index) => (
                   <div className="flex flex-row items-center gap-x-2">
                     <input
                       type="checkbox"
                       value={sentimentID}
-                      onChange={(e) => filterUpdate(e, sentimentFilter, setSentimentFilter)}
+                      checked={checkboxSentiment[index]}
+                      onChange={(e) => filterUpdate(e, sentimentFilter, setSentimentFilter, checkboxSentiment, setCheckboxSentiment, index)}
                       id={sentimentID}
                     />
                     <p>{sentimentID}</p>
@@ -157,17 +166,19 @@ export default function AllDisasters() {
                 
                   
               <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 ">
-                {eventTypes.map((eventID) => (
+                {eventTypes.map((eventID, index) => (
                   <div className="flex flex-row items-center gap-x-2">
                     <input
                       type="checkbox"
                       value={eventID}
-                      onChange={(e) => filterUpdate(e, eventFilter, setEventFilter)}
+                      checked={checkboxDisasters[index]}
+                      onChange={(e) => filterUpdate(e, eventFilter, setEventFilter, checkboxDisasters, setCheckboxDisasters, index)}
                       id={eventID}
                     />
                     <p>{eventID}</p>
                   </div>
                 ))}
+                
               </Collapsible.Content>
             </Collapsible.Root>   
             </div>
