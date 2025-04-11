@@ -139,7 +139,7 @@ export default function AllDisasters() {
             <div className="flex flex-col items-start gap-x-2 w-1/2 gap-y-3 mt-20">
               {/* OVERALL SENTIMENT FILTERS */}
               <Collapsible.Root
-                className="relative"
+                className="relative w-xs"
                 open={openSentiment}
                 onOpenChange={setOpenSentiment}
                 >
@@ -147,7 +147,7 @@ export default function AllDisasters() {
                 Overall Sentiment
                   {openSentiment ? <Cross2Icon /> : <CaretDownIcon />}
                 </Collapsible.Trigger>
-                <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 ">
+                <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 w-47">
                   {sentimentTypes.map((sentimentID, index) => (
                     <div className="flex flex-row items-center gap-x-2">
                       <input
