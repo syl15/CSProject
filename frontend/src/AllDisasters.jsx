@@ -38,13 +38,13 @@ export default function AllDisasters() {
 
     const back = () => {
       if(currIndex > 0) {
-        setCurrIndex(currIndex-3);
+        setCurrIndex(currIndex - 4);
       }
     }
 
     const next = () => {
       if (currIndex < disasters.length - 1) {
-        setCurrIndex(currIndex + 3);
+        setCurrIndex(currIndex + 4);
       }
     };
 
@@ -123,7 +123,7 @@ export default function AllDisasters() {
           
               
               <div className="flex flex-col w-full md:mt-15">
-                {filteredDisasters.slice(currIndex,currIndex+3).map((disaster) => (
+                {filteredDisasters.slice(currIndex,currIndex + 4).map((disaster) => (
                   <div key={disaster.id} className="mb-5 rounded-md cursor-pointer max-w-xl hover:bg-gray-100" onClick={() => navigateToDisaster(disaster)}>
                       <DisasterCard disaster={disaster}/>
                   </div>
