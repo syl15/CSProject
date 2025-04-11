@@ -1,9 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-=======
-
-// import "./SearchResult.css";
->>>>>>> c396508 (added search bar)
 export default function SearchResult( {result}) {
     return (
     <div 
