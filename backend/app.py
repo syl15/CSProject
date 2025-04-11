@@ -39,7 +39,9 @@ def get_disasters():
     cursor = conn.cursor()
 
     # Parse query parameters 
-    limit = int(request.args.get("limit", 10))
+    limit_param = request.args.get("limit")
+    limit = int(limit_param) if limit_param else None
+
     start_date = request.args.get("startDate")
 
     # Get all base disaster info 
