@@ -58,14 +58,18 @@ export default function AllDisasters() {
     }
 
     useEffect(() => {
-      console.log(filterSelected);
       if(filterSelected.length === 0) {
         setFilteredDisasters(disasters);
-      } else {
+      } 
+      else {
         const newDisasters = filterSelected.map((filterID) =>
           disasters.filter(disaster => disaster.overallSentiment === filterID)
         );
-        setFilteredDisasters(newDisasters.flat());
+        setFilteredDisasters(
+          newDisasters.flat().sort(function(a, b) {
+            return a.id - b.id;
+          })
+        );
       }
     }, [filterSelected])
 
@@ -94,15 +98,15 @@ export default function AllDisasters() {
               />
               <p>Neutral</p>
             </div>
-            {/* <div className="flex flex-row items-center gap-x-2">
+            <div className="flex flex-row items-center gap-x-2">
               <input
                 type="checkbox"
                 value="negative"
-                onChange={negativeSelected}
+                onChange={filterChange}
                 id="negative"
               />
               <p>Negative</p>
-            </div> */}
+            </div>
           
           </div>
           
