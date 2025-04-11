@@ -33,9 +33,12 @@ export default function Navbar() {
                     </NavigationMenu.Link>
                 </NavigationMenu.List>
             </div>
-            {/* Search bar */}
-            <Searchbar setResults={setResults} />
-            <SearchResultsList results={results} />
+            <div className="relative justified-end w-full max-w-md z-1">
+                {/* Search bar */}
+                <Searchbar setResults={setResults} />
+                <SearchResultsList results={results} />
+                
+            </div>
 
 	    </NavigationMenu.Root>
    
