@@ -12,7 +12,7 @@ export default function Navbar() {
     const [results, setResults] = useState([]);
 
   return (
-    <div className="overflow-x-hidden absolute w-screen left-0 right-0 md:border-b-1 md:border-[#D4D4D4] pb-5 px-6 md:px-10">
+    <div className="overflow-x-hidden absolute w-screen left-0 right-0 md:border-b-1 md:border-[#D4D4D4] pb-5 px-6 md:px-10 z-1">
         <MobileNavbar/>
         <NavigationMenu.Root className="invisible md:visible flex flex-row justify-between items-between">
             <div className="flex flex-row items-center gap-x-10">
@@ -33,7 +33,7 @@ export default function Navbar() {
                     </NavigationMenu.Link>
                 </NavigationMenu.List>
             </div>
-            <div className="relative justified-end w-full max-w-md z-1">
+            <div className="relative justified-end w-full max-w-md z-50">
                 {/* Search bar */}
                 <Searchbar setResults={setResults} />
                 <SearchResultsList results={results} />

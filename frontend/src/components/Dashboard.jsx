@@ -42,8 +42,6 @@ export default function Dashboard({disaster}) {
         <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
             <Summary summary={currDisaster.summary}/>
             <PieChart sentiment={currDisaster.sentiment}/>
-            <Summary summary={currDisaster.summary}/>
-            <PieChart sentiment={currDisaster.sentiment}/>
         </div>
         <div className="row-three flex flex-col overflow-hidden w-full lg:flex-row md:gap-x-10">
             <Map location={currDisaster.location}/>
