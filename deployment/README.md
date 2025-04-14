@@ -11,8 +11,8 @@ All deployments to Render are triggered from the **main** branch **only**. Thus,
 - `fastapi-model`: automatically deploys when `main` is updated (Render watches `model/api/`)
 
 ## Live endpoints 
-- Flask Base URL: https://flask-backend-hu5x.onrender.com/
-- FastAPI Base URL: https://fastapi-model-3vkm.onrender.com/
+- Flask Base URL: [ASK BACKEND TEAM]
+- FastAPI Base URL: [ASK  BACKEND TEAM]
 
 When using these live endpoints, you won't have to manually run the Flask/FastAPI apps locally! 
 
