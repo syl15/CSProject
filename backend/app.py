@@ -1,12 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS 
-import requests
-import sys
 import json
-from populate import raw_crisis_nlp_populate
 from collections import OrderedDict
 from database import get_db_connection
 from datetime import datetime
+import sys 
 
 # ----------------------------------------
 # FLASK APP SETUP 
@@ -16,8 +14,12 @@ CORS(app, origins=["http://localhost:5173"])
 
 @app.get("/")
 def home():
-    return "Hello, World!"
+    return "Disaster Endpoints API"
 
+# Health check to warm service
+@app.get("/health")
+def health():
+    return "OK", 200
 
 # ----------------------------------------
 # DISASTER ENDPOINTS 
@@ -145,152 +147,166 @@ def get_disaster_by_id(disaster_id):
         JSON: A single disaster object with metadata and top posts 
     """
 
-    conn = get_db_connection() 
-    cursor = conn.cursor() 
+    try: 
 
-    # Get all base disaster info 
-    cursor.execute("""
-            SELECT id, 
-                   name, 
-                   date, 
-                   summary, 
-                   lat, 
-                   long, 
-                   radius, 
-                   location_name
-            FROM disaster_information
-            WHERE id = %s;
-    """, (disaster_id,))
+        conn = get_db_connection() 
+        cursor = conn.cursor() 
 
-    row = cursor.fetchone() 
+        # Get all base disaster info 
+        cursor.execute("""
+                SELECT id, 
+                    name, 
+                    date, 
+                    summary, 
+                    lat, 
+                    long, 
+                    radius, 
+                    location_name
+                FROM disaster_information
+                WHERE id = %s;
+        """, (disaster_id,))
 
-    if not row: 
-        return jsonify({"error": "Disaster not found"}), 404
-    
-    # Get sentiment
-    cursor.execute("""
-            SELECT 
-                COUNT(*) FILTER (WHERE model_sentiment_rating >= 0.05),
-                COUNT(*) FILTER (WHERE model_sentiment_rating <= -0.05),
-                COUNT(*) FILTER (
-                    WHERE model_sentiment_rating > -0.05 AND model_sentiment_rating < 0.05
-                ),
-                PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating),
-                CASE 
-                    WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) >= 0.05 THEN 'positive'
-                    WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) <= -0.05 THEN 'negative'
-                    ELSE 'neutral'
-                END
-            FROM temp_bluesky
-            WHERE disaster_id = %s
-    """, (disaster_id,))
+        row = cursor.fetchone() 
 
-    sentiment = cursor.fetchone()
-    if sentiment:
-        pos, neg, neu, median, overall = sentiment
-        total = pos + neg + neu
+        if not row: 
+            return jsonify({"error": "Disaster not found"}), 404
+        
+        # Get sentiment
+        cursor.execute("""
+                SELECT 
+                    COUNT(*) FILTER (WHERE model_sentiment_rating >= 0.05),
+                    COUNT(*) FILTER (WHERE model_sentiment_rating <= -0.05),
+                    COUNT(*) FILTER (
+                        WHERE model_sentiment_rating > -0.05 AND model_sentiment_rating < 0.05
+                    ),
+                    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating),
+                    CASE 
+                        WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) >= 0.05 THEN 'positive'
+                        WHEN PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY model_sentiment_rating) <= -0.05 THEN 'negative'
+                        ELSE 'neutral'
+                    END
+                FROM temp_bluesky
+                WHERE disaster_id = %s
+        """, (disaster_id,))
 
-        sentiment_dict  = {
-            "positive": pos, 
-            "negative": neg, 
-            "neutral": neu
-        }
+        sentiment = cursor.fetchone()
+        if sentiment:
+            pos, neg, neu, median, overall = sentiment
+            total = pos + neg + neu
 
-        # Compute a severity score 
-        # How many negative posts + median intensity 
-        sentiment_balance = (neg - pos) / total if total else 0 
-        hybrid_score = sentiment_balance + (-1 * median if median else 0) 
+            sentiment_dict  = {
+                "positive": pos, 
+                "negative": neg, 
+                "neutral": neu
+            }
 
-        if hybrid_score <= -1.0: # Strongly positive
-            severity = 1
-        elif hybrid_score <= -0.3:
-            severity = 2
-        elif hybrid_score <= 0.3:
-            severity = 3
-        elif hybrid_score <= 0.8: 
-            severity = 4
+            # Compute a severity score 
+            # How many negative posts + median intensity 
+            sentiment_balance = (neg - pos) / total if total else 0 
+            hybrid_score = sentiment_balance + (-1 * median if median else 0) 
+
+            if hybrid_score <= -1.0: # Strongly positive
+                severity = 1
+            elif hybrid_score <= -0.3:
+                severity = 2
+            elif hybrid_score <= 0.3:
+                severity = 3
+            elif hybrid_score <= 0.8: 
+                severity = 4
+            else:
+                severity = 5 # Strongly negative
+
         else:
-            severity = 5 # Strongly negative
+            sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
+            overall = "unknown"
+            severity = 2 # Defaults to neutral
 
-    else:
-        sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
-        overall = "unknown"
-        severity = 2 # Defaults to neutral
+        # Get event type
+        cursor.execute("""
+                SELECT model_disaster_label
+                FROM temp_bluesky
+                WHERE disaster_id = %s AND model_disaster_label IS NOT NULL
+                GROUP BY model_disaster_label
+                ORDER BY COUNT(*) DESC, model_disaster_label ASC
+                LIMIT 1
+        """, (disaster_id,))
+        
+        event_type_row = cursor.fetchone()
+        event_type = event_type_row[0] if event_type_row else "unknown"
 
-     # Get event type
-    cursor.execute("""
-            SELECT model_disaster_label
-            FROM temp_bluesky
-            WHERE disaster_id = %s AND model_disaster_label IS NOT NULL
-            GROUP BY model_disaster_label
-            ORDER BY COUNT(*) DESC, model_disaster_label ASC
-            LIMIT 1
-    """, (disaster_id,))
-    
-    event_type_row = cursor.fetchone()
-    event_type = event_type_row[0] if event_type_row else "unknown"
+        # Get total post count
+        cursor.execute("""
+                SELECT COUNT(*) FROM temp_bluesky WHERE disaster_id = %s
+        """, (disaster_id,))
 
-    # Get total post count
-    cursor.execute("""
-            SELECT COUNT(*) FROM temp_bluesky WHERE disaster_id = %s
-    """, (disaster_id,))
+        post_count = cursor.fetchone()
+        total_posts = post_count[0] if post_count else 0
 
-    post_count = cursor.fetchone()
-    total_posts = post_count[0] if post_count else 0
+        # Get 5 posts
+        cursor.execute("""
+                SELECT 
+                    poster_name, 
+                    post_user_handle, 
+                    post_original_text, 
+                    post_time_created_at, 
+                    post_link, 
+                    model_sentiment_rating
+                FROM temp_bluesky
+                WHERE disaster_id = %s
+                LIMIT 5     
+        """, (disaster_id,))
+        post_rows = cursor.fetchall()
 
-    # Get top 10 posts
-    cursor.execute("""
-            SELECT 
-                poster_name, 
-                post_user_handle, 
-                post_original_text, 
-                post_time_created_at, 
-                post_link, 
-                model_sentiment_rating
-            FROM temp_bluesky
-            WHERE disaster_id = %s
-            LIMIT 10     
-    """, (disaster_id,))
-    post_rows = cursor.fetchall()
+        posts = [] 
+        for r in post_rows:
+            posts.append({
+                "posterName": r[0] if r[0] else "Unknown",
+                "username": r[1],
+                "content": r[2],
+                "timestamp": r[3].isoformat() if r[3] else None,
+                "link": r[4],
+                "sentimentScore": float(r[5]) if r[5] is not None else 0.0
+            })
 
-    posts = [] 
-    for r in post_rows:
-        posts.append({
-            "posterName": r[0] if r[0] else "Unknown",
-            "username": r[1],
-            "content": r[2],
-            "timestamp": r[3].isoformat(),
-            "link": r[4],
-            "sentimentScore": float(r[5])
-        })
+        # Build final disaster object (match format of /disasters)
+        disaster = OrderedDict([
+            ("id", row[0]),
+            ("name", row[1]),
+            ("totalPosts", total_posts),
+            ("severity", severity),
+            ("eventType", event_type),
+            ("startDate", row[2].isoformat()),
+            ("summary", row[3]),
+            ("location", {
+                "latitude": float(row[4]),
+                "longitude": float(row[5]),
+                "radius": float(row[6])
+            }),
+            ("locationName", row[7]),
+            ("sentiment", sentiment_dict), 
+            ("overallSentiment", overall),
+            ("posts", posts)
+        ])
 
-    # Build final disaster object (match format of /disasters)
-    disaster = OrderedDict([
-        ("id", row[0]),
-        ("name", row[1]),
-        ("totalPosts", total_posts),
-        ("severity", severity),
-        ("eventType", event_type),
-        ("startDate", row[2].isoformat()),
-        ("summary", row[3]),
-        ("location", {
-            "latitude": float(row[4]),
-            "longitude": float(row[5]),
-            "radius": float(row[6])
-        }),
-        ("locationName", row[7]),
-        ("sentiment", sentiment_dict), 
-        ("overallSentiment", overall),
-        ("posts", posts)
-    ])
+        cursor.close() 
+        conn.close()
 
-    cursor.close() 
-    conn.close()
+        sys.stdout.write(f"Returning disaster {disaster_id}\n")
+        sys.stdout.flush()
 
-    return app.response_class(
-        json.dumps(disaster, indent=2, ensure_ascii=False),
-        mimetype="application/json"
-    )
+        try:
+            body = json.dumps(disaster, indent=2, ensure_ascii=False)
+        except Exception as e:
+            sys.stdout.write(f"json.dumps failed for disaster {disaster_id}: {e}\n")
+            sys.stdout.flush()
+            return jsonify({"error": f"Serialization failed for disaster {disaster_id}"}), 500
+
+        return app.response_class(body, mimetype="application/json")
+        
+    except Exception as e: 
+        sys.stdout.write(f"Error in /disasters/{disaster_id}: {e}\n")
+        sys.stdout.flush()
+        return jsonify({"error": f"Internal server error on disaster {disaster_id}"}), 500
 
 @app.get("/disasters/recent")
 def get_most_recent_disaster(): 
@@ -322,63 +338,3 @@ def get_most_recent_disaster():
 
     # Forward to /disasters/<id> endpoint
     return get_disaster_by_id(most_recent_id)
-
-
-# ----------------------------------------
-# MODEL PREDICTION ENDPOINT (FASTAPI)
-# ----------------------------------------
-
-# TODO: Eventually, make this an env variable, and add it to render.yaml under envVars
-# FASTAPI_LIVE_URL = "https://fastapi-model-3vkm.onrender.com/predict-disaster"
-FASTAPI_LOCAL_URL = "http://127.0.0.1:8000/predict-disaster"
-
-@app.post("/predict")
-def make_prediction(): 
-    """
-    Sends input text to the FastAPI model for prediction.
-
-    Request Body:
-        {
-            "text": "Some input text"
-        }
-
-    Returns:
-        JSON: The model's prediction.
-    """
-    data = request.get_json() 
-    text = data.get("text")
-
-    response = requests.post(FASTAPI_LOCAL_URL, json={"text": text})
-    if response.status_code == 200:
-        return jsonify(response.json())
-    else: 
-        return jsonify({"Error:" "Failed to get prediction"}), 500
-
-@app.post("/mock-predict")
-def mock_prediction(): 
-    """
-    Returns a mock response for testing the Flask API without calling FastAPI.
-
-    Returns:
-        JSON: A mock prediction result.
-    """
-    return jsonify({"event_type": "Testing Flask"})
-
-
-# ----------------------------------------
-# APPLICATION STARTUP 
-# ----------------------------------------
- 
-if __name__ == "__main__":
-    """
-    Starts the Flask application.
-    Optionally resets the database if '--reset-db' is passed as a command-line argument. (Not recommended)
-    """
-    reset_db = "--reset-db" in sys.argv # 
-
-    if reset_db:
-        print("🔄 resetting and repopulating Raw_Crisis_NLP table...")
-    else:
-        print("Checking if Raw_Crisis_NLP table needs to be populated...")
-        
-    raw_crisis_nlp_populate(reset=reset_db)
