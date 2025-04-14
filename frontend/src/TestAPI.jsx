@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
-
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
+import { BASE_URL } from "./config";
 
 const TestAPI = () => {
     const [disasters, setDisasters] = useState([]);

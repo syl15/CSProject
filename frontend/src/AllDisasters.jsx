@@ -9,8 +9,8 @@ import { Collapsible } from "radix-ui";
 import {
 	CaretDownIcon, CheckIcon, Cross2Icon, RowSpacingIcon
 } from "@radix-ui/react-icons";
+import { BASE_URL } from "./config";
 
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
 
 export default function AllDisasters() {
     const [disasters, setDisasters] = useState([]);

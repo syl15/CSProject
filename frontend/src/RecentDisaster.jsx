@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard'
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
+import { BASE_URL } from "./config";
 
 export default function RecentDisaster() {
     const [recentDisaster, setRecentDisaster] = useState(null); 

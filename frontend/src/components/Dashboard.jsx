@@ -8,7 +8,8 @@ import PieChart from './PieChart'
 import AddedDate from './AddedDate'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
+import { BASE_URL } from "../config";
+
 
 export default function Dashboard({disaster}) {
     const location = useLocation();
