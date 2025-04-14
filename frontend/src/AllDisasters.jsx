@@ -197,7 +197,7 @@ export default function AllDisasters() {
                     <DisasterCard disaster={disaster}/>
                 </div>
               ))}
-              <div className="flex flex-row gap-x-3 mt-3 relative">
+              <div className="flex flex-row gap-x-3 mt-3 relative pb-20">
                 <button onClick={back} className="border border-[#D4D4D4] rounded-md">Previous</button>
                 <button onClick={next} className="border border-[#D4D4D4] rounded-md">Next</button>
               </div>
