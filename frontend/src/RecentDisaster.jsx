@@ -16,7 +16,7 @@ export default function RecentDisaster() {
     }, [])
 
     if(!recentDisaster) {
-        return <div>Loading...</div>
+        return <div className="mt-30">Loading...</div>
     }
     return (
         <Dashboard disaster={recentDisaster}/>
