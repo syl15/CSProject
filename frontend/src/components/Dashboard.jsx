@@ -26,7 +26,7 @@ export default function Dashboard({disaster}) {
     }, [])
    
     if(!disasterInfo) {
-        return <p>Loading...</p>
+        return <div className="mt-30">Loading...</div>
     }
     const start = new Date(`${disasterInfo.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
 

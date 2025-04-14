@@ -3,7 +3,7 @@ import SearchResult from './SearchResult';
 
 export default function SearchResultsList( {results}) {
     return (
-    <div className = "absolute top-full left-0 w-full z-50 max-h-60 overflow-y-auto">
+    <div className = "results-list fixed -mt-[0.5]">
         { results.map((result, id) => {
             return <SearchResult result = {result} key = {id}/>; 
         })}
