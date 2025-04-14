@@ -6,13 +6,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard'
 
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
-import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom';
-import Dashboard from './components/Dashboard'
-
-const BASE_URL = "http://127.0.0.1:5001"; // Flask API URL
-
 export default function AllDisasters() {
     const [disasters, setDisasters] = useState([]);
     const [currIndex, setCurrIndex] = useState(0);
@@ -150,7 +143,5 @@ export default function AllDisasters() {
           
       </div>
     )
-          
-      </div>
-    )
+        
 }
