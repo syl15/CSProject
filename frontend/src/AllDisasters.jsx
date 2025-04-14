@@ -42,7 +42,7 @@ export default function AllDisasters() {
 
 
     if(!disasters && !filteredDisasters) {
-      return <div>Loading...</div>
+      return <div className="mt-30">Loading...</div>
     }
 
     // pass selected disaster to URL
