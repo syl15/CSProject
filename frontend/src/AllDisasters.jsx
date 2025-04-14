@@ -22,7 +22,7 @@ export default function AllDisasters() {
     const [checkboxSentiment, setCheckboxSentiment] = useState([false, false, false])
 
     const sentimentTypes = ["positive", "neutral", "negative"];
-    const eventTypes = ["earthquake", "hurricane", "wildfire", "tornado", "flood"]
+    const eventTypes = ["earthquake", "hurricane", "wildfire", "flood"]
     
     const navigate = useNavigate();
 
