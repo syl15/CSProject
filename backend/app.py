@@ -4,6 +4,7 @@ import json
 from collections import OrderedDict
 from database import get_db_connection
 from datetime import datetime
+import sys 
 
 # ----------------------------------------
 # FLASK APP SETUP 
@@ -13,7 +14,12 @@ CORS(app, origins=["http://localhost:5173"])
 
 @app.get("/")
 def home():
-    return "Hello, World!"
+    return "Disaster Endpoints API"
+
+# Health check to warm service
+@app.get("/health")
+def health():
+    return "OK", 200
 
 # ----------------------------------------
 # DISASTER ENDPOINTS 
@@ -285,18 +291,21 @@ def get_disaster_by_id(disaster_id):
         cursor.close() 
         conn.close()
 
-        print(f"Returning disaster", {disaster_id})
+        sys.stdout.write(f"Returning disaster {disaster_id}\n")
+        sys.stdout.flush()
 
         try:
             body = json.dumps(disaster, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"json.dumps failed for disaster {disaster_id}: {e}")
+            sys.stdout.write(f"json.dumps failed for disaster {disaster_id}: {e}\n")
+            sys.stdout.flush()
             return jsonify({"error": f"Serialization failed for disaster {disaster_id}"}), 500
 
         return app.response_class(body, mimetype="application/json")
         
     except Exception as e: 
-        print(f"Error in /disasters/{disaster_id} : {e}")
+        sys.stdout.write(f"Error in /disasters/{disaster_id}: {e}\n")
+        sys.stdout.flush()
         return jsonify({"error": f"Internal server error on disaster {disaster_id}"}), 500
 
 @app.get("/disasters/recent")
