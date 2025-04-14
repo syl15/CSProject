@@ -1,9 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS 
-import requests
-import sys
 import json
-from populate import raw_crisis_nlp_populate
 from collections import OrderedDict
 from database import get_db_connection
 from datetime import datetime
@@ -17,7 +14,6 @@ CORS(app, origins=["http://localhost:5173"])
 @app.get("/")
 def home():
     return "Hello, World!"
-
 
 # ----------------------------------------
 # DISASTER ENDPOINTS 
@@ -322,63 +318,3 @@ def get_most_recent_disaster():
 
     # Forward to /disasters/<id> endpoint
     return get_disaster_by_id(most_recent_id)
-
-
-# ----------------------------------------
-# MODEL PREDICTION ENDPOINT (FASTAPI)
-# ----------------------------------------
-
-# TODO: Eventually, make this an env variable, and add it to render.yaml under envVars
-# FASTAPI_LIVE_URL = "https://fastapi-model-3vkm.onrender.com/predict-disaster"
-FASTAPI_LOCAL_URL = "http://127.0.0.1:8000/predict-disaster"
-
-@app.post("/predict")
-def make_prediction(): 
-    """
-    Sends input text to the FastAPI model for prediction.
-
-    Request Body:
-        {
-            "text": "Some input text"
-        }
-
-    Returns:
-        JSON: The model's prediction.
-    """
-    data = request.get_json() 
-    text = data.get("text")
-
-    response = requests.post(FASTAPI_LOCAL_URL, json={"text": text})
-    if response.status_code == 200:
-        return jsonify(response.json())
-    else: 
-        return jsonify({"Error:" "Failed to get prediction"}), 500
-
-@app.post("/mock-predict")
-def mock_prediction(): 
-    """
-    Returns a mock response for testing the Flask API without calling FastAPI.
-
-    Returns:
-        JSON: A mock prediction result.
-    """
-    return jsonify({"event_type": "Testing Flask"})
-
-
-# ----------------------------------------
-# APPLICATION STARTUP 
-# ----------------------------------------
- 
-if __name__ == "__main__":
-    """
-    Starts the Flask application.
-    Optionally resets the database if '--reset-db' is passed as a command-line argument. (Not recommended)
-    """
-    reset_db = "--reset-db" in sys.argv # 
-
-    if reset_db:
-        print("🔄 resetting and repopulating Raw_Crisis_NLP table...")
-    else:
-        print("Checking if Raw_Crisis_NLP table needs to be populated...")
-        
-    raw_crisis_nlp_populate(reset=reset_db)
