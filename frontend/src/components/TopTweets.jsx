@@ -4,7 +4,7 @@ import TweetBox from './TweetBox';
 
 export default function TopTweets({tweetsList}) {
   return (
-    <div className="flex flex-col border border-[#D4D4D4] rounded-md mt-5 md:mt-15 text-left p-4 gap-y-2 h-[25rem] w-full">
+    <div className="flex flex-col border border-[#D4D4D4] rounded-md mt-5 md:mt-15 text-left p-4 gap-y-2 h-[35rem] md:h-[25rem] w-full">
         <div className="border-b-1 border-[#D4D4D4]">
             <h3 className="pb-2">Posts</h3>
         </div>
