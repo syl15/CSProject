@@ -1,7 +1,7 @@
 import os 
 import gdown 
 
-# Downloads train, test, dev sets from all_data (https://drive.google.com/drive/u/5/folders/1_RTvKXflGBOdWWaocSOax5JxPzBIz8n1)
+# Downloads train, test, dev sets from local ../datasets directory (https://drive.google.com/drive/u/5/folders/1_RTvKXflGBOdWWaocSOax5JxPzBIz8n1)
 train_id = "1ABaDbbrpJvLR-mVX5KW9vXnRuQNufZuQ"
 test_id = "1D0H5ASAat1sDzTuqB9VEJozvwrCKQ04w"
 dev_id = "1MEx0KFVDUHaWWfWK4XGc_Ch4zaTmcqsh"
