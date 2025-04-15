@@ -11,6 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import { BASE_URL } from "./config";
 
+
 export default function AllDisasters() {
     const [disasters, setDisasters] = useState([]);
     const [currIndex, setCurrIndex] = useState(0);
@@ -26,15 +27,12 @@ export default function AllDisasters() {
     const eventTypes = ["earthquake", "hurricane", "wildfire", "flood"]
     
     const navigate = useNavigate();
+
     // Fetch disasters on mount 
     useEffect(() => {
         // Add parameters if necessary
         fetch(`${BASE_URL}/disasters`) // Ex. /disasters?limit=1 
             .then((result) => result.json())
-            .then((result) => {
-              setDisasters(result);
-              setFilteredDisasters(result);
-            })
             .then((result) => {
               setDisasters(result);
               setFilteredDisasters(result);
@@ -199,15 +197,12 @@ export default function AllDisasters() {
                     <DisasterCard disaster={disaster}/>
                 </div>
               ))}
-              <div className="flex flex-row gap-x-3 mt-3 relative">
+              <div className="flex flex-row gap-x-3 mt-3 relative pb-20">
                 <button onClick={back} className="border border-[#D4D4D4] rounded-md">Previous</button>
                 <button onClick={next} className="border border-[#D4D4D4] rounded-md">Next</button>
               </div>
             </div>
           </div>
-
-          
       </div>
     )
-        
 }
