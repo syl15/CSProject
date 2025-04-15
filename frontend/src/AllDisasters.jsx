@@ -192,11 +192,15 @@ export default function AllDisasters() {
 
             {/* DISASTER CONTAINER */}
             <div className="flex flex-col w-full md:mt-15">
-              {filteredDisasters.slice(currIndex,currIndex + 4).map((disaster) => (
-                <div key={disaster.id} className="mb-5 rounded-md cursor-pointer max-w-xl hover:bg-gray-100" onClick={() => navigateToDisaster(disaster)}>
-                    <DisasterCard disaster={disaster}/>
-                </div>
-              ))}
+              {filteredDisasters ? (
+                filteredDisasters.slice(currIndex,currIndex + 4).map((disaster) => (
+                  <div key={disaster.id} className="mb-5 rounded-md cursor-pointer max-w-xl hover:bg-gray-100" onClick={() => navigateToDisaster(disaster)}>
+                      <DisasterCard disaster={disaster}/>
+                  </div>
+                ))
+              ) : (
+                <div><p>Loading...</p></div>
+              )}
               <div className="flex flex-row gap-x-3 mt-3 relative pb-20">
                 <button onClick={back} className="border border-[#D4D4D4] rounded-md">Previous</button>
                 <button onClick={next} className="border border-[#D4D4D4] rounded-md">Next</button>
