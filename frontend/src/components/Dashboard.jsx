@@ -26,7 +26,7 @@ export default function Dashboard({disaster}) {
                 setDisasterInfo(data)
             })
             .catch(console.error);
-    }, [])
+    }, [currDisaster?.id]);
    
     if(!disasterInfo) {
         return <div className="mt-30">Loading...</div>
