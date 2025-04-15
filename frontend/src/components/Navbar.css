@@ -12,12 +12,19 @@
     padding-left:500px;
 }
 
-.search-result{
+.search-result {
     padding: 10px 20px;
+    background-color: white;
+    border: 1px solid #D4D4D4;
+    transition: background-color 0.3s ease; 
 }
 
-.search-result{
-    background-color: #F6F6F6;
+.search-result:hover {
+    background-color: #F6F6F6; 
+}
+
+.search-result:hover .result-name {
+    color: #646cffaa;  
 }
 
 .relative {
