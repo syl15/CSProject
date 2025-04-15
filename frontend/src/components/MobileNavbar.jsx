@@ -9,7 +9,8 @@ export default function MobileNavbar() {
     const [results, setResults] = useState([]); 
 
   return (
-    <Menubar.Root className="visible md:invisible flex flex-start absolute w-screen left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
+    <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
+    <Menubar.Root className="visible md:invisible flex flex-start relative min-w-full left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
         <Menubar.Menu>
             <div className="flex flex-row-reverse gap-x-5">
             <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
@@ -23,7 +24,7 @@ export default function MobileNavbar() {
                     alignOffset={-3}
                 >
 
-                <div className="relative justified-end w-full max-w-md z-50">
+                <div className="">
                                 {/* Search bar */}
                                 <Searchbar setResults={setResults} />
                                 <SearchResultsList results={results} />
@@ -44,5 +45,6 @@ export default function MobileNavbar() {
             </Menubar.Portal>
         </Menubar.Menu>
     </Menubar.Root>
+    </div>
   );
 }

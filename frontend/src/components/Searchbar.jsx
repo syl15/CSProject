@@ -25,10 +25,10 @@ export default function Searchbar({ setResults }) {
     };
 
     return (
-        <div className="relative">
+        <div className="relative focus:outline-hidden">
             <MagnifyingGlassIcon className="absolute left-3 top-[11px]"/>
             <input
-                className="h-[38px] w-full pl-8 pr-2 border border-[#D4D4D4] text-sm"
+                className="h-[38px] w-full pl-8 pr-2 border border-[#D4D4D4] text-sm focus:outline-hidden"
                 type="text"
                 placeholder="Search"
                 value={input}
