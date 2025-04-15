@@ -34,23 +34,23 @@ export default function Dashboard({disaster}) {
     const start = new Date(`${disasterInfo.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
 
     return (
-    <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
-        <div className="flex flex-col gap-y-2">
-            <h1 className="text-4xl font-bold text-left">{disasterInfo.name}</h1>
+        <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
+            <div className="flex flex-col gap-y-2">
+                <h1 className="text-4xl font-bold text-left">{disasterInfo.name}</h1>
+            </div>
+            <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
+                <AddedDate dateAdded={start}/>
+                <TotalTweets total={disasterInfo.totalPosts}/>
+                <Severity severity={disasterInfo.severity}/>
+            </div>
+            <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
+                <Summary summary={disasterInfo.summary}/>
+                <PieChart sentiment={disasterInfo.sentiment}/>
+            </div>
+            <div className="row-three flex flex-col overflow-hidden w-full lg:flex-row md:gap-x-10">
+                <Map location={disasterInfo.location}/>
+                <TopTweets tweetsList={disasterInfo.posts}/>
+            </div>
         </div>
-        <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
-            <AddedDate dateAdded={start}/>
-            <TotalTweets total={disasterInfo.totalPosts}/>
-            <Severity severity={disasterInfo.severity}/>
-        </div>
-        <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
-            <Summary summary={disasterInfo.summary}/>
-            <PieChart sentiment={disasterInfo.sentiment}/>
-        </div>
-        <div className="row-three flex flex-col overflow-hidden w-full lg:flex-row md:gap-x-10">
-            <Map location={disasterInfo.location}/>
-            <TopTweets tweetsList={disasterInfo.posts}/>
-        </div>
-    </div>
-  )
+    )
 }
