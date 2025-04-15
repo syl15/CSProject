@@ -12,8 +12,8 @@ export default function TopTweets({tweetsList}) {
         
         {tweetsList ? (
           <div className="flex flex-col pt-4 gap-y-3 overflow-y-scroll scrollbar">
-            {tweetsList.map((tweet) => (
-                <TweetBox tweetObj={tweet}/>
+            {tweetsList.map((tweet, index) => (
+              <TweetBox key={tweet.id || index} tweetObj={tweet} />
             ))}
           </div>
         ) : (

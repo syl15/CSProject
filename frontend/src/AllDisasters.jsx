@@ -149,7 +149,7 @@ export default function AllDisasters() {
                 </Collapsible.Trigger>
                 <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 w-47">
                   {sentimentTypes.map((sentimentID, index) => (
-                    <div className="flex flex-row items-center gap-x-2">
+                    <div key={sentimentID} className="flex flex-row items-center gap-x-2">
                       <input
                         type="checkbox"
                         value={sentimentID}
@@ -175,7 +175,7 @@ export default function AllDisasters() {
                 </Collapsible.Trigger>
                 <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 ">
                   {eventTypes.map((eventID, index) => (
-                    <div className="flex flex-row items-center gap-x-2">
+                    <div key={eventID} className="flex flex-row items-center gap-x-2">
                       <input
                         type="checkbox"
                         value={eventID}

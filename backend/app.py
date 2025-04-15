@@ -10,7 +10,7 @@ import sys
 # FLASK APP SETUP 
 # ----------------------------------------
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"]) 
+CORS(app, origins=["http://localhost:5173", "https://disaster-sentiment-tracker.vercel.app"]) 
 
 @app.get("/")
 def home():
@@ -215,24 +215,6 @@ def get_disaster_by_id(disaster_id):
                 severity = 4
             else:
                 severity = 5 # Strongly negative
-
-    else:
-        sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}
-        overall = "unknown"
-        severity = 2 # Defaults to neutral
-
-     # Get event type
-    cursor.execute("""
-            SELECT model_disaster_label
-            FROM temp_bluesky
-            WHERE disaster_id = %s AND model_disaster_label IS NOT NULL
-            GROUP BY model_disaster_label
-            ORDER BY COUNT(*) DESC, model_disaster_label ASC
-            LIMIT 1
-    """, (disaster_id,))
-    
-    event_type_row = cursor.fetchone()
-    event_type = event_type_row[0] if event_type_row else "unknown"
 
         else:
             sentiment_dict = {"positive": 0, "negative": 0, "neutral": 0}

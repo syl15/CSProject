@@ -21,7 +21,10 @@ export default function Dashboard({disaster}) {
         // Add parameters if necessary
         fetch(`${BASE_URL}/disasters/${currDisaster.id}`) // Ex. /disasters?limit=1 
             .then((result) => result.json())
-            .then(setDisasterInfo)
+            .then((data) => {
+                console.log(data);
+                setDisasterInfo(data)
+            })
             .catch(console.error);
     }, [])
    
@@ -33,20 +36,20 @@ export default function Dashboard({disaster}) {
     return (
     <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
         <div className="flex flex-col gap-y-2">
-            <h1 className="text-4xl font-bold text-left">{currDisaster.name}</h1>
+            <h1 className="text-4xl font-bold text-left">{disasterInfo.name}</h1>
         </div>
         <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
             <AddedDate dateAdded={start}/>
-            <TotalTweets total={currDisaster.totalPosts}/>
-            <Severity severity={currDisaster.severity}/>
+            <TotalTweets total={disasterInfo.totalPosts}/>
+            <Severity severity={disasterInfo.severity}/>
         </div>
         <div className="row-two flex flex-col lg:flex-row lg:gap-x-10">
-            <Summary summary={currDisaster.summary}/>
-            <PieChart sentiment={currDisaster.sentiment}/>
+            <Summary summary={disasterInfo.summary}/>
+            <PieChart sentiment={disasterInfo.sentiment}/>
         </div>
         <div className="row-three flex flex-col overflow-hidden w-full lg:flex-row md:gap-x-10">
-            <Map location={currDisaster.location}/>
-            <TopTweets tweetsList={currDisaster.posts}/>
+            <Map location={disasterInfo.location}/>
+            <TopTweets tweetsList={disasterInfo.posts}/>
         </div>
     </div>
   )
