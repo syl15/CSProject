@@ -12,3 +12,4 @@ numpy
 scikit-learn
 umap-learn
 matplotlib
+plotly
