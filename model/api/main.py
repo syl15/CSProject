@@ -18,8 +18,8 @@ app = FastAPI()
 ''' word2vec_multiclass_model.sav represents the word2vec + linearSVC model
     optimized.sav represents the TFDIF + linearSVC model
 '''
-file = "sentence_transformer_model.sav"
-# file = "optimized_model.sav"
+# file = "sentence_transformer_model.sav"
+file = "optimized_model.sav"
 model = joblib.load(file)
 
 # Define input schema 
