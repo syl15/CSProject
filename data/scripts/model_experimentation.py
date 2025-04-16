@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import os, re
+import os, re, pickle
 
 DATA_DIR = "datasets"
 train = pd.read_csv(os.path.join(DATA_DIR, "train.tsv"), sep="\t").groupby("event_type").sample(frac=1)
@@ -111,7 +111,12 @@ for model, params in zip(models, paramss):
 
     print("model name: ", model.__class__.__name__)
     print("best parameters: ", clf.best_params_)
+    best_model = clf.best_estimator_
 
     actual_y = test["event_type"].factorize()[0]
-    predicted_y = clf.best_estimator_.predict(test["tweet_text"].apply(preprocess))
+    predicted_y = best_model.predict(test["tweet_text"].apply(preprocess))
     print(classification_report(actual_y, predicted_y, target_names=test["event_type"].unique()))
+
+MODEL_DIR = "../model"
+filename = "optimized_model.sav"
+pickle.dump(best_model, open(os.path.join(MODEL_DIR, filename), "wb"))
