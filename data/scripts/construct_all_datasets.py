@@ -2,7 +2,6 @@
 # also renames "fire" label to "wildfire"
 
 from datasets import load_dataset, concatenate_datasets, Value
-import pandas as pd
 
 # tweets with unrelated data to insert into training and testing dataset
 base_url = "https://huggingface.co/datasets/nlp-pw/Disaster-Tweets-Normalized/resolve/main/data/"
@@ -35,5 +34,5 @@ def map_labels(row):
 crisisnlp = {split: load_dataset("csv", delimiter="\t", data_files=f"combined_datasets/combined_{split}.tsv", split="train").map(map_labels) for split in hf_dataset.keys()}
 for name, crisisnlp_dataset in crisisnlp.items():
     concatenated = concatenate_datasets([crisisnlp_dataset, hf_dataset[name]])
-    concatenated.to_csv(f"../datasets/all_{name}.tsv", sep="\t")
+    concatenated.to_csv(f"datasets/{name}.tsv", sep="\t")
     # upload all_data/ into google drive and update the IDs of the individual *.tsv files in data/scripts/download_data.py

@@ -13,7 +13,7 @@ files_info = [
 ]
 
 # Relative path to data directory 
-data_directory = "../datasets" 
+data_directory = "datasets" 
 
 # If data folder does not exist, create it
 if not os.path.exists(data_directory):
