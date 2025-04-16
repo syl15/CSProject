@@ -32,6 +32,11 @@ class SentimentOutput(BaseModel):
 def read_root(): 
     return {"message": "Model prediction API"}
 
+# Health route to keep service warm
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
 @app.post("/predict-disaster", response_model=PredictionOutput)
 def predict_event_type(data: PostInput):
     text = [preprocess(data.text)]
