@@ -43,7 +43,11 @@ export default function MobileNavbar() {
                         setResults={setResults}
                         onFocus={() => setShowResults(true)}
                     />
-                    {showResults && <SearchResultsList results={results} />}
+                    {showResults && 
+                        <SearchResultsList 
+                        results={results} 
+                        />
+                    }
                 </div>
 
                     <a className="text-sm text-black" href="/">

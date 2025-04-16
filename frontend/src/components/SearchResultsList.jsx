@@ -20,9 +20,13 @@ export default function SearchResultsList( {results, onClickOutside}) {
     return (
 
             <div ref={wrapperRef} className="results-list absolute min-w-62.5 text-left overflow-auto h-auto max-h-60 overflow-y-auto bg-white border border-gray-300 z-50">
-                {results.map((result, id) => (
-                    <SearchResult result={result} key={id} />
-                ))}
+                {results.length === 0 ? (
+                    <div className="px-4 py-2 text-gray-500 text-sm"> No results found </div>
+                        ) : (
+                    results.map((result, id) => (
+                        <SearchResult result={result} key={id} />
+                    ))
+                )}
             </div>
     );
 }

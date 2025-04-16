@@ -8,10 +8,9 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import MobileNavbar from './MobileNavbar';;
 
 export default function Navbar() {
-
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
-    
+
   return (
     <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
         <div className="relative min-w-full pb-5 px-6 md:px-10 z-1">

@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import { BASE_URL } from "../config.js";
 
-export default function Searchbar({ setResults, onFocus }) {
+export default function Searchbar({ setResults, onFocus}) {
     const [input, setInput] = useState("");
     
     const fetchData = (value) => {
@@ -14,7 +14,7 @@ export default function Searchbar({ setResults, onFocus }) {
                     value && disaster.name && 
                     disaster.name.toLowerCase().includes(value.toLowerCase())
                 ));
-                setResults(results);
+                    setResults(results);
             });
         
     };
