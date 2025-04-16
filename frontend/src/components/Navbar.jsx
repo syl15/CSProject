@@ -44,6 +44,7 @@ export default function Navbar() {
                         <SearchResultsList 
                             results={results} 
                             onClickOutside={() => setShowResults(false)} 
+                            onClickDisaster={() => setShowResults(false)} 
                         />
                     )}
                 </div>

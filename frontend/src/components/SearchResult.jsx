@@ -1,12 +1,16 @@
 import React from "react";
 import { useNavigate, Link } from 'react-router-dom';
+import { useEffect } from "react";
 
-export default function SearchResult( {result}) {
+export default function SearchResult( {result, onClick}) {
     const navigate = useNavigate();
-
+    
     const navigateToDisaster = (disaster) => {
-        navigate(`/AllDisasters/${disaster.name}`, { state: disaster });
+        onClick();
+        navigate(`/AllDisasters/${disaster.name}`, { state: disaster });        
     };
+
+    
 
     return (
         <div 
