@@ -5,15 +5,6 @@ from dateutil import parser
 from database import get_db_connection
 import os
 
-'''
-!!!!!!!!!
-IMPORTANT NOTE:
-For the purposes of testing, the sql commands in this file write to a TEMPORARY table called "temp_bluesky"
-This temp table will be deleted after proper testing
-Before deploying, ensure all sql commands are write to table "raw_bluesky"
-!!!!!!!!!
-'''
-
 # create authenticated bsky session to access API
 def authenticate_bsky():
     load_dotenv()
