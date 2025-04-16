@@ -26,14 +26,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import LinearSVC
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 models = [
     xgb.XGBClassifier(random_state=42),
     RandomForestClassifier(random_state=42),
     MultinomialNB(),
-    LogisticRegression(random_state=42, solver='liblinear'),
+    LogisticRegression(random_state=42, solver="liblinear"),
     LinearSVC(class_weight="balanced"),
 ]
 
@@ -77,8 +77,8 @@ paramss = [
     }
 ]
 
-# tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5, ngram_range=(1, 10), stop_words='english')
-tfidf = TfidfVectorizer(sublinear_tf=True, stop_words='english')
+# tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5, ngram_range=(1, 10), stop_words="english")
+tfidf = TfidfVectorizer(sublinear_tf=True, stop_words="english")
 features = train["tweet_text"].apply(preprocess)
 labels = train["event_type"].factorize()[0]
 
