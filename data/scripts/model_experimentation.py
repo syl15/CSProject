@@ -77,7 +77,7 @@ paramss = [
     }
 ]
 
-# tfidf = TfidfVectorizer(sublinear_tf=True, min_df=5, ngram_range=(1, 10), stop_words="english")
+# tfidf = TfidfVectorizer(sublinear_tf=True, max_df=0.75, min_df=0.01, ngram_range=(1, 1), stop_words="english")
 tfidf = TfidfVectorizer(sublinear_tf=True, stop_words="english")
 features = train["tweet_text"].apply(preprocess)
 labels = train["event_type"].factorize()[0]
