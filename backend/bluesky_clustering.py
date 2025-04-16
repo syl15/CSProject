@@ -10,6 +10,8 @@ from clustering_helper import *
 from generate_metadata import generate_disaster_metadata
 from sklearn.preprocessing import normalize
 import umap
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import datetime
 import os
