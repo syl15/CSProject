@@ -1,8 +1,11 @@
-# Dataset 
+# Datasets 
 data/scripts/combined_datasets/
+data/scripts/datasets/
 dev.tsv
 test.tsv
 train.tsv
+model/api/*.tsv
+model/api/*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
