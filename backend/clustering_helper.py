@@ -68,24 +68,11 @@ def load_existing_disasters():
 # link disaster id to each post
 def update_bluesky_disaster_column(post_to_disaster):
     try:
-        # TODO: change to raw_bluesky
         print("Updating temp_bluesky disaster column...")
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # update_data = [(disaster_id, post_id) for post_id, disaster_id in post_to_disaster]
-
-        # # Update the `raw_bluesky` table
-        # cursor.executemany("""
-        #     UPDATE raw_bluesky
-        #     SET disaster = %s
-        #     WHERE id = %s;
-        # """, update_data)
-
-        # conn.commit()
-
         for post_id, disaster_id in post_to_disaster:
-            # TODO: change to raw_bluesky
             cursor.execute("""
                 UPDATE temp_bluesky
                 SET disaster_id = %s
@@ -94,7 +81,6 @@ def update_bluesky_disaster_column(post_to_disaster):
 
         conn.commit()
 
-        # TODO: change to raw_bluesky
         print("temp_bluesky disaster column updated successfully.")
     except Exception as e:
         print("Error updating raw_bluesky disaster column:", e)
@@ -110,7 +96,6 @@ def remove_noise_post(post_id):
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        #TODO: Remove this when clustering is finalized
         cursor.execute("""
             SELECT * FROM temp_bluesky WHERE post_id = %s;
         """, (post_id,))
@@ -121,8 +106,6 @@ def remove_noise_post(post_id):
             f.write(f"\npost id: {post_data[0]}\n")
             f.write(f"post text: {post_data[1]}\n")
         
-        # Remove noise posts from `raw_bluesky`
-        # TODO: change to raw_bluesky
         cursor.execute("""
             DELETE FROM temp_bluesky WHERE post_id = %s;
         """, (post_id,))
@@ -187,7 +170,6 @@ def get_unprocessed_posts():
         print("Fetching unprocessed posts...")
         conn = get_db_connection()
         cursor = conn.cursor()
-        # TODO: change to raw_bluesky
         cursor.execute("""
             SELECT Post_ID, Post_Original_Text 
             FROM temp_bluesky 

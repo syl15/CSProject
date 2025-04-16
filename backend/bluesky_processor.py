@@ -5,32 +5,24 @@ Since the poller is runs on a schedule, we can estimate when to make calls to Fa
 As soon as bluesky_poller.py has run, we will immediately batch process all new data added to the DB
 '''
 
-'''
-!!!!!!!!!
-IMPORTANT NOTE:
-For the purposes of testing, the sql commands in this file write to a TEMPORARY table called "temp_bluesky"
-This temp table will be deleted after testing
-Before deploying, ensure all sql commands are writing to table "raw_bluesky"
-!!!!!!!!!
-'''
-
-#TODO: Does fastAPI servers need to be up the all the time?
-
 import requests
 import psycopg2
 from database import get_db_connection
+from config import get_deployed_fastapi_link, get_local_fastapi_link
 from datetime import datetime
 
-# TODO: Adjust FastAPI Endpoints
-CLASSIFICATION_API_URL = "http://localhost:8000/predict-disaster"
-SENTIMENT_API_URL = "http://localhost:8000/predict-sentiment"
+DEPLOYED_BASE_URL = get_deployed_fastapi_link()
+LOCAL_BASE_URL = get_local_fastapi_link()
+
+# swap out deployed constant with local constant and vice versa
+CLASSIFICATION_API_URL = f"{DEPLOYED_BASE_URL}/predict-disaster"
+SENTIMENT_API_URL = f"{DEPLOYED_BASE_URL}/predict-sentiment"
 
 # batch fetch new bluesky posts
 def fetch_unprocessed_posts():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        #TODO: change temp_bluesky to raw_bluesky
         cursor.execute("""
             SELECT Post_ID, Post_Original_Text FROM temp_bluesky
             WHERE Model_Disaster_Label IS NULL;
@@ -62,10 +54,11 @@ def classify_posts(posts):
         else:
             print(f"❌ Classification failed for {post_id}")
             classified_results.append((post_id, "unrelated"))
+            print(f"Status Code: {response.status_code}")
+            print(f"Response Text: {response.text}")
 
     return classified_results
 
-# TODO: uncomment/adjust this function
 # sentiment analysis if the disaster label is not unrelated
 def analyze_sentiment(posts):
     sentiment_results = []
@@ -91,7 +84,6 @@ def update_database(classified_results, sentiment_results):
         conn = get_db_connection()
         cursor = conn.cursor()
 
-         #TODO: change temp_bluesky to raw_bluesky
         for post_id, disaster_label in classified_results:
             cursor.execute("""
                 UPDATE temp_bluesky
@@ -99,7 +91,6 @@ def update_database(classified_results, sentiment_results):
                 WHERE Post_ID = %s;
             """, (disaster_label, post_id))
 
-         #TODO: change temp_bluesky to raw_bluesky
         for post_id, sentiment_score in sentiment_results:
             cursor.execute("""
                 UPDATE temp_bluesky
@@ -126,7 +117,6 @@ def remove_unrelated_posts():
         cursor = conn.cursor()
 
         # fetch unrelated posts before deletion
-         #TODO: change temp_bluesky to raw_bluesky
         cursor.execute("""
             SELECT Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link 
             FROM temp_bluesky
@@ -149,7 +139,6 @@ def remove_unrelated_posts():
                 )
                 log_file.write(log_entry)
 
-         #TODO: change temp_bluesky to raw_bluesky
         cursor.execute("""
             DELETE FROM temp_bluesky
             WHERE Model_Disaster_Label = 'unrelated';

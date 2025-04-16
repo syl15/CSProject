@@ -10,9 +10,6 @@ Activate a local CRON job:
             - everything else specifies the command to be run by the job
                 - in this case, we want to open the backend directory and use python from the backend venv to run the bluesky_poller script
     4. save the file. If using vim, use ":wq" and press enter
-
-
-TODO: Make CRON job Heroku friendly
 '''
 
 from bluesky_poller import poll_bsky_posts, authenticate_bsky
