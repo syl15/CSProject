@@ -10,7 +10,8 @@ import MobileNavbar from './MobileNavbar';;
 export default function Navbar() {
 
     const [results, setResults] = useState([]);
-
+    const [showResults, setShowResults] = useState(false);
+    
   return (
     <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
         <div className="relative min-w-full pb-5 px-6 md:px-10 z-1">
@@ -36,9 +37,16 @@ export default function Navbar() {
                 </div>
                 <div className="relative justified-end w-full max-w-md z-50">
                     {/* Search bar */}
-                    <Searchbar setResults={setResults} />
-                    <SearchResultsList results={results} />
-                    
+                    <Searchbar 
+                        setResults={setResults}
+                        onFocus={() => setShowResults(true)}  
+                    />
+                    {showResults && (
+                        <SearchResultsList 
+                            results={results} 
+                            onClickOutside={() => setShowResults(false)} 
+                        />
+                    )}
                 </div>
 
             </NavigationMenu.Root>

@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import { BASE_URL } from "../config.js";
 
-export default function Searchbar({ setResults }) {
+export default function Searchbar({ setResults, onFocus }) {
     const [input, setInput] = useState("");
     
     const fetchData = (value) => {
@@ -28,11 +28,12 @@ export default function Searchbar({ setResults }) {
         <div className="relative focus:outline-hidden">
             <MagnifyingGlassIcon className="absolute left-3 top-[11px]"/>
             <input
-                className="h-[38px] w-full pl-8 pr-2 border border-[#D4D4D4] text-sm focus:outline-hidden"
+                className="h-[38px] w-full pl-8 pr-2 border border-[#D4D4D4] text-sm focus:outline-none rounded-sm"
                 type="text"
                 placeholder="Search"
                 value={input}
                 onChange={(e) => handleChange(e.target.value)}
+                onFocus = {onFocus}
             />
         </div>
     );
