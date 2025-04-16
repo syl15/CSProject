@@ -22,7 +22,7 @@ export default function MobileNavbar() {
   }, []);
 
   return (
-    <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
+    <div className="min-w-full absolute left-0 right-0">
     <Menubar.Root className="visible md:invisible flex flex-start relative min-w-full left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
         <Menubar.Menu>
             <div className="flex flex-row-reverse gap-x-5">

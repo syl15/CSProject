@@ -12,7 +12,7 @@ export default function Navbar() {
     const [showResults, setShowResults] = useState(false);
 
   return (
-    <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
+    <div className="min-w-full absolute left-0 right-0 md:border-b-1 md:border-[#D4D4D4]">
         <div className="relative min-w-full pb-5 px-6 md:px-10 z-1">
             <MobileNavbar/>
             <NavigationMenu.Root className="invisible md:visible flex flex-row justify-between items-between">
