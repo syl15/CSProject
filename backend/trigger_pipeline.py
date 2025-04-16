@@ -1,5 +1,5 @@
 from flask import Flask 
-from run_pipeline import run_pipeline 
+# from run_pipeline import run_pipeline 
 from config import get_deployed_fastapi_link
 import requests
 import time
