@@ -45,7 +45,9 @@ export default function MobileNavbar() {
                     />
                     {showResults && 
                         <SearchResultsList 
-                        results={results} 
+                            results={results} 
+                            onClickOutside={() => setShowResults(false)} 
+                            onClickDisaster={() => setShowResults(false)} 
                         />
                     }
                 </div>
