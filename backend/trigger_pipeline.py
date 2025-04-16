@@ -11,8 +11,8 @@ FASTAPI_HEALTH_URL = BASE_URL + "/health"
 PREDICT_DISASTER_URL = BASE_URL + "/predict-disaster"
 PREDICT_SENTIMENT_URL = BASE_URL + "/predict-sentiment"
 
-MAX_RETRIES = 3 
-RETRY_DELAY = 5
+MAX_RETRIES = 5
+RETRY_DELAY = 10
 
 app = Flask(__name__) 
 
@@ -36,7 +36,7 @@ def trigger_pipeline():
 
             # Dynamic timeouts
             timeout_health = 30 if attempt == 1 else 15
-            timeout_disaster = 50 if attempt == 1 else 20
+            timeout_disaster = 50 if attempt == 1 else 30
             timeout_sentiment = 50 if attempt == 1 else 20
 
             # /health
@@ -80,7 +80,7 @@ def trigger_pipeline():
         
         if attempt < MAX_RETRIES: 
             print(f"Retrying in {RETRY_DELAY} seconds")
-            time.sleep(RETRY_DELAY)
+            time.sleep(RETRY_DELAY * attempt)
 
     return {"error": f"FastAPI service is down after {MAX_RETRIES} retries"}, 503
 
