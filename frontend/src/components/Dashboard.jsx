@@ -21,9 +21,12 @@ export default function Dashboard({disaster}) {
         // Add parameters if necessary
         fetch(`${BASE_URL}/disasters/${currDisaster.id}`) // Ex. /disasters?limit=1 
             .then((result) => result.json())
-            .then(setDisasterInfo)
+            .then((data) => {
+                console.log(data);
+                setDisasterInfo(data)
+            })
             .catch(console.error);
-    }, [])
+    }, [currDisaster?.id]);
    
     if(!disasterInfo) {
         return <div className="mt-30">Loading...</div>
