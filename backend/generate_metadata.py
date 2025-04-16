@@ -1,5 +1,4 @@
 # OpenRouter limits: 20 requests/minute, 200 requests/day 
-# TODO: Add retry logic on failure
 
 import os, requests, re, json, sys
 from datetime import datetime
@@ -63,7 +62,7 @@ def validate_metadata(metadata):
     try: 
         datetime.strptime(metadata["start_date"], "%Y-%m-%d")
     except ValueError:
-        print(f"start_date {metadata["start_date"]} is not in YYYY-MM-DD format")
+        print(f"start_date {metadata['start_date']} is not in YYYY-MM-DD format")
         return False 
     
     location = metadata["location"]
