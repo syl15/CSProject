@@ -79,7 +79,7 @@ def trigger_pipeline():
             traceback.print_exc()
         
         if attempt < MAX_RETRIES: 
-            print(f"Retrying in {RETRY_DELAY} seconds")
+            print(f"Retrying in {RETRY_DELAY * attempt} seconds")
             time.sleep(RETRY_DELAY * attempt)
 
     return {"error": f"FastAPI service is down after {MAX_RETRIES} retries"}, 503

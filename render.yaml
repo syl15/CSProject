@@ -6,10 +6,10 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
     branch: main
-    autoDeploy: true
+    autoDeploy: false
     buildFilter:
       paths:
-        - backend/**
+        - backend/app.py
     envVars:
       - key: DATABASE_URL
         sync: false
@@ -29,3 +29,4 @@ services:
     buildFilter:
       paths:
         - model/api/**
+
