@@ -31,7 +31,6 @@ def create_raw_bluesky_table():
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
-            #TODO: change temp_bluesky to raw_bluesky
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS temp_bluesky (
                     Post_ID TEXT PRIMARY KEY,
@@ -65,7 +64,6 @@ def insert_bluesky_data(batch_posts):
         conn = get_db_connection()
         if conn:
             cursor = conn.cursor()
-            #TODO: change temp_bluesky to raw_bluesky
             cursor.executemany('''
                 INSERT INTO temp_bluesky (Post_ID, Post_Original_Text, Post_Time_Created_At, Post_User_Handle, Post_Link, Post_Total_Interactions, Post_Keyword, Model_Disaster_Label,
                     Model_Sentiment_Rating, Poster_Name)
@@ -74,7 +72,6 @@ def insert_bluesky_data(batch_posts):
             ''', batch_posts)
 
             conn.commit()
-            #TODO: change temp_bluesky to raw_bluesky
             print(f"✅ {len(batch_posts)} inserted into temp_bluesky.")
         else:
             print("❌ Could not connect to database.")
