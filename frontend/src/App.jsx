@@ -5,16 +5,18 @@ import Navbar from "./components/Navbar.jsx"
 import { Route, Routes } from 'react-router-dom'
 import AllDisasters from './AllDisasters.jsx'
 import RecentDisaster from './RecentDisaster.jsx'
+import Dashboard from './components/Dashboard.jsx'
 
 function App() {
   return (
     <>
-      <TestAPI/>
+      {/* <TestAPI/> */}
       <Navbar/>
       <div>
         <Routes>
           <Route path="/"  element={<RecentDisaster/>} />
           <Route path="/AllDisasters"  element={<AllDisasters/>} />
+          <Route path="/AllDisasters/:disasterName" element={<Dashboard />} />
         </Routes>
         
       </div>

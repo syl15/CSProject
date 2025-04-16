@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { NavigationMenu } from 'radix-ui';
 import Searchbar from './Searchbar';
+import SearchResultsList from './SearchResultsList';
+
 import './Navbar.css'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import MobileNavbar from './MobileNavbar';;
 
 export default function Navbar() {
+
+    const [results, setResults] = useState([]);
+
   return (
     <div className="overflow-x-hidden absolute w-screen left-0 right-0 md:border-b-1 md:border-[#D4D4D4] pb-5 px-6 md:px-10">
         <MobileNavbar/>
@@ -28,8 +33,12 @@ export default function Navbar() {
                     </NavigationMenu.Link>
                 </NavigationMenu.List>
             </div>
-            {/* Search bar */}
-            <Searchbar />
+            <div className="relative justified-end w-full max-w-md">
+                {/* Search bar */}
+                <Searchbar setResults={setResults} />
+                <SearchResultsList results={results} />
+            </div>
+
 	    </NavigationMenu.Root>
    
     </div>
