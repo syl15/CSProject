@@ -9,7 +9,7 @@ dev_id = "1MEx0KFVDUHaWWfWK4XGc_Ch4zaTmcqsh"
 files_info = [
     {"url": f"https://drive.google.com/uc?id={train_id}", "filename": "train.tsv"}, 
     {"url": f"https://drive.google.com/uc?id={test_id}", "filename": "test.tsv"},
-    {"url": f"https://drive.google.com/uc?id={dev_id}", "filename": "dev.tsv"}
+    # {"url": f"https://drive.google.com/uc?id={dev_id}", "filename": "dev.tsv"}
 ]
 
 # Relative path to data directory 
