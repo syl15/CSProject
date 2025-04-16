@@ -4,6 +4,7 @@ from config import get_deployed_fastapi_link
 import requests
 import time
 import traceback
+import os
 
 BASE_URL = get_deployed_fastapi_link()
 
@@ -61,7 +62,7 @@ def trigger_pipeline():
 
             # Step 2: Run pipeline 
             if health.status_code == 200 and disaster.status_code == 200 and sentiment.status_code == 200:
-                run_pipeline()
+                # run_pipeline()
                 return {
                     "status": "Pipeline triggered successfully",
                     "fastapi_response_time_sec": round(total_time, 2),
@@ -85,4 +86,5 @@ def trigger_pipeline():
     return {"error": f"FastAPI service is down after {MAX_RETRIES} retries"}, 503
 
 if __name__ == "__main__": 
-    app.run(host="0.0.0.0", port=5050, debug=False)
+    port = int(os.environ.get("PORT", 5050))
+    app.run(host="0.0.0.0", port=port, debug=False)
