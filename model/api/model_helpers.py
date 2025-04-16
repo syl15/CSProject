@@ -36,10 +36,10 @@ def preprocess(text):
     return text
 
 # ------------------ Sentence Transformer Preprocessing ------------------
-from sentence_transformers import SentenceTransformer
-def preprocess_sentence(text):
-    model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
-    return model.encode(preprocess(text))
+# from sentence_transformers import SentenceTransformer
+# def preprocess_sentence(text):
+#     model = SentenceTransformer("paraphrase-MiniLM-L6-v2")
+#     return model.encode(preprocess(text))
 
 
 # ------------------ Embeddings Preprocessing ------------------
