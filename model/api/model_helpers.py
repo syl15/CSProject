@@ -11,17 +11,6 @@ import warnings
 
 # ------------------ Setup ------------------
 
-# Installs 'en_core_web_sm' if it is already not
-def install_spacy_model(model='en_core_web_sm'): 
-    try: 
-        spacy.load(model) 
-    except OSError: 
-        subprocess.run([sys.executable, "-m", "spacy", "download", model], check=True)
-
-# Install and load the model 
-install_spacy_model() 
-nlp = spacy.load('en_core_web_sm')
-
 # If you get SSL errors on Mac, run:
 # /Applications/Python\ 3.x/Install\ Certificates.command globally (OUTSIDE your venv)
 # Replace '3.x' with your version (ex. /Applications/Python\ 3.12/Install\ Certificates.command)
@@ -35,13 +24,14 @@ warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 sia = SentimentIntensityAnalyzer()
 
 # ------------------ TFIDF Preprocessing ------------------
-
+nltk.download("wordnet", quiet=True)
+from nltk.stem import WordNetLemmatizer as lemma
 def preprocess(text):
     text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
-    text = re.sub(r'[^\w\s]', ' ', text)
-    text = " ".join([word for word in text.split() if word[0] != "@"])
+    text = re.sub(r'[^\w\s]', '', text)
+    text = " ".join([word for word in text.split() if word[0] != "@" and word.isalpha()])
     text = text.lower()
-    text = " ".join([token.lemma_ for token in nlp(text)])
+    text = " ".join([lemma().lemmatize(token) for token in text.split()]).strip()
     
     return text
 
@@ -70,11 +60,11 @@ def get_word_embeddings(text, model, vector_size=300):
     return np.mean(embeddings, axis=0)
 
 def preprocess_with_embeddings(text, model):
-
     text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
-    text = re.sub(r'[^\w\s]', ' ', text)
-    text = " ".join([word for word in text.split() if word[0] != "@"])
+    text = re.sub(r'[^\w\s]', '', text)
+    text = " ".join([word for word in text.split() if word[0] != "@" and word.isalpha()])
     text = text.lower()
+    text = " ".join([lemma().lemmatize(token) for token in text.split()]).strip()
     
     return get_word_embeddings(text, model)
 
