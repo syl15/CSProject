@@ -1,5 +1,5 @@
 from flask import Flask 
-# from run_pipeline import run_pipeline 
+from run_pipeline import run_pipeline 
 from config import get_deployed_fastapi_link
 import requests
 import time
@@ -62,7 +62,7 @@ def trigger_pipeline():
 
             # Step 2: Run pipeline 
             if health.status_code == 200 and disaster.status_code == 200 and sentiment.status_code == 200:
-                # run_pipeline()
+                run_pipeline()
                 return {
                     "status": "Pipeline triggered successfully",
                     "fastapi_response_time_sec": round(total_time, 2),
