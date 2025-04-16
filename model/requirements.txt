@@ -5,8 +5,5 @@ uvicorn
 pandas
 numpy
 joblib
-requests
 nltk
 spacy
-gensim
-sentence_transformers
