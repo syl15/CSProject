@@ -1,2 +1,7 @@
 gdown
 datasets
+pandas
+numpy
+nltk
+scikit-learn
+xgboost
