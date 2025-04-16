@@ -1,12 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react';
 import { Menubar } from 'radix-ui';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Searchbar from './Searchbar';
+import SearchResultsList from './SearchResultsList';
 
 
 export default function MobileNavbar() {
+    const [results, setResults] = useState([]); 
+
   return (
-    <Menubar.Root className="visible md:invisible flex flex-start absolute w-screen left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
+    <div className="min-w-full absolute left-0 right-0 md:-mt-10 md:border-b-1 md:border-[#D4D4D4]">
+    <Menubar.Root className="visible md:invisible flex flex-start relative min-w-full left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
         <Menubar.Menu>
             <div className="flex flex-row-reverse gap-x-5">
             <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
@@ -19,7 +23,13 @@ export default function MobileNavbar() {
                     sideOffset={5}
                     alignOffset={-3}
                 >
-                    <Searchbar />
+
+                <div className="">
+                                {/* Search bar */}
+                                <Searchbar setResults={setResults} />
+                                <SearchResultsList results={results} />
+                </div>
+
                     <a className="text-sm text-black" href="/">
                         <Menubar.Item className="mt-3 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">Overview</p>
@@ -35,5 +45,6 @@ export default function MobileNavbar() {
             </Menubar.Portal>
         </Menubar.Menu>
     </Menubar.Root>
+    </div>
   );
 }
