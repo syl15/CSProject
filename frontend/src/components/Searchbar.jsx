@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import { BASE_URL } from "../config.js";
 
 export default function Searchbar({ setResults, onFocus}) {
     const [input, setInput] = useState("");
+    const debounceTimeout = useRef(null);
     
     // useEffect((value) => {
     //     fetch(`${BASE_URL}/disasters`) 
@@ -20,6 +21,14 @@ export default function Searchbar({ setResults, onFocus}) {
     // }, [])
 
     const fetchData = (value) => {
+        if (!value.trim()) {
+            console.log("Skipping fetch — input is empty.");
+            setResults([]);
+            return;
+          }
+        
+        console.log(`Fetching disasters for input: "${value}"`);
+
         fetch(`${BASE_URL}/disasters`) 
             .then((response) => response.json())
             .then((json) => {
@@ -35,7 +44,12 @@ export default function Searchbar({ setResults, onFocus}) {
 
     const handleChange = (value) => {
         setInput(value);
-        fetchData(value);
+    
+        clearTimeout(debounceTimeout.current);
+        debounceTimeout.current = setTimeout(() => {
+          fetchData(value);
+        }, 100); // wait 200ms after typing stops
+
     };
 
     return (
