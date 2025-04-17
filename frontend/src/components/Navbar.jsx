@@ -22,7 +22,7 @@ export default function Navbar() {
                         {/* Overview */}
                         <NavigationMenu.Link className="text-sm text-black" href="/">
                             <NavigationMenu.Item className="list-none nav-item">
-                                Overview
+                                Most Recent
                             </NavigationMenu.Item>
                         </NavigationMenu.Link>
 
