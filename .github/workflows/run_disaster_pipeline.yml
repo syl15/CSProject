@@ -1,0 +1,61 @@
+name: Run Disaster Pipeline
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # every day at 8:00 am CST
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DATABASE_URL:       ${{ secrets.DATABASE_URL }}
+      BSKY_USERNAME:      ${{ secrets.BSKY_USERNAME }}
+      BSKY_APP_PASSWORD:  ${{ secrets.BSKY_APP_PASSWORD }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FASTAPI_BASE_URL:   ${{ secrets.FASTAPI_BASE_URL }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Prewarm FastAPI
+        run: |
+          set -e
+          ENDPOINTS=(
+            "/health GET"
+            "/predict-disaster POST {\"text\":\"warmup\"}"
+            "/predict-sentiment POST {\"text\":\"warmup\"}"
+          )
+      
+          for endpoint in "${ENDPOINTS[@]}"; do
+            path=$(echo "$endpoint" | awk '{print $1}')
+            method=$(echo "$endpoint" | awk '{print $2}')
+            payload=$(echo "$endpoint" | cut -d' ' -f3-)
+      
+            echo "Warming ${path} via ${method}"
+            for i in $(seq 1 12); do
+              if [[ "$method" == "GET" ]]; then
+                curl --silent --fail "$FASTAPI_BASE_URL$path" && echo && break
+              else
+                curl --silent --fail -X POST \
+                      -H "Content-Type: application/json" \
+                      --data-raw "$payload" \
+                      "$FASTAPI_BASE_URL$path" && echo && break
+              fi
+              echo "  attempt $i failed; waiting 20s…"
+              sleep 20
+            done
+          done
+        
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run the pipeline
+        run: python backend/run_pipeline.py
+
