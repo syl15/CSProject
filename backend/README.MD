@@ -37,7 +37,7 @@ You should be able to see the API responses on `http://localhost:5173/`.
       - `http://127.0.0.1:5001/disasters?startDate=2024-01-01` 
 
 `GET /disasters/id` 
-- This will contain additional information about each disaster, including posts (currently limited to returning a max of 10)
+- This will contain additional information about each disaster, including posts (currently limited to returning a max of 5)
 - No other parameters are available  
 - You must specify a valid id to get back a disaster 
 - Examples: 
