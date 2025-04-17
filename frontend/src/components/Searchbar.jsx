@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import { BASE_URL } from "../config.js";
@@ -6,6 +6,19 @@ import { BASE_URL } from "../config.js";
 export default function Searchbar({ setResults, onFocus}) {
     const [input, setInput] = useState("");
     
+    // useEffect((value) => {
+    //     fetch(`${BASE_URL}/disasters`) 
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //         const results = json.filter((disaster) => (
+    //             value && disaster.name && 
+    //             disaster.name.toLowerCase().includes(value.toLowerCase())
+    //         ));
+    //         setResults(results);
+    //     })
+    //     .catch(console.error);
+    // }, [])
+
     const fetchData = (value) => {
         fetch(`${BASE_URL}/disasters`) 
             .then((response) => response.json())
@@ -14,8 +27,9 @@ export default function Searchbar({ setResults, onFocus}) {
                     value && disaster.name && 
                     disaster.name.toLowerCase().includes(value.toLowerCase())
                 ));
-                    setResults(results);
-            });
+                setResults(results);
+            })
+            .catch(console.error);
         
     };
 
