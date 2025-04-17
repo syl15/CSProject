@@ -56,6 +56,7 @@ export default function AllDisasters() {
         }));
 
       }
+      setCurrIndex(0);
     }, [sentimentFilter, eventFilter])
 
 
@@ -90,6 +91,7 @@ export default function AllDisasters() {
         const checkboxCopy = [...checkboxes];
         checkboxCopy[index] = true;
         setCheckboxes(checkboxCopy);
+        // setCurrIndex(0);
       } else {
         // remove filter value if filter is unselected
         setFilters(filters.filter((filterID) => filterID !== e.target.value))
