@@ -9,7 +9,7 @@
 
 ### Using the Flask API routes 
 
-1. Activate your `venv` and install dependencies
+1. Activate your `venv` and install dependencies \
     `source venv/bin/activate` \
     `pip install -r backend/requirements.txt`
 2. Run the Flask app \
