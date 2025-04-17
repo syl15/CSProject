@@ -35,7 +35,7 @@ export default function Dashboard({disaster, isMostRecent}) {
     const start = new Date(`${disasterInfo.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
 
     return (
-        <div className="flex flex-col mt-[3.04rem] md:mt-13 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
+        <div className="flex flex-col mt-[3.03rem] md:mt-13 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
             
             {isMostRecent && <Disclaimer/>}
             <div className="flex flex-col gap-y-2 mt-25">
