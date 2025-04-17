@@ -90,6 +90,12 @@ scoring = {'f1':make_scorer(f1_score, average="weighted"),
 }
 
 for model, params in zip(models, paramss):
+    model_name = model.__class__.__name__
+
+    # after examining the f1 scores of the 5 test models, we determined that the linearsvc() was the best model
+    # if (model_name != "LinearSVC"):
+    #     continue
+
     pipeline = Pipeline([
         ('tfidf', tfidf),
         ('clf', model)
@@ -109,7 +115,7 @@ for model, params in zip(models, paramss):
 
     clf.fit(features, labels)
 
-    print("model name: ", model.__class__.__name__)
+    print("model name: ", model_name)
     print("best parameters: ", clf.best_params_)
     best_model = clf.best_estimator_
 
