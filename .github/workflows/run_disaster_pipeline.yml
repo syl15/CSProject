@@ -1,0 +1,23 @@
+name: Run Disaster Pipeline
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # daily at 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DATABASE_URL:      ${{ secrets.DATABASE_URL }}
+      BSKY_USERNAME:     ${{ secrets.BSKY_USERNAME }}
+      BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+      OPENROUTER_API_KEY:${{ secrets.OPENROUTER_API_KEY }}
+      FASTAPI_BASE_URL:  ${{ secrets.FASTAPI_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with: python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - run: python backend/run_pipeline.py
