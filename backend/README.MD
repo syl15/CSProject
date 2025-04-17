@@ -10,10 +10,10 @@
 ### Using the Flask API routes 
 
 1. Activate your `venv` and install dependencies
+    `source venv/bin/activate` \
+    `pip install -r backend/requirements.txt` \
 2. Run the Flask app \
     `cd backend` \
-    `source venv/bin/activate`
-    `pip install -r backend/requirements.txt`
     `flask run`
 3. Run the React app \
     `cd frontend` \
