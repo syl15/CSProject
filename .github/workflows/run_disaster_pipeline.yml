@@ -2,7 +2,7 @@ name: Run Disaster Pipeline
 
 on:
   schedule:
-    - cron: '0 8 * * *' # daily at 08:00 UTC
+    - cron: '0 8 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -16,8 +16,16 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       FASTAPI_BASE_URL:   ${{ secrets.FASTAPI_BASE_URL }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: python-version: '3.12'
-      - run: pip install -r backend/requirements.txt
-      - run: python backend/run_pipeline.py
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run the pipeline
+        run: python backend/run_pipeline.py
