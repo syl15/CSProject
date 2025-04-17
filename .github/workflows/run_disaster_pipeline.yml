@@ -39,16 +39,16 @@ jobs:
             payload=$(echo "$endpoint" | cut -d' ' -f3-)
       
             echo "Warming ${path} via ${method}"
-            for i in $(seq 1 4); do
+            for i in $(seq 1 12); do
               if [[ "$method" == "GET" ]]; then
-                curl --silent --fail "$FASTAPI_BASE_URL$path" && break
+                curl --silent --fail "$FASTAPI_BASE_URL$path" && echo && break
               else
                 curl --silent --fail -X POST \
                       -H "Content-Type: application/json" \
                       --data-raw "$payload" \
-                      "$FASTAPI_BASE_URL$path" && break
+                      "$FASTAPI_BASE_URL$path" && echo && break
               fi
-              echo "  attempt $i failed; waiting 10s…"
+              echo "  attempt $i failed; waiting 20s…"
               sleep 20
             done
           done
