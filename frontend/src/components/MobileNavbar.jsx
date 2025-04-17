@@ -1,12 +1,29 @@
-import React from 'react'
+import React, {useState, useRef, useEffect} from 'react';
 import { Menubar } from 'radix-ui';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 import Searchbar from './Searchbar';
+import SearchResultsList from './SearchResultsList';
 
 
 export default function MobileNavbar() {
+  const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    }
+
+  document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <Menubar.Root className="visible md:invisible flex flex-start absolute w-screen left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
+    <div className="min-w-full absolute left-0 right-0">
+    <Menubar.Root className="visible md:invisible flex flex-start relative min-w-full left-0 right-0 border-b-1 border-[#D4D4D4] pb-5 px-6">
         <Menubar.Menu>
             <div className="flex flex-row-reverse gap-x-5">
             <h1 className="font-bold text-lg">Disaster Sentiment Tracker</h1>
@@ -14,12 +31,27 @@ export default function MobileNavbar() {
             </div>
             <Menubar.Portal>
                 <Menubar.Content
-                    className="border border-[#D4D4D4] rounded-sm text-sm p-3 visible md:invisible mt-2 bg-white"
+                    className="border border-[#D4D4D4] rounded-sm text-sm p-3 visible md:invisible mt-2 bg-white z-30"
                     align="start"
                     sideOffset={5}
                     alignOffset={-3}
                 >
-                    <Searchbar />
+
+                <div ref = {searchRef} className="relative z-40">
+                    {/* Search bar */}
+                    <Searchbar
+                        setResults={setResults}
+                        onFocus={() => setShowResults(true)}
+                    />
+                    {showResults && 
+                        <SearchResultsList 
+                            results={results} 
+                            onClickOutside={() => setShowResults(false)} 
+                            onClickDisaster={() => setShowResults(false)} 
+                        />
+                    }
+                </div>
+
                     <a className="text-sm text-black" href="/">
                         <Menubar.Item className="mt-3 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
                             <p className="pl-2">Overview</p>
@@ -35,5 +67,6 @@ export default function MobileNavbar() {
             </Menubar.Portal>
         </Menubar.Menu>
     </Menubar.Root>
+    </div>
   );
 }
