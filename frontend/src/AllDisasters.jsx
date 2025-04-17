@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import DisasterCard from './components/DisasterCard'
-import FilterColumn from './components/FilterColumn'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard'
