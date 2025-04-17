@@ -2,7 +2,7 @@ name: Run Disaster Pipeline
 
 on:
   schedule:
-    - cron: '0 8 * * *' 
+    - cron: '0 15 * * *' 
   workflow_dispatch:
 
 jobs:
@@ -24,34 +24,38 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: pip install -r backend/requirements.txt
-
       - name: Prewarm FastAPI
         run: |
           set -e
           ENDPOINTS=(
-            "/health GET ''"
-            "/predict-disaster POST '{\"text\":\"warmup\"}'"
-            "/predict-sentiment POST '{\"text\":\"warmup\"}'"
+            "/health GET"
+            "/predict-disaster POST {\"text\":\"warmup\"}"
+            "/predict-sentiment POST {\"text\":\"warmup\"}"
           )
-          # up to 12 attempts, 10s between = ~2m max per endpoint
-          for e in "${ENDPOINTS[@]}"; do
-            IFS=' ' read -r path method payload <<< "$e"
-            echo "⏳ Warming ${path} via ${method}"
-            for i in $(seq 1 12); do
+      
+          for endpoint in "${ENDPOINTS[@]}"; do
+            path=$(echo "$endpoint" | awk '{print $1}')
+            method=$(echo "$endpoint" | awk '{print $2}')
+            payload=$(echo "$endpoint" | cut -d' ' -f3-)
+      
+            echo "Warming ${path} via ${method}"
+            for i in $(seq 1 4); do
               if [[ "$method" == "GET" ]]; then
                 curl --silent --fail "$FASTAPI_BASE_URL$path" && break
               else
                 curl --silent --fail -X POST \
-                     -H "Content-Type: application/json" \
-                     -d "$payload" \
-                     "$FASTAPI_BASE_URL$path" && break
+                      -H "Content-Type: application/json" \
+                      --data-raw "$payload" \
+                      "$FASTAPI_BASE_URL$path" && break
               fi
               echo "  attempt $i failed; waiting 10s…"
-              sleep 10
+              sleep 20
             done
           done
+        
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
 
       - name: Run the pipeline
         run: python backend/run_pipeline.py
+
