@@ -8,10 +8,10 @@ export default function ToolTip({paragraph}) {
     <Tooltip.Provider>
         <Tooltip.Root>
             <Tooltip.Trigger asChild>
-                <InfoCircledIcon width="20px" height="20px"/>
+                <InfoCircledIcon width="20px" height="20px" color="gray"/>
             </Tooltip.Trigger>
             <Tooltip.Portal>
-                <Tooltip.Content className="max-w-50 bg-[#ECECEC] rounded-md text-xs p-3" sideOffset={5}>
+                <Tooltip.Content className="max-w-50 bg-[#ECECEC] rounded-md text-xs p-3 mx-3" sideOffset={5}>
                     {paragraph}
                     <Tooltip.Arrow className="fill-[#ECECEC]" />
                 </Tooltip.Content>

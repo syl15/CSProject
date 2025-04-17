@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard'
+import Disclaimer from './components/Disclaimer';
 import { BASE_URL } from "./config";
 
 export default function RecentDisaster() {
@@ -19,6 +20,7 @@ export default function RecentDisaster() {
         return <div className="mt-30">Loading...</div>
     }
     return (
-        <Dashboard disaster={recentDisaster}/>
+        <Dashboard disaster={recentDisaster} isMostRecent={true}/>
+        
     )
 }
