@@ -2,7 +2,7 @@ name: Run Disaster Pipeline
 
 on:
   schedule:
-    - cron: '*/10 * * * *'  # every 10 minutes
+    - cron: '0 13 * * *'  # every day at 8:00 am CST
   workflow_dispatch:
 
 jobs:
