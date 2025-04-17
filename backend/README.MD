@@ -11,7 +11,7 @@
 
 1. Activate your `venv` and install dependencies
     `source venv/bin/activate` \
-    `pip install -r backend/requirements.txt` \
+    `pip install -r backend/requirements.txt`
 2. Run the Flask app \
     `cd backend` \
     `flask run`
