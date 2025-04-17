@@ -73,21 +73,21 @@ paramss = [
         "tfidf__ngram_range": [(1, 1), (1, 2)],
         "tfidf__max_df": [0.75, 0.8, 0.9, 0.95],
         "tfidf__min_df": [0.1, 0.01],
-        "clf__C": [0.01, 100, 1, 0.1, 10],
+        "clf__C": [0.01, 0.1, 1, 10, 100],
     }
 ]
 
-# tfidf = TfidfVectorizer(sublinear_tf=True, max_df=0.75, min_df=0.01, ngram_range=(1, 1), stop_words="english")
 tfidf = TfidfVectorizer(sublinear_tf=True, stop_words="english")
+# clf C=1
+# tfidf = TfidfVectorizer(sublinear_tf=True, max_df=0.75, min_df=0.01, ngram_range=(1, 2), stop_words="english")
 features = train["tweet_text"].apply(preprocess)
-labels = train["event_type"].factorize()[0]
+labels, label_names = train["event_type"].factorize()
 
 scoring = {'f1':make_scorer(f1_score, average="weighted"),
     # 'precision':'precision',
     # 'roc_auc':'roc_auc',
     # 'recall':'recall'
 }
-
 
 for model, params in zip(models, paramss):
     pipeline = Pipeline([
@@ -117,6 +117,8 @@ for model, params in zip(models, paramss):
     predicted_y = best_model.predict(test["tweet_text"].apply(preprocess))
     print(classification_report(actual_y, predicted_y, target_names=test["event_type"].unique()))
 
-MODEL_DIR = "../model"
-filename = "optimized_model.sav"
-pickle.dump(best_model, open(os.path.join(MODEL_DIR, filename), "wb"))
+# save linearsvc model + decoded labels
+MODEL_DIR = "../../model/api"
+filename = "optimized_model_labels.sav"
+with open(os.path.join(MODEL_DIR, filename), "wb") as f:
+    pickle.dump((best_model, label_names), f)

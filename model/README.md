@@ -18,6 +18,9 @@ You will need three terminal windows to run Flask, FastAPI, and curl commands (t
 
 **Example command:**
 
+**(format for windows command prompt)**:
+curl -X POST http://localhost:8000/predict-disaster -H "Content-Type: application/json" -d "{\"text\": \"Had to evacuate because of the LA fires\"}"
+
 curl -X POST http://localhost:5001/predict -H "Content-Type: application/json" -d '{"text": "Tornado warning in Oklahoma"}'
 
 curl -X POST http://localhost:5001/predict -H "Content-Type: application/json" -d '{"text": "Earthquake in Japan"}'
