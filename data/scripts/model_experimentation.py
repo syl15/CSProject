@@ -93,8 +93,8 @@ for model, params in zip(models, paramss):
     model_name = model.__class__.__name__
 
     # after examining the f1 scores of the 5 test models, we determined that the linearsvc() was the best model
-    # if (model_name != "LinearSVC"):
-    #     continue
+    if (model_name != "LinearSVC"):
+        continue
 
     pipeline = Pipeline([
         ('tfidf', tfidf),
