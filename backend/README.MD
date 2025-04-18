@@ -1,24 +1,31 @@
-### Contents of this folder
-  - Items you need to create:
-    1. `.env`:
-      - Stores DB URL, bluesky credentials
-      - Contact backend developer for this info
+# Backend 
+
+## Core contents 
   - `app.py`: Entry point for Flask app.
     - Automatically runs the backend server via `flask run`
-    - Optional command `python app.py --reset-db` exists if you want to repopulate the Raw Crisis NLP database. **This is not recommended. Inserting all the training data into the DB takes about 25 minutes.**
   - `database.py`: Allows backend to connect and interact with PostgreSQL tables via SQL queries
-  - `populate.py`: Script to populate the Raw Crisis NLP table and handle table resets. **Do not manually run without asking backend dev**
-  - `bluesky_poller.py`: Sets up and CRON job for periodially polling bluesky
+  - `run_pipeline.py`: Full pipeline that polls for new bluesky posts, classifies and clusters them, and writes results back to the database
 
-### First time users
-  - [Create a venv](#activating-your-venv)
+## Prerequisites 
+
+### Environnment Variables 
+Create a `.env` file with the following keys and contact backend developers for the values:     
+DATABASE_URL= \
+BSKY_USERNAME= \
+BSKY_APP_PASSWORD= \
+OPENROUTER_API_KEY= \
+FASTAPI_BASE_URL= \
+FASTAPI_LOCAL_BASE_URL= 
+
+### Virtual Environment
+  - [Activate your venv](#activating-your-venv)
     - TLDR: 
       - `source [venv_name]/bin/activate` to activate venv
       - `deactivate` to deactivate venv
-  - [Run backend/requirements.txt](#installing-new-packages) to download necessary requirements
+  - [Install dependencies](#installing-new-packages)
     - TLDR:
       - `pip install -r backend/requirements.txt` to install backend required packages
-  - Host the server by running `flask run` in CLI
+  - Host the server by running `flask run` 
 
 ### Activating your venv 
 
@@ -26,12 +33,12 @@ Aside: Should you activate your venv from the root directory?
   - Actually, a lot of sources are mixed over whether this is the best practice and there are many ways to do it, but you can pick a workflow that works for you. 
   - Activating the venv from the root, however, does make the venv accessible to all the project subfolder which means you won't have to reactivate if you're navigating to specific subfolders. 
 
-If your project is new: 
+#### If your project is new: 
   - You will need create a new venv
   - Run `python3 -m venv venv` (using whatever python version you have)
   - This creates a `venv` folder in the root directory
 
-Recurring steps (instructions for Mac)
+#### Recurring steps (instructions for Mac)
 1. Navigate to root directory of the project 
 2. To activate, run `source venv/bin/activate` 
 3. Install requirements `pip install -r [folderName]/requirements.txt`
@@ -42,13 +49,14 @@ Recurring steps (instructions for Mac)
     - You only need to do this if dependencies have changed since you last worked on the project (e.g. after pulling new changes)
 4. To deactivate, run `deactivate`
 
+#### Troubleshooting 
 
 If your current venv is corrupted or has conflicting dependencies, you can try deactivating your venv, deleting the old venv and creating a new one. 
 
-`deactivate` (deactivate old venv)  
-`rm -rf venv`  (removes the venv directory)  
-`python3 -m venv venv` (creates a new venv)  
-`pip install -r [folderName]/requirements.txt` (reinstall dependencies)
+1. `deactivate` (deactivate old venv)  
+2. `rm -rf venv`  (removes the venv directory)  
+3. `python3 -m venv venv` (creates a new venv)  
+4. `pip install -r [folderName]/requirements.txt` (reinstall dependencies)
 
 ### Installing new packages 
 
@@ -57,36 +65,29 @@ If you're adding new dependencies, ex. you ran `pip install scikit-learn`,  the 
 So after installation, freeze the environment to update the list of dependencies by running the following command:
 
 `pip freeze > [folderName]/requirements.txt` 
+- Example: `pip freeze > backend/requirements.txt` 
 
-  Example: `pip freeze > backend/requirements.txt` 
+And commit the updated `requirements.txt` to version control so everyone else can download it as well. 
 
-And commit the updated requirements to version control. 
-
-The same goes for if you updated an existing package. 
-
-Alternatively, you can just add the dependency to requirements.txt directly. 
+The same goes for if you updated an existing package. Alternatively, you can just add the dependency to `requirements.txt` directly, but this won't add the specific version. 
 
 
-### Using the Flask API routes 
+## Using the Flask API routes 
 
 1. Activate your `venv` and install dependencies
 2. Run the Flask app \
     `cd backend` \
     `flask run`
-3. Run the React app \
-    `cd frontend` \
-    `npm install` \
-    `npm run dev`
+3. View the local endpoint: `http://127.0.0.1:5001`
 
-You should be able to see the API responses on `http://localhost:5173/`.
 
-### Overivew of API routes
+### Overview of API routes
 
 `GET /disasters`
 - This is meant to be an overview of all the disasters in our database. It will have less information than the endpoint for each disaster. 
 - This has a few optional parameters you can specify. Check out `app.py` for more documentation 
-  - limit (how many disasters you want to return)
-  - startDate (start date of the disaster)
+  - `limit`: how many disasters you want to return
+  - `startDate`: start date of the disaster
   - To use a parameter, use the format: 
     - `base_url/disasters?key=value?key=value`, where the parameter name is the `key` 
     - Examples: 
