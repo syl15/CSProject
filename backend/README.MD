@@ -74,7 +74,9 @@ The same goes for if you updated an existing package. Alternatively, you can jus
 
 ## Using the Flask API routes 
 
-1. Activate your `venv` and install dependencies
+1. Activate your `venv` and install dependencies \
+    `source venv/bin/activate` \
+    `pip install -r backend/requirements.txt`
 2. Run the Flask app \
     `cd backend` \
     `flask run`
@@ -96,7 +98,7 @@ The same goes for if you updated an existing package. Alternatively, you can jus
       - `http://127.0.0.1:5001/disasters?startDate=2024-01-01` 
 
 `GET /disasters/id` 
-- This will contain additional information about each disaster, including posts (currently limited to returning a max of 10)
+- This will contain additional information about each disaster, including posts (currently limited to returning a max of 5)
 - No other parameters are available  
 - You must specify a valid id to get back a disaster 
 - Examples: 
@@ -105,4 +107,3 @@ The same goes for if you updated an existing package. Alternatively, you can jus
 `GET /disasters/recent` 
 - Returns the most recent disaster, with all the metadata and posts 
 - No other parameters are available
-
