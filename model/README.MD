@@ -10,9 +10,9 @@
 ## Using the FastAPI routes 
 
 1. Activate your `venv` and install dependencies; see `backend/README.MD` for full instructions 
-2. Run the FastAPI app \ 
-    `cd model/api` \ 
-    `python main.py` \ 
+2. Run the FastAPI app: </br>
+    `cd model/api` </br>
+    `python main.py` </br>
     `uvicorn main:app --reload`
 3. View the local endpoint: `http://127.0.0.1:8000`
     - To use test the endpoint, you can go to `http://127.0.0.1:8000/docs`, which is an interactive SwaggerUI page that will display all the available routes. 

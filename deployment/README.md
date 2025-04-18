@@ -1,6 +1,6 @@
-# Deployment Workflow
+# Deployment 
 
-## Branches 
+## Workflow and branches 
 - `dev`: used for ongoing development 
 - `main`: used for stable, production ready code 
 
