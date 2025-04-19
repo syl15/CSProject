@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os, re, pickle
 
-DATA_DIR = "datasets"
+DATA_DIR = "../datasets"
 train = pd.read_csv(os.path.join(DATA_DIR, "train.tsv"), sep="\t").groupby("event_type").sample(frac=1)
 test = pd.read_csv(os.path.join(DATA_DIR, "test.tsv"), sep="\t").groupby("event_type").sample(frac=1)
 

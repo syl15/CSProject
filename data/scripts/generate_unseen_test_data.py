@@ -7,7 +7,7 @@
 import pandas as pd
 from datasets import load_dataset, concatenate_datasets, Value
 
-DATA_DIR = "datasets"
+DATA_DIR = "../datasets"
 datasets = []
 keep_columns = ["tweet_text", "event_type"]
 

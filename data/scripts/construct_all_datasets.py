@@ -1,7 +1,10 @@
 # combines specifically-labeled disaster data from crisisnlp with generally-labeled disaster data (which contains unrelated tweets) from huggingface
 # also renames "fire" label to "wildfire"
 
+import os
 from datasets import load_dataset, concatenate_datasets, Value
+
+DATA_DIR = "../datasets"
 
 # tweets with unrelated data to insert into training and testing dataset
 base_url = "https://huggingface.co/datasets/nlp-pw/Disaster-Tweets-Normalized/resolve/main/data/"
@@ -31,8 +34,9 @@ def map_labels(row):
     if event_type == "fire":
         row["event_type"] = "wildfire"
     return row
-crisisnlp = {split: load_dataset("csv", delimiter="\t", data_files=f"combined_datasets/combined_{split}.tsv", split="train").map(map_labels) for split in hf_dataset.keys()}
+crisisnlp = {split: load_dataset("csv", delimiter="\t", data_files=os.path.join(DATA_DIR, combined_datasets, f"combined_{split}.tsv"), split="train").map(map_labels) for split in hf_dataset.keys()}
 for name, crisisnlp_dataset in crisisnlp.items():
+    # saves train.tsv, dev.tsv, test.tsv into /data/datasets 
     concatenated = concatenate_datasets([crisisnlp_dataset, hf_dataset[name]])
-    concatenated.to_csv(f"datasets/{name}.tsv", sep="\t")
-    # upload all_data/ into google drive and update the IDs of the individual *.tsv files in data/scripts/download_data.py
+    concatenated.to_csv(os.path.join(DATA_DIR, f"{name}.tsv"), sep="\t")
+
