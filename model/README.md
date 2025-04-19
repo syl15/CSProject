@@ -3,12 +3,15 @@
 ## Core Contents 
 - `/api` directory: contains all files relevant to running the FastAPI app
   - `main.py`: entry point for FastAPI app, handles the routes `/predict-disaster` and `/predict-sentiment`
-- `/test` directory: contains 
-  - `model_st.py` - This model uses a pretrained sentence transformer model to generate embeddings. It is trained on a random sample from `data/scripts/datasets/train.tsv` that is 1/4 the size of the full dataset for the optimal balance of accuracy and resources.
-    The most lightweight version generates `st_model.sav` uses the `paraphrase-albert-small-v2` model and has an accuracy of 
+- `/experimentation` directory: contains files relevant to other tested but undeployed models
+  - `model_st.py` - This model uses a pretrained sentence transformer model to generate embeddings.
+    - trained on a random sample from `data/scripts/datasets/train.tsv` that is 1/4 the size of the full dataset for the optimal balance of accuracy and resources
+    - uses the `paraphrase-albert-small-v2` pretrained model
+    - generates `st_model.sav`
 
 ## Prerequisites 
 - If you don't have a `.sav` file in your `/api` folder, you need to run the appropriate `model.py` file or equivalent to generate the model binary and ensure that it's in the `/api` directory
+- Do the same to test the two models in `/experimentation`
 
 ## Using the FastAPI routes 
 
