@@ -46,4 +46,4 @@ freqs = df["event_type"].value_counts()
 print(df)
 print(freqs)
 
-final_dataset.to_csv(f"{DATA_DIR}/final_test.csv")
+final_dataset.to_csv(f"{DATA_DIR}/final_test.tsv", sep="\t")
