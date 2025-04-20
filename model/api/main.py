@@ -5,9 +5,11 @@ from model_helpers import preprocess, analyze_sentiment
 
 app = FastAPI() 
 
-# Load disaster-type classifier and label names
+# Load disaster-type classifier
 file = "optimized_model_labels.sav"
 model, label_names = joblib.load(file)
+
+print(label_names)
 
 # Define input schema 
 class PostInput(BaseModel): 
@@ -34,8 +36,7 @@ def predict_event_type(data: PostInput):
     text = [preprocess(data.text)]
     predicted_class = model.predict(text)[0] # Returns value from [0...4]
     predicted_label = label_names[predicted_class]
-
-    return {"event_type": predicted_label}    
+    return {"event_type": predicted_label}
 
 @app.post("/predict-sentiment", response_model=SentimentOutput)
 def predict_sentiment(data: PostInput): 
