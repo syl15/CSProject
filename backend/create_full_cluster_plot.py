@@ -64,9 +64,22 @@ if not df.empty:
 
     fig.update_layout(
     legend_title="Disaster Name",
-    width=500,
-    height=800
+    width=1500,
+    height=900
 )
     fig.show()
+
+
+    from sklearn.metrics import silhouette_score
+    from sklearn.preprocessing import LabelEncoder
+
+    # Encode disaster names to numerical cluster labels
+    label_encoder = LabelEncoder()
+    cluster_labels = label_encoder.fit_transform(df['disaster_name'])
+
+    # Calculate silhouette score using original high-dimensional embeddings
+    score = silhouette_score(embeddings, cluster_labels, metric='euclidean')
+    print(f"🟢 Silhouette Score: {score:.4f}")
+
 else:
     print("⚠️ No data to visualize.")
