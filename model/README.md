@@ -3,7 +3,7 @@
 ## Core Contents 
 - `/api` directory: contains all files relevant to running the FastAPI app
   - `main.py`: entry point for FastAPI app, handles the routes `/predict-disaster` and `/predict-sentiment`
-- `/experimentation` directory: contains files relevant to 2 tested but undeployed models-
+- `/experimentation` directory: contains files relevant to 2 tested but undeployed models-  
   They use a different embeddings generating model, but use LinearSVC() as the classification model. Both are trained on a random sample from `data/scripts/datasets/train.tsv` that is 1/4 the size of the full dataset for the optimal balance of accuracy and resources.
   - `word2vec_multiclass_model.py` - This model uses a pretrained word2vec model to generate embeddings.
     - generates `word2vec_multiclass_model.sav`
