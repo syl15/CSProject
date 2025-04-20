@@ -3,10 +3,8 @@
 # ---------------------------------------------------------------------------------------------------------
 
 import pandas as pd
-import re
 import numpy as np
-import spacy
-import pickle
+import re, os, pickle
 from gensim.models import KeyedVectors
 import gensim.downloader as api
 from sklearn.metrics import classification_report
@@ -15,7 +13,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 from sklearn.exceptions import UndefinedMetricWarning
 import warnings
-import os
 
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 

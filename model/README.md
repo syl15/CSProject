@@ -6,8 +6,7 @@
 - `/experimentation` directory: contains files relevant to other tested but undeployed models- `/experimentation` directory: contains files relevant to other tested but undeployed models
   - `word2vec_multiclass_model.py` - This model uses a pretrained word2vec model to generate embeddings.
     - trained on a random sample from `data/scripts/datasets/train.tsv` that is 1/4 the size of the full dataset for the optimal balance of accuracy and resources
-    - uses the `paraphrase-albert-small-v2` pretrained model
-    - generates `word_model.sav`
+    - generates `word2vec_multiclass_model.sav`
   - `model_st.py` - This model uses a pretrained sentence transformer model ([all options](https://www.sbert.net/docs/sentence_transformer/pretrained_models.html)) to generate embeddings.
     - trained on a random sample from `data/scripts/datasets/train.tsv` that is 1/4 the size of the full dataset for the optimal balance of accuracy and resources (most lightweight option)
     - uses the `paraphrase-albert-small-v2` pretrained model

@@ -1,10 +1,11 @@
 fastapi
-scikit-learn
 pydantic
 uvicorn
-pandas
-numpy
 joblib
+pandas
 nltk
+scikit-learn
+numpy
+gensim
 sentence-transformers
 tqdm
