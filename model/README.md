@@ -3,17 +3,9 @@
 ## Core Contents 
 - `/api` directory: contains all files relevant to running the FastAPI app
   - `main.py`: entry point for FastAPI app, handles the routes `/predict-disaster` and `/predict-sentiment`
-- `/experimentation` directory: contains files relevant to 2 tested but undeployed models-  
-  They use different embeddings generating models, but both use LinearSVC() as the classification model & are trained on a random 1/4 sample from `data/scripts/datasets/train.tsv` for the optimal balance of accuracy and resources.
-  - `word2vec_multiclass_model.py` - This model uses a pretrained word2vec model to generate embeddings.
-    - generates `word2vec_multiclass_model.sav`
-  - `model_st.py` - This model uses a pretrained sentence transformer model ([all options](https://www.sbert.net/docs/sentence_transformer/pretrained_models.html)) to generate embeddings.
-    - uses the `paraphrase-albert-small-v2` pretrained model (the most lightweight option)
-    - generates `st_model.sav`
 
 ## Prerequisites 
 - If you don't have a `.sav` file in your `/api` folder, you need to run the appropriate `model.py` file or equivalent to generate the model binary and ensure that it's in the `/api` directory
-- Do the same to test the two models in `/experimentation`
 
 ## Using the FastAPI routes 
 
