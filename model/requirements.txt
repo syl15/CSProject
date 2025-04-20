@@ -1,9 +1,0 @@
-fastapi 
-scikit-learn
-pydantic 
-uvicorn
-pandas
-numpy
-joblib
-nltk
-spacy
