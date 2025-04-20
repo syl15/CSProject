@@ -13,9 +13,8 @@ from sentence_transformers import SentenceTransformer
 # sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # from api.model_helpers import preprocess
 
-DATA_DIR = "../../data/scripts/datasets"
+DATA_DIR = "../../data/datasets"
 filename = "st_model.sav"
-model = LinearSVC(class_weight="balanced")
 
 transformer = SentenceTransformer("paraphrase-albert-small-v2")
 
@@ -30,6 +29,8 @@ def preprocess(text, transformer):
 
 # train the model and generate the .sav file
 def generate():
+	model = LinearSVC(class_weight="balanced")
+
 	train = pd.read_csv(os.path.join(DATA_DIR, "train.tsv"), sep="\t").groupby("event_type").sample(frac=0.25)
 	train_embeddings = np.array([preprocess(text, transformer) for text in tqdm(train["tweet_text"])])
 	labels, label_names = train["event_type"].factorize()
