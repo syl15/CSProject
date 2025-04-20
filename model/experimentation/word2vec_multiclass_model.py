@@ -4,7 +4,7 @@
 
 import pandas as pd
 import numpy as np
-import re, os, pickle
+import re, os, pickle, joblib
 from gensim.models import KeyedVectors
 import gensim.downloader as api
 from sklearn.metrics import classification_report
@@ -19,22 +19,7 @@ warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 # directory of the current script
 script_dir = os.path.dirname(__file__)
 DATA_DIR = "../../data/datasets"
-
-# get train/test data
-train_path = os.path.join(script_dir, DATA_DIR, 'train.tsv')
-test_path = os.path.join(script_dir, DATA_DIR, 'test.tsv')
-train = pd.read_csv(train_path, sep="\t").groupby("event_type").sample(frac=1)
-test = pd.read_csv(test_path, sep="\t").groupby("event_type").sample(frac=1)
-
-# Download the model 
-model_path = os.path.join(script_dir, "word2vec-google-news-300.model")
-
-if os.path.exists(model_path):
-    word2vec_model = KeyedVectors.load(model_path)
-else: 
-    path = api.load("word2vec-google-news-300", return_path=True)
-    word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)
-    word2vec_model.save(model_path)
+filename = "word2vec_multiclass_model.sav"
 
 # return the average embedding for a text based on Word2Vec embeddings
 def get_word_embeddings(text, model, vector_size=300):
@@ -53,7 +38,6 @@ def get_word_embeddings(text, model, vector_size=300):
     return np.mean(embeddings, axis=0)
 
 def preprocess_with_embeddings(text, model):
-
     text = re.sub(r'https?:\/\/\S*', '', text, flags=re.MULTILINE)
     text = re.sub(r'[^\w\s]', ' ', text)
     text = " ".join([word for word in text.split() if word[0] != "@"])
@@ -61,22 +45,48 @@ def preprocess_with_embeddings(text, model):
     
     return get_word_embeddings(text, model)
 
-# extract word embeddings from the train/test data
-train_embeddings = np.array([preprocess_with_embeddings(text, word2vec_model) for text in train['tweet_text']])
-test_embeddings = np.array([preprocess_with_embeddings(text, word2vec_model) for text in test['tweet_text']])
 
-# convert event_type to integers
-labels = train['event_type'].factorize()[0]
-actual_y = test["event_type"].factorize()[0]
+# Download the model 
+model_path = os.path.join(script_dir, "word2vec-google-news-300.model")
 
-# train the classifier
-model = LinearSVC()
-model.fit(train_embeddings, labels)
-predicted_y = model.predict(test_embeddings)
+if os.path.exists(model_path):
+    word2vec_model = KeyedVectors.load(model_path)
+else: 
+    path = api.load("word2vec-google-news-300", return_path=True)
+    word2vec_model = KeyedVectors.load_word2vec_format(path, binary=True)
+    word2vec_model.save(model_path)
 
-# performance report
-print(classification_report(actual_y, predicted_y, target_names=test["event_type"].unique()))
+def generate():
+    train_path = os.path.join(script_dir, DATA_DIR, 'train.tsv')
+    train = pd.read_csv(train_path, sep="\t").groupby("event_type").sample(frac=1)
 
-# save model
-filename = os.path.join(script_dir, "word2vec_multiclass_model.sav")
-pickle.dump(model, open(filename, 'wb'))
+    train_embeddings = np.array([preprocess_with_embeddings(text, word2vec_model) for text in train['tweet_text']])
+    labels, label_names = train['event_type'].factorize()
+
+    # train the classifier
+    classifier = LinearSVC()
+    classifier.fit(train_embeddings, labels)
+
+    # save model
+    filename = os.path.join(script_dir, "word2vec_multiclass_model.sav")
+    with open(filename, "wb") as f:
+        pickle.dump((classifier, label_names), f)
+
+def analyze(dataset):
+    model, label_names = joblib.load(filename)
+
+    test_path = os.path.join(script_dir, DATA_DIR, dataset)
+    test = pd.read_csv(test_path, sep="\t").groupby("event_type").sample(frac=1)
+
+    # extract word embeddings from the train/test data
+    test_embeddings = np.array([preprocess_with_embeddings(text, word2vec_model) for text in test['tweet_text']])
+
+    # convert event_type to integers
+    actual_y = test["event_type"].factorize()[0]
+    predicted_y = model.predict(test_embeddings)
+
+    # performance report
+    print(classification_report(actual_y, predicted_y, target_names=label_names))
+
+generate()
+analyze("final_test.tsv")
