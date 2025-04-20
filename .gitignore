@@ -176,6 +176,15 @@ cython_debug/
 # Mac 
 .DS_Store
 
+# Datasets 
+data/scripts/combined_datasets/
+data/scripts/datasets/
+dev.tsv
+test.tsv
+train.tsv
+model/api/*.tsv
+model/api/*.csv
+
 # Model development 
 .pkl
 *.pkl
@@ -193,5 +202,26 @@ backend/unrelated_posts.txt
 backend/bluesky_log.txt
 bluesky_log.txt
 
-# Node modules 
+# Frontend 
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
