@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import DisasterCard from './components/DisasterCard'
-import FilterColumn from './components/FilterColumn'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard'
@@ -28,9 +27,9 @@ export default function AllDisasters() {
     
     const navigate = useNavigate();
 
-    // Fetch disasters on mount 
+    // fetch disasters on mount 
     useEffect(() => {
-        // Add parameters if necessary
+        // add parameters if necessary
         fetch(`${BASE_URL}/disasters`) // Ex. /disasters?limit=1 
             .then((result) => result.json())
             .then((result) => {
@@ -40,8 +39,28 @@ export default function AllDisasters() {
             .catch(console.error);
     }, [])
 
+    // fetch disasters based on filter selection
+    useEffect(() => {
+      // if no filters were selected, return the original list
+      if(sentimentFilter.length === 0 && eventFilter.length === 0) {
+        setFilteredDisasters(disasters);
+      } 
+      else {
+        let resultArr = disasters;
+        resultArr = filterBySentiment(resultArr); // apply sentiment filters
+        resultArr = filterByEvent(resultArr.flat()); // apply event filters 
+        // if multiple filters were selected, combine them into one array=
+        // sort them by disaster ID to maintain (somewhat of) original order
+        setFilteredDisasters(resultArr.flat().sort(function(a, b) {
+          return a.id - b.id;
+        }));
 
-    if(!disasters && !filteredDisasters) {
+      }
+      setCurrIndex(0);
+    }, [sentimentFilter, eventFilter])
+
+
+    if(disasters.length === 0) {
       return <div className="mt-30">Loading...</div>
     }
 
@@ -49,7 +68,6 @@ export default function AllDisasters() {
     const navigateToDisaster = (disaster) => {
       navigate(`/AllDisasters/${disaster.name}`, { state: disaster });
     }
-
 
     // prev and next button for pagination
     const back = () => {
@@ -73,6 +91,7 @@ export default function AllDisasters() {
         const checkboxCopy = [...checkboxes];
         checkboxCopy[index] = true;
         setCheckboxes(checkboxCopy);
+        // setCurrIndex(0);
       } else {
         // remove filter value if filter is unselected
         setFilters(filters.filter((filterID) => filterID !== e.target.value))
@@ -82,24 +101,6 @@ export default function AllDisasters() {
         setCheckboxes(checkboxCopy);
       }
     }
-
-    useEffect(() => {
-      // if no filters were selected, return the original list
-      if(sentimentFilter.length === 0 && eventFilter.length === 0) {
-        setFilteredDisasters(disasters);
-      } 
-      else {
-        let resultArr = disasters;
-        resultArr = filterBySentiment(resultArr); // apply sentiment filters
-        resultArr = filterByEvent(resultArr.flat()); // apply event filters 
-        // if multiple filters were selected, combine them into one array=
-        // sort them by disaster ID to maintain (somewhat of) original order
-        setFilteredDisasters(resultArr.flat().sort(function(a, b) {
-          return a.id - b.id;
-        }));
-
-      }
-    }, [sentimentFilter, eventFilter])
 
     const filterBySentiment = (filteredArray) => {
       // if no sentiment filters were selected, return original array
@@ -149,7 +150,7 @@ export default function AllDisasters() {
                 </Collapsible.Trigger>
                 <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 w-47">
                   {sentimentTypes.map((sentimentID, index) => (
-                    <div className="flex flex-row items-center gap-x-2">
+                    <div key={sentimentID} className="flex flex-row items-center gap-x-2">
                       <input
                         type="checkbox"
                         value={sentimentID}
@@ -175,7 +176,7 @@ export default function AllDisasters() {
                 </Collapsible.Trigger>
                 <Collapsible.Content className="flex flex-col flex-start border border-[#D4D4D4] rounded-md gap-y-1 text-left p-4 mt-3 ">
                   {eventTypes.map((eventID, index) => (
-                    <div className="flex flex-row items-center gap-x-2">
+                    <div key={eventID} className="flex flex-row items-center gap-x-2">
                       <input
                         type="checkbox"
                         value={eventID}
@@ -192,11 +193,16 @@ export default function AllDisasters() {
 
             {/* DISASTER CONTAINER */}
             <div className="flex flex-col w-full md:mt-15">
-              {filteredDisasters.slice(currIndex,currIndex + 4).map((disaster) => (
-                <div key={disaster.id} className="mb-5 rounded-md cursor-pointer max-w-xl hover:bg-gray-100" onClick={() => navigateToDisaster(disaster)}>
+              {filteredDisasters.length !== 0 ? (
+                filteredDisasters.slice(currIndex,currIndex + 4).map((disaster) => (
+                  <div key={disaster.id} className="mb-5 rounded-md cursor-pointer max-w-xl hover:bg-gray-100" onClick={() => navigateToDisaster(disaster)}>
                     <DisasterCard disaster={disaster}/>
-                </div>
-              ))}
+                  </div>
+              ))) : 
+                (
+                  <p className="text-left pb-3">No disasters to show</p> 
+                )
+              }
               <div className="flex flex-row gap-x-3 mt-3 relative pb-20">
                 <button onClick={back} className="border border-[#D4D4D4] rounded-md">Previous</button>
                 <button onClick={next} className="border border-[#D4D4D4] rounded-md">Next</button>

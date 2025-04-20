@@ -9,9 +9,10 @@ import AddedDate from './AddedDate'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { BASE_URL } from "../config";
+import Disclaimer from './Disclaimer'
 
 
-export default function Dashboard({disaster}) {
+export default function Dashboard({disaster, isMostRecent}) {
     const location = useLocation();
     const currDisaster = location.state || disaster; 
    
@@ -21,9 +22,12 @@ export default function Dashboard({disaster}) {
         // Add parameters if necessary
         fetch(`${BASE_URL}/disasters/${currDisaster.id}`) // Ex. /disasters?limit=1 
             .then((result) => result.json())
-            .then(setDisasterInfo)
+            .then((data) => {
+                console.log(data);
+                setDisasterInfo(data)
+            })
             .catch(console.error);
-    }, [])
+    }, [currDisaster?.id]);
    
     if(!disasterInfo) {
         return <div className="mt-30">Loading...</div>
@@ -31,8 +35,10 @@ export default function Dashboard({disaster}) {
     const start = new Date(`${disasterInfo.startDate}T00:00:00`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric"});
 
     return (
-        <div className="flex flex-col mt-30 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
-            <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col mt-[3.03rem] md:mt-13 w-screen h-auto absolute left-0 right-0 px-10 md:px-20 pb-10 md:pb-40 overflow-x-hidden">
+            
+            {isMostRecent && <Disclaimer/>}
+            <div className="flex flex-col gap-y-2 mt-25">
                 <h1 className="text-4xl font-bold text-left">{disasterInfo.name}</h1>
             </div>
             <div className="row-one flex flex-col lg:flex-row lg:gap-x-10">
