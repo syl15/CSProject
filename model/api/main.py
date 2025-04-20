@@ -3,19 +3,11 @@ from pydantic import BaseModel
 import joblib 
 from model_helpers import preprocess, analyze_sentiment
 
-LABEL_MAP = {
-    0: "earthquake", 
-    1: "wildfire", 
-    2: "flood", 
-    3: "hurricane", 
-    4: "unrelated"
-}
-
 app = FastAPI() 
 
-# Load disaster-type classifier
-file = "optimized_model.sav"
-model = joblib.load(file)
+# Load disaster-type classifier and label names
+file = "optimized_model_labels.sav"
+model, label_names = joblib.load(file)
 
 # Define input schema 
 class PostInput(BaseModel): 
@@ -41,7 +33,7 @@ def health_check():
 def predict_event_type(data: PostInput):
     text = [preprocess(data.text)]
     predicted_class = model.predict(text)[0] # Returns value from [0...4]
-    predicted_label = LABEL_MAP.get(int(predicted_class), "unknown") # Convert class to string value
+    predicted_label = label_names[predicted_class]
 
     return {"event_type": predicted_label}    
 

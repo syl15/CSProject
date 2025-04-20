@@ -54,7 +54,7 @@ export default function MobileNavbar() {
 
                     <a className="text-sm text-black" href="/">
                         <Menubar.Item className="mt-3 py-1 hover:bg-[#F6F6F6] focus:outline-[1.5px] focus:outline-[#DFDFDF] rounded-sm">
-                            <p className="pl-2">Overview</p>
+                            <p className="pl-2">Most Recent</p>
                         </Menubar.Item>
                     </a>
                     <a className="text-sm text-black" href="/AllDisasters">

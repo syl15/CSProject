@@ -1,7 +1,6 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import DisasterCard from './components/DisasterCard'
-import FilterColumn from './components/FilterColumn'
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard'
@@ -57,6 +56,7 @@ export default function AllDisasters() {
         }));
 
       }
+      setCurrIndex(0);
     }, [sentimentFilter, eventFilter])
 
 
@@ -91,6 +91,7 @@ export default function AllDisasters() {
         const checkboxCopy = [...checkboxes];
         checkboxCopy[index] = true;
         setCheckboxes(checkboxCopy);
+        // setCurrIndex(0);
       } else {
         // remove filter value if filter is unselected
         setFilters(filters.filter((filterID) => filterID !== e.target.value))
