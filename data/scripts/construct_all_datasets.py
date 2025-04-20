@@ -34,7 +34,7 @@ def map_labels(row):
     if event_type == "fire":
         row["event_type"] = "wildfire"
     return row
-crisisnlp = {split: load_dataset("csv", delimiter="\t", data_files=os.path.join(DATA_DIR, combined_datasets, f"combined_{split}.tsv"), split="train").map(map_labels) for split in hf_dataset.keys()}
+crisisnlp = {split: load_dataset("csv", delimiter="\t", data_files=os.path.join(DATA_DIR, "combined_datasets", f"combined_{split}.tsv"), split="train").map(map_labels) for split in hf_dataset.keys()}
 for name, crisisnlp_dataset in crisisnlp.items():
     # saves train.tsv, dev.tsv, test.tsv into /data/datasets 
     concatenated = concatenate_datasets([crisisnlp_dataset, hf_dataset[name]])

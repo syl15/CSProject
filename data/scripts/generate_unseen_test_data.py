@@ -1,8 +1,4 @@
 # this script generates a test dataset made from completely unseen-before data to assess the true accuracy of the model
-# DATA SOURCES:
-# 1. disaster: https://huggingface.co/datasets/QCRI/CrisisMMD/viewer/damage?views%5B%5D=damage_train
-# 2. non-disaster/unrelated only from: https://www.kaggle.com/datasets/vstepanenko/disaster-tweets (already downloaded to datasets/tweets.csv)
-# 3. disaster: related disasters only (unrelated may overlap with unrelated from test data): https://huggingface.co/datasets/nlp-pw/Disaster-Tweets-Normalized/
 
 import pandas as pd
 from datasets import load_dataset, concatenate_datasets, Value
