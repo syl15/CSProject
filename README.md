@@ -1,9 +1,5 @@
 # Disaster Monitoring Dashboard 
 
-A full stack disaster monitoring platform utilizing Bluesky data. 
-
-Live link: https://disaster-sentiment-tracker.vercel.app/
-
 ## Core Features 
 - Automatic identification, clustering, and summarization of diasters
 - LLM generated summaries for human-friendly disaster tracking 
