@@ -18,7 +18,7 @@ from bluesky_clustering import cluster_and_process_posts
 
 def run_pipeline():
     client = authenticate_bsky()
-    poll_bsky_posts(client, limit=10)
+    poll_bsky_posts(client, limit=60)
     process_bluesky_data()
     assigned_count, dropped_count = cluster_and_process_posts()
     
