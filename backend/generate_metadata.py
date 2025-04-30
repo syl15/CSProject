@@ -191,7 +191,7 @@ def generate_disaster_metadata(clusters):
             # openchat: openchat/openchat-7b (more structured)
             
         data = {
-            "model": "openchat/openchat-7b", 
+            "model": "mistral/ministral-8b", 
             "temperature": 0,
             "messages": [
                 {
